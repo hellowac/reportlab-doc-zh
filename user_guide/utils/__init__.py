@@ -3,7 +3,7 @@ import logging
 import os
 
 from .rltemplate import RLDocTemplate
-from .stylesheet import getStyleSheet, getCnStyleSheet
+from .stylesheet import getStyleSheet, getCnStyleSheet, CnParagraphStyle
 
 from reportlab.lib import colors
 from reportlab.lib.units import inch
@@ -159,7 +159,7 @@ def disc(text, klass=Paragraph, style=discussiontextstyle):
     getStory().append(P)
 
 
-def cn_disc(text, klass=Paragraph, style=discussiontextstyle):
+def cn_disc(text, klass=Paragraph, style=cn_discussiontextstyle):
     text = quickfix(text)
     P = klass(text, style)
     getStory().append(P)
@@ -181,7 +181,7 @@ def bullet(text):
     text = u'<bullet><font name="Symbol">\u2022</font></bullet>' + quickfix(
         text
     )
-    P = Paragraph(text, BU)
+    P = Paragraph(text, style=BU)
     getStory().append(P)
 
 
@@ -189,7 +189,7 @@ def cn_bullet(text):
     text = u'<bullet><font name="Symbol">\u2022</font></bullet>' + quickfix(
         text
     )
-    P = Paragraph(text, BU)
+    P = Paragraph(text, style=cn_BU)
     getStory().append(P)
 
 
@@ -244,13 +244,13 @@ def cn_title(text):
 # should be swapped over to using them.
 
 
-def headingTOC(text='Table of contents'):
+def headingTOC(text):
     getStory().append(PageBreak())
     p = Paragraph(text, H1)
     getStory().append(p)
 
 
-def cn_headingTOC(text='Table of contents'):
+def cn_headingTOC(text):
     getStory().append(PageBreak())
     p = Paragraph(text, cn_H1)
     getStory().append(p)
@@ -266,7 +266,7 @@ def heading1(text):
 
 def cn_heading1(text):
     getStory().append(PageBreak())
-    p = Paragraph('Chapter <seq id="Chapter"/> ' + quickfix(text), cn_H1)
+    p = Paragraph('第 <seq id="Chapter"/> 章  ' + quickfix(text), cn_H1)
     getStory().append(p)
 
 

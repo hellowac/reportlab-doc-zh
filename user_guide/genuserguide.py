@@ -9,12 +9,15 @@ from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+from reportlab import rl_settings
 
 from utils import (
     setStory,
     getStory,
     RLDocTemplate,
 )
+
+rl_settings.verbose = 1
 
 
 # Define the log format
