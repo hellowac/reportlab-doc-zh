@@ -382,7 +382,7 @@ cn_disc("""我们要求开源开发人员考虑在适当的地方尝试RML。
 成本是合理的，并且与项目的规模有关，而收入则帮助我们花费更多的时间来开发此软件。
 """)
 
-heading2("What is Python?")
+# heading2("What is Python?")
 cn_heading2("什么是 Python?")
 
 disc(
