@@ -1524,15 +1524,17 @@ for the entire figure can be adjusted: the lines of the figure can
 be drawn (stroked) or not; the interior of the figure can be filled or
 not; and so forth."""
 )
-cn_disc("aaa")
+cn_disc("正如文本对象被设计成专门用于展示文本一样，路径对象被设计成专门用于构建图形。 "
+        "当路径对象被绘制到$canvas$上时，它们被绘制成一个图形（就像一个矩形），"
+        "整个图形的绘制模式可以调整：图形的线条可以绘制（笔画），也可以不绘制；"
+        "图形的内部可以填充，也可以不填充；等等。")
 
 disc(
     """
-For example the $star$ function uses a path object
-to draw a star
+For example the $star$ function uses a path object to draw a star
 """
 )
-cn_disc("aaa")
+cn_disc("例如，$star$函数使用一个路径对象来绘制一个星体")
 
 eg(examples.teststar)
 
@@ -1542,12 +1544,13 @@ The $star$ function has been designed to be useful in illustrating
 various line style parameters supported by $pdfgen$.
 """
 )
-cn_disc("aaa")
+cn_disc("$star$函数被设计用来说明$pdfgen$支持的各种行式参数。")
 
-illust(examples.star, "line style parameters")
+# illust(examples.star, "line style parameters")
+cn_illust(examples.star, "直线样式参数")
 
-heading3("Line join settings")
-cn_heading3("xxx")
+# heading3("Line join settings")
+cn_heading3("直线连接设置")
 
 disc(
     """
@@ -1555,7 +1558,7 @@ The $setLineJoin$ method can adjust whether line segments meet in a point
 a square or a rounded vertex.
 """
 )
-cn_disc("aaa")
+cn_disc("通过$setLineJoin$方法，可以调整线段在一个点上相接的是方块还是圆角顶点。")
 
 eg(examples.testjoins)
 
@@ -1565,20 +1568,22 @@ The line join setting is only really of interest for thick lines because
 it cannot be seen clearly for thin lines.
 """
 )
-cn_disc("aaa")
+cn_disc("线条连接的设置只有对粗线条才真正有意义，因为对细线条看不清楚。")
 
-illust(examples.joins, "different line join styles")
+# illust(examples.joins, "different line join styles")
+cn_illust(examples.joins, "不同的直线连接样式")
 
-heading3("Line cap settings")
-cn_heading3("xxx")
+# heading3("Line cap settings")
+cn_heading3("直线帽子设置")
 disc(
     """The line cap setting, adjusted using the $setLineCap$ method,
-determines whether a terminating line
-ends in a square exactly at the vertex, a square over the vertex
+determines whether a terminating line ends in a square exactly at the vertex, a square over the vertex
 or a half circle over the vertex.
 """
 )
-cn_disc("aaa")
+cn_disc("使用$setLineCap$方法调整的线帽设置，"
+        "决定了终止线的终点是在顶点处的正方形、"
+        "顶点上方的正方形还是顶点上方的半圆。")
 
 eg(examples.testcaps)
 
@@ -1586,19 +1591,20 @@ disc(
     """The line cap setting, like the line join setting, is only clearly
 visible when the lines are thick."""
 )
-cn_disc("aaa")
+cn_disc("线帽设置和线条连接设置一样，只有在线条较粗时才会清晰可见。")
 
-illust(examples.caps, "line cap settings")
+# illust(examples.caps, "line cap settings")
+cn_illust(examples.caps, "直线帽子设置")
 
-heading3("Dashes and broken lines")
-cn_heading3("xxx")
+# heading3("Dashes and broken lines")
+cn_heading3("破折号和断线")
 
 disc(
     """
 The $setDash$ method allows lines to be broken into dots or dashes.
 """
 )
-cn_disc("aaa")
+cn_disc("用$setDash$方法可以将线条分成点或破折号。")
 
 eg(examples.testdashes)
 
@@ -1608,41 +1614,43 @@ The patterns for the dashes or dots can be in a simple on/off repeating pattern
 or they can be specified in a complex repeating pattern.
 """
 )
-cn_disc("aaa")
+cn_disc("虚线或圆点的图案可以是简单的开/关重复图案，也可以指定为复杂的重复图案。")
 
-illust(examples.dashes, "some dash patterns")
+# illust(examples.dashes, "some dash patterns")
+cn_illust(examples.dashes, "破折号")
 
-heading3("Creating complex figures with path objects")
-cn_heading3("xxx")
+# heading3("Creating complex figures with path objects")
+cn_heading3("用路径对象创建复杂的图形")
 
 disc(
     """
-Combinations of lines, curves, arcs and other figures
-can be combined into a single figure using path objects.
-For example the function shown below constructs two path
-objects using lines and curves.
-This function will be used later on as part of a
-pencil icon construction.
+Combinations of lines, curves, arcs and other figures can be combined into a 
+single figure using path objects. For example the function shown below 
+constructs two path objects using lines and curves. This function will be 
+used later on as part of a pencil icon construction.
 """
 )
-cn_disc("aaa")
+cn_disc("线条、曲线、弧线等图形的组合可以使用路径对象组合成一个图形。"
+        "例如下图所示的函数就是利用直线和曲线构造两个路径对象。"
+        "这个函数将在后面的铅笔图标构造中使用。")
 
 eg(examples.testpenciltip)
 
 disc(
     """
-Note that the interior of the pencil tip is filled
-as one object even though it is constructed from
-several lines and curves.  The pencil lead is then
+Note that the interior of the pencil tip is filled as one object even though 
+it is constructed from several lines and curves.  The pencil lead is then
 drawn over it using a new path object.
 """
 )
-cn_disc("aaa")
+cn_disc("请注意，铅笔头的内部是作为一个对象填充的，即使它是由几条线和曲线构成的。"
+        "然后使用一个新的路径对象在其上绘制铅笔头。")
 
-illust(examples.penciltip, "a pencil tip")
+# illust(examples.penciltip, "a pencil tip")
+cn_illust(examples.penciltip, "铅笔头")
 
-heading2('Rectangles, circles, ellipses')
-cn_heading2("xxx")
+# heading2('Rectangles, circles, ellipses')
+cn_heading2("矩形、圆形、椭圆形。")
 
 disc(
     """
@@ -1654,7 +1662,10 @@ draws a pencil icon using rectangles and rounded rectangles with
 various fill colors and a few other annotations.
 """
 )
-cn_disc("aaa")
+cn_disc("$pdfgen$模块支持许多一般有用的形状，如矩形、圆角矩形、椭圆和圆。"
+        "这些图形中的每一个都可以在路径对象中使用，也可以直接在$canvas$上绘制。 "
+        "例如下面的$pencil$函数使用矩形和圆角矩形绘制了一个铅笔图标，"
+        "并添加了各种填充颜色和其他一些注释。")
 
 eg(examples.testpencil)
 
@@ -1668,12 +1679,16 @@ because, for example, the white rectangles "erase" parts of a black rectangle
 and the "tip" paints over part of the yellow rectangle.
 """
 )
-cn_disc("aaa")
+cn_disc("注意，这个函数是用来创建左边的'边距铅笔'的。"
+        "还要注意的是，元素的绘制顺序很重要，因为，"
+        "例如，白色矩形'擦掉'了黑色矩形的一部分，"
+        "而 '笔尖'则涂抹了黄色矩形的一部分。")
 
-illust(examples.pencil, "a whole pencil")
+# illust(examples.pencil, "a whole pencil")
+cn_illust(examples.pencil, "铅笔")
 
-heading2('Bezier curves')
-cn_heading2("xxx")
+# heading2('Bezier curves')
+cn_heading2("贝兹尔曲线")
 
 disc(
     """
@@ -1681,37 +1696,38 @@ Programs that wish to construct figures with curving borders
 generally use Bezier curves to form the borders.
 """
 )
-cn_disc("aaa")
+cn_disc("想要构造具有弯曲边界的图形的程序，一般使用贝塞尔曲线来形成边界。")
 
 eg(examples.testbezier)
 
 disc(
     """
-A Bezier curve is specified by four control points
-$(x1,y1)$, $(x2,y2)$, $(x3,y3)$, $(x4,y4)$.
-The curve starts at $(x1,y1)$ and ends at $(x4,y4)$
-and the line segment from $(x1,y1)$ to $(x2,y2)$
-and the line segment from $(x3,y3)$ to $(x4,y4)$
-both form tangents to the curve.  Furthermore the
-curve is entirely contained in the convex figure with vertices
-at the control points.
+A Bezier curve is specified by four control points $(x1,y1)$, $(x2,y2)$, 
+$(x3,y3)$, $(x4,y4)$. The curve starts at $(x1,y1)$ and ends at $(x4,y4)$ 
+and the line segment from $(x1,y1)$ to $(x2,y2)$ 
+and the line segment from $(x3,y3)$ to $(x4,y4)$ 
+both form tangents to the curve.  
+Furthermore the curve is entirely contained in the convex figure with vertices at the control points.
 """
 )
-cn_disc("aaa")
+cn_disc("Bezier曲线由四个控制点$(x1,y1)$，$(x2,y2)$，$(x3,y3)$，$(x4,y4)$指定。"
+        "曲线起于$(x1,y1)$，止于$(x4,y4)$，从$(x1,y1)$到$(x2,y2)$的线段和从$(x3,y3)$到$(x4,y4)$的线段都与曲线形成切线。 "
+        "而且曲线完全包含在凸图形中，顶点在控制点上。")
 
-illust(examples.bezier, "basic bezier curves")
+# illust(examples.bezier, "basic bezier curves")
+cn_illust(examples.bezier, "基本贝塞尔曲线")
 
 disc(
     """
-The drawing above (the output of $testbezier$) shows
-a bezier curves, the tangent lines defined by the control points
-and the convex figure with vertices at the control points.
+The drawing above (the output of $testbezier$) shows a bezier curves, 
+the tangent lines defined by the control points and the convex figure with 
+vertices at the control points.
 """
 )
-cn_disc("aaa")
+cn_disc("上图($testbezier$的输出)显示了一个bezier曲线、控制点定义的切线和控制点处有顶点的凸图形。")
 
-heading3("Smoothly joining bezier curve sequences")
-cn_heading3("xxx")
+# heading3("Smoothly joining bezier curve sequences")
+cn_heading3("平滑地连接贝塞尔曲线序列")
 
 disc(
     """
@@ -1721,23 +1737,25 @@ several bezier curves make sure that the tangent lines to adjacent
 bezier curves that join at a control point lie on the same line.
 """
 )
-cn_disc("aaa")
+cn_disc("通常情况下，将几条贝塞尔曲线连接成一条平滑曲线是很有用的。 "
+        "要想从几条贝塞尔曲线中构造一条较大的平滑曲线，"
+        "请确保相邻贝塞尔曲线在控制点连接的切线位于同一直线上。")
 
 eg(examples.testbezier2)
 
 disc(
     """
-The figure created by $testbezier2$ describes a smooth
-complex curve because adjacent tangent lines "line up" as
-illustrated below.
+The figure created by $testbezier2$ describes a smooth complex curve because 
+adjacent tangent lines "line up" as illustrated below.
 """
 )
-cn_disc("aaa")
+cn_disc('由$testbezier2$创建的图形描述了一条平滑的复曲线，因为相邻的切线 "排队"，如下图所示。')
 
-illust(examples.bezier2, "bezier curves")
+# illust(examples.bezier2, "bezier curves")
+cn_illust(examples.bezier2, "bezier curves")
 
-heading2("Path object methods")
-cn_heading2('xxx')
+# heading2("Path object methods")
+cn_heading2('路径对象方法')
 
 disc(
     """
@@ -1748,7 +1766,9 @@ apply paint on the canvas starting at the end point of the last
 operation and leave the brush at a new end point.
 """
 )
-cn_disc("aaa")
+cn_disc('路径对象通过在画布上的起始点设置 "笔 "或 "画笔"，'
+        '并在画布上的附加点上绘制线条或曲线，从而建立复杂的图形。 '
+        '大多数操作都是从上一次操作的终点开始在画布上涂抹颜料，并在新的终点留下画笔。')
 
 eg("""pathobject.moveTo(x,y)""")
 
@@ -1759,7 +1779,8 @@ of lines or curves if there is one) and replaces the brush at the
 new ^(x,y)^ location on the canvas to start a new path sequence.
 """
 )
-cn_disc("aaa")
+cn_disc("$moveTo$方法抬起画笔(结束任何当前的线条或曲线序列(如果有的话))，"
+        "并在画布上新的^(x,y)^位置替换画笔，开始一个新的路径序列。")
 
 eg("""pathobject.lineTo(x,y)""")
 
@@ -1769,7 +1790,7 @@ The $lineTo$ method paints straight line segment from the current brush
 location to the new ^(x,y)^ location.
 """
 )
-cn_disc("aaa")
+cn_disc("$lineTo$方法从当前笔刷位置到新的^(x,y)^位置绘制直线段。")
 
 eg("""pathobject.curveTo(x1, y1, x2, y2, x3, y3) """)
 
@@ -1780,7 +1801,9 @@ the current brush location, using ^(x1,y1)^, ^(x2,y2)^, and ^(x3,y3)^
 as the other three control points, leaving the brush on ^(x3,y3)^.
 """
 )
-cn_disc("aaa")
+cn_disc("$curveTo$方法从当前画笔位置开始绘制一条贝塞尔曲线，"
+        "使用^(x1,y1)^、^(x2,y2)^和^(x3,y3)^作为其他三个控制点，"
+        "将画笔留在^(x3,y3)^上。")
 
 eg("""pathobject.arc(x1,y1, x2,y2, startAng=0, extent=90) """)
 
@@ -1789,19 +1812,24 @@ eg("""pathobject.arcTo(x1,y1, x2,y2, startAng=0, extent=90) """)
 disc(
     """
 The $arc$ and $arcTo$ methods paint partial ellipses.  The $arc$ method first 
-"lifts the brush"
-and starts a new shape sequence.  The $arcTo$ method joins the start of
-the partial ellipse to the current
-shape sequence by line segment before drawing the partial ellipse.  The points
-^(x1,y1)^ and ^(x2,y2)^ define opposite corner points of a rectangle enclosing
-the ellipse.  The $startAng$ is an angle (in degrees) specifying where to begin
-the partial ellipse where the 0 angle is the midpoint of the right border of 
-the enclosing
-rectangle (when ^(x1,y1)^ is the lower left corner and ^(x2,y2)^ is the upper
-right corner).  The $extent$ is the angle in degrees to traverse on the ellipse.
+"lifts the brush" and starts a new shape sequence.  The $arcTo$ method joins 
+the start of the partial ellipse to the current shape sequence by line 
+segment before drawing the partial ellipse.  The points ^(x1,y1)^ and ^(x2,
+y2)^ define opposite corner points of a rectangle enclosing the ellipse.  
+The $startAng$ is an angle (in degrees) specifying where to begin the partial ellipse where the 0 angle is the midpoint of the right border of 
+the enclosing rectangle (when ^(x1,y1)^ is the lower left corner and ^(x2,
+y2)^ is the upper right corner).  The $extent$ is the angle in degrees to 
+traverse on the ellipse.
 """
 )
-cn_disc("aaa")
+cn_disc('$arc$和$arcTo$方法可以绘制部分椭圆。 '
+        '$arc$方法首先 "提起画笔 "并开始一个新的形状序列。 '
+        '而$arcTo$方法则是将部分椭圆的起始点与当前的形状序列用线连接起来。 '
+        '在画部分椭圆之前，先画出部分椭圆的线段。 '
+        '点^（x1，y1）^和^（x2, y2)^定义包围椭圆的矩形的相对角点。 '
+        'startAng$是一个角度(度数)，指定了部分椭圆的开始位置，其中0角是右边界的中点。 '
+        '围成的矩形（当^(x1,y1)^为左下角，^(x2, y2）^为右上角）.'
+        '$extent$是指与椭圆上的横移。')
 
 eg(examples.testarcs)
 
@@ -1809,9 +1837,10 @@ disc(
     """The $arcs$ function above exercises the two partial ellipse methods.
 It produces the following drawing."""
 )
-cn_disc("aaa")
+cn_disc("上面的$arcs$函数行使了两种局部椭圆方法。它产生了下面的图形。")
 
-illust(examples.arcs, "arcs in path objects")
+# illust(examples.arcs, "arcs in path objects")
+cn_illust(examples.arcs, "弧线")
 
 eg("""pathobject.rect(x, y, width, height) """)
 
@@ -1819,7 +1848,7 @@ disc(
     """The $rect$ method draws a rectangle with lower left corner
 at ^(x,y)^ of the specified ^width^ and ^height^."""
 )
-cn_disc("aaa")
+cn_disc("$rect$方法在^(x,y)^指定的^width^和^height^处画一个左下角的矩形。")
 
 eg("""pathobject.ellipse(x, y, width, height)""")
 
@@ -1829,7 +1858,7 @@ draws an ellipse enclosed in the rectange with lower left corner
 at ^(x,y)^ of the specified ^width^ and ^height^.
 """
 )
-cn_disc("aaa")
+cn_disc("$ellipse$方法在指定的^width^和^height^的^(x,y)^处绘制一个左下角的矩形包围的椭圆。")
 
 eg("""pathobject.circle(x_cen, y_cen, r) """)
 
@@ -1838,7 +1867,7 @@ disc(
 draws a circle centered at ^(x_cen, y_cen)^ with radius ^r^.
 """
 )
-cn_disc("aaa")
+cn_disc("circle$方法画一个以^(x_cen，y_cen)^为中心，半径^r^的圆。")
 
 eg(examples.testvariousshapes)
 
@@ -1848,9 +1877,10 @@ The $variousshapes$ function above shows a rectangle, circle and ellipse
 placed in a frame of reference grid.
 """
 )
-cn_disc("aaa")
+cn_disc("上面的$variousshapes$函数显示了一个放置在参考网格中的矩形、圆和椭圆。")
 
-illust(examples.variousshapes, "rectangles, circles, ellipses in path objects")
+# illust(examples.variousshapes, "rectangles, circles, ellipses in path objects")
+cn_illust(examples.variousshapes, "路径对象中的矩形、圆形、椭圆形。")
 
 eg("""pathobject.close() """)
 
@@ -1863,7 +1893,7 @@ recent point where the brush was placed on the paper by $moveTo$
 or $arc$ or other placement operations).
 """
 )
-cn_disc("aaa")
+cn_disc("$close$方法通过从图形的最后一点到图形的起始点(最近一次通过$moveTo$或$arc$或其他放置操作将画笔放置在纸上的点)画一条线段来关闭当前图形。")
 
 eg(examples.testclosingfigures)
 
@@ -1874,9 +1904,10 @@ effect of closing or not closing figures including a line
 segment and a partial ellipse.
 """
 )
-cn_disc("aaa")
+cn_disc("$closingfigures$函数说明了闭合或不闭合图形的效果，包括一条线段和一个部分椭圆。")
 
-illust(examples.closingfigures, "closing and not closing pathobject figures")
+# illust(examples.closingfigures, "closing and not closing patho bject figures")
+cn_illust(examples.closingfigures, "闭合和不闭合的路径对象数字")
 
 disc(
     """
@@ -1884,15 +1915,15 @@ Closing or not closing graphical figures effects only the stroked outline
 of a figure, not the filling of the figure as illustrated above.
 """
 )
-cn_disc("aaa")
+cn_disc("关闭或不关闭图形只影响图形的描边轮廓，而不影响图形的填充，如上图所示。")
 
 disc(
     """
-For a more extensive example of drawing using a path object
-examine the $hand$ function.
+For a more extensive example of drawing using a path object examine the 
+$hand$ function.
 """
 )
-cn_disc("aaa")
+cn_disc("关于使用路径对象绘图的更广泛的例子，请检查$hand$函数。")
 
 eg(examples.testhand)
 
@@ -1904,9 +1935,11 @@ line up the curves join smoothly, but where they do not line up the curves show
 a "sharp edge".
 """
 )
-cn_disc("aaa")
+cn_disc('在调试模式下(默认)，$hand$函数显示了用于构成图形的贝塞尔曲线的切线段。'
+        '请注意，当线段对齐时，曲线平滑地连接在一起，但当线段不对齐时，曲线显示出一个 "尖锐的边缘"。')
 
-illust(examples.hand, "an outline of a hand using bezier curves")
+# illust(examples.hand, "an outline of a hand using bezier curves")
+cn_illust(examples.hand, "手形图")
 
 disc(
     """
@@ -1915,7 +1948,8 @@ Bezier curves.  With the $fill$ parameter set the figure is
 filled using the current fill color.
 """
 )
-cn_disc("aaa")
+cn_disc("在非调试模式下，$hand$函数只显示贝塞尔曲线。 "
+        "如果设置了$fill$参数，则会使用当前的填充颜色填充图形。")
 
 eg(examples.testhand2)
 
@@ -1925,11 +1959,13 @@ Note that the "stroking" of the border draws over the interior fill where
 they overlap.
 """
 )
-cn_disc("aaa")
+cn_disc('注意，边框的 "描边 "画在它们重叠的内部填充物上。')
 
-illust(examples.hand2, "the finished hand, filled")
+# illust(examples.hand2, "the finished hand, filled")
+cn_illust(examples.hand2, "妙手回春")
 
-heading2("Further Reading: The ReportLab Graphics Library")
+# heading2("Further Reading: The ReportLab Graphics Library")
+cn_heading2("进一步阅读: ReportLab图形库")
 
 disc(
     """
@@ -1939,7 +1975,8 @@ much more sophisticated graphics using the dedicated
 high-level <i>ReportLab Graphics Library</i>.
 """
 )
-cn_disc("aaa")
+cn_disc("到目前为止，我们所看到的图形是在相当低的水平上创建的。"
+        "但应该注意的是，还有一种方法可以使用专用的高级<i>ReportLab图形库</i>创建更复杂的图形。")
 
 disc(
     """
@@ -1948,17 +1985,17 @@ reusable graphics for different output formats (vector and bitmap)
 like PDF, EPS, SVG, JPG and PNG.
 """
 )
-cn_disc("aaa")
+cn_disc("它可以用来为不同的输出格式（矢量图和位图）如PDF、EPS、SVG、JPG和PNG等制作高质量的、独立于平台的、可重复使用的图形。")
 
 disc(
     """
-A more thorough description of its philsophy and features is
+A more thorough description of its philosophy and features is
 now covered in Chapter 11 of this document, <i>Graphics</i>, which 
 contains information about the existing components and
 how to create customized ones.
 """
 )
-cn_disc("aaa")
+cn_disc("本文档第11章<i>绘图</i>对其理念和功能进行了更详尽的描述，其中包含了现有组件的信息以及如何创建自定义组件。")
 
 disc(
     """
@@ -1968,7 +2005,8 @@ different types of charts like bar, line and pie charts) that
 builds directly on the graphics library.
 """
 )
-cn_disc("aaa")
+cn_disc("第11章还详细介绍了ReportLab图表包及其组件（标签、坐标轴、图例和不同类型的图表，如柱状图、线状图和饼状图），"
+        "它直接建立在图形库上。")
 
 
 
