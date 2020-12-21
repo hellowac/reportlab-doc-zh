@@ -1,13 +1,37 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
 # history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch4_platypus_concepts.py
-from utils import *
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
+    eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+    pencilnote,
+    startKeep,
+    endKeep,
+)
 from utils import examples
 
 #####################################################################################################3
 
 
-heading1("PLATYPUS - Page Layout and Typography Using Scripts")
+# heading1("PLATYPUS - Page Layout and Typography Using Scripts")
+cn_heading1("PLATYPUS - 使用脚本进行页面布局和排版。")
 
 heading2("Design Goals")
 

@@ -1,26 +1,43 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
 # history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch6_tables.py
+from reportlab.platypus.flowables import Spacer
+from reportlab.lib.units import inch
 from utils import (
     heading1,
-    disc,
-    bullet,
+    cn_heading1,
     heading2,
+    cn_heading2,
     heading3,
+    cn_heading3,
     heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
     eg,
-    npeg,
-    EmbeddedCode,
+    cn_eg,
+    illust,
+    cn_illust,
     CPage,
+    parabox,
+    parabox2,
+    bullet,
     getStory,
-    Spacer,
-    inch,
+    pencilnote,
+    startKeep,
+    endKeep,
+    caption,
+    cn_caption,
+    styleSheet,
+    cn_styleSheet,
+    npeg,
+    EmbeddedCode
 )
 
-from reportlab.platypus import Image, ListFlowable, ListItem
-import reportlab
+from reportlab.platypus import Image
 
-heading1("Tables and TableStyles")
+# heading1("Tables and TableStyles")
+cn_heading1('表格和表格样式')
 disc(
     """
 The $Table$  and $LongTable$ classes derive from the $Flowable$ class and are intended
@@ -462,7 +479,8 @@ $'splitlast'$ or $'splitfirst'$ to indicate that the style should be used only f
 a split table, or the first row of a continuation. This allows splitting tables with nicer effects around the split."""
 )
 
-heading1("""Programming $Flowables$""")
+# heading1("""Programming $Flowables$""")
+cn_heading1("编写 $Flowables$")
 
 disc(
     """The following flowables let you conditionally evaluate and execute expressions and statements at wrap time:"""
@@ -553,7 +571,9 @@ The value of i is 1
 """
 )
 
-heading1("""Other Useful $Flowables$""")
+# heading1("""Other Useful $Flowables$""")
+cn_heading2("其他可用的$Flowables$")
+
 heading2(
     """$Preformatted(text, style, bulletText=None, dedent=0, maxLineLength=None, splitChars=None, newLineChars=None)$"""
 )

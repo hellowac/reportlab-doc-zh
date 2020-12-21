@@ -1,10 +1,37 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
-# history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch3_pdffeatures.py
-from utils import *
+# history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide
+# /ch3_pdffeatures.py
+from reportlab.lib import colors
+from reportlab.platypus.tables import Table, TableStyle
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
+    eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+    pencilnote,
+)
 from utils import examples
 
-heading1("Exposing PDF Special Capabilities")
+
+# heading1("Exposing PDF Special Capabilities")
+cn_heading1("揭示PDF的特殊能力")
+
 disc(
     """PDF provides a number of features to make electronic
     document viewing more efficient and comfortable, and
@@ -32,7 +59,6 @@ disc(
     program would probably define the forms up front and refer to
     them from another location."""
 )
-
 
 eg(examples.testforms)
 
@@ -92,7 +118,8 @@ t = Table(
         [
             'XYZ',
             'left top zoom',
-            'Fine grained control. If you omit a parameter\nthe PDF browser interprets it as "leave as is"',
+            'Fine grained control. If you omit a parameter\nthe PDF browser '
+            'interprets it as "leave as is"',
         ],
     ]
 )
@@ -109,7 +136,8 @@ t.setStyle(
 
 getStory().append(t)
 caption(
-    """Table <seq template="%(Chapter)s-%(Table+)s"/> - Required attributes for different fit types"""
+    """Table <seq template="%(Chapter)s-%(Table+)s"/> - Required attributes 
+    for different fit types"""
 )
 
 disc(
@@ -117,7 +145,6 @@ disc(
 Note : $fit$ settings are case-sensitive so $fit="FIT"$ is invalid
 """
 )
-
 
 disc(
     """
@@ -139,7 +166,6 @@ eg(
 canvas.bookmarkPage('my_bookmark',fit="XYZ",left=0,top=200)
 """
 )
-
 
 disc(
     """
@@ -165,7 +191,6 @@ They ignore any geometric transform in effect in the canvas graphic state.
 """
 )
 
-
 pencilnote()
 
 disc(
@@ -179,26 +204,34 @@ and $bookmarkHorizontal$.
 heading3("Defining internal links")
 eg(
     """
- canvas.linkAbsolute(contents, destinationname, Rect=None, addtopage=1, name=None, 
+ canvas.linkAbsolute(contents, destinationname, Rect=None, addtopage=1, 
+ name=None, 
  thickness=0, color=None, dashArray=None, **kw)
  """
 )
 
 disc(
     """
-    The $linkAbsolute$ method defines a starting point for a jump.  When the user
-    is browsing the generated document using a dynamic viewer (such as Acrobat Reader)
+    The $linkAbsolute$ method defines a starting point for a jump.  When the 
+    user
+    is browsing the generated document using a dynamic viewer (such as 
+    Acrobat Reader)
     when the mouse is clicked when the pointer is within the rectangle specified
-    by $Rect$ the viewer will jump to the endpoint associated with $destinationname$.
-    As in the case with $bookmarkHorizontalAbsolute$ the rectangle $Rect$ must be
-    specified in terms of the default user space.  The $contents$ parameter specifies
-    a chunk of text which displays in the viewer if the user left-clicks on the region.
+    by $Rect$ the viewer will jump to the endpoint associated with 
+    $destinationname$.
+    As in the case with $bookmarkHorizontalAbsolute$ the rectangle $Rect$ 
+    must be
+    specified in terms of the default user space.  The $contents$ parameter 
+    specifies
+    a chunk of text which displays in the viewer if the user left-clicks on 
+    the region.
 """
 )
 
 disc(
     """
-The rectangle $Rect$ must be specified in terms of a tuple ^(x1,y1,x2,y2)^ identifying
+The rectangle $Rect$ must be specified in terms of a tuple ^(x1,y1,x2,
+y2)^ identifying
 the lower left and upper right points of the rectangle in default user space.
 """
 )
@@ -247,14 +280,19 @@ eg(
 )
 
 disc(
-    """The $thickness$, $color$ and $dashArray$ arguments may be used alternately
+    """The $thickness$, $color$ and $dashArray$ arguments may be used 
+    alternately
 to specify a border if no Border argument is specified.
 If Border is specified it must be either a string representation of a PDF
-array or a $PDFArray$ (see the pdfdoc module). The $color$ argument (which should be a $Color$ instance) is equivalent to a keyword argument $C$ which should resolve to a PDF color definition (Normally a three entry PDF array).
+array or a $PDFArray$ (see the pdfdoc module). The $color$ argument (which 
+should be a $Color$ instance) is equivalent to a keyword argument $C$ which 
+should resolve to a PDF color definition (Normally a three entry PDF array).
 """
 )
 disc(
-    """The $canvas.linkRect$ method is similar in intent to the $linkAbsolute$ method, but has an extra argument $relative=1$ so is intended to obey the local userspace transformation."""
+    """The $canvas.linkRect$ method is similar in intent to the 
+    $linkAbsolute$ method, but has an extra argument $relative=1$ so is 
+    intended to obey the local userspace transformation."""
 )
 
 heading2("Outline Trees")
@@ -309,7 +347,6 @@ if paragraph.style == 'Heading1':
 
 heading2("Page Transition Effects")
 
-
 eg(
     """
  canvas.setPageTransition(self, effectname=None, duration=1,
@@ -346,7 +383,8 @@ viewed using the "Document Info" menu item of the browser and they also can
 be used as a simple standard way of providing basic information about the
 document to archiving software which need not parse the entire
 file.  To find the annotations view the $*.pdf$ output file using a standard
-text editor (such as $notepad$ on MS/Windows or $vi$ or $emacs$ on unix) and look
+text editor (such as $notepad$ on MS/Windows or $vi$ or $emacs$ on unix) and 
+look
 for the string $/Author$ in the file contents.
 """
 )
@@ -369,25 +407,30 @@ heading3("About encrypting PDF files")
 
 disc(
     """
-Adobe's PDF standard allows you to do three related things to a PDF file when you encrypt it:
+Adobe's PDF standard allows you to do three related things to a PDF file when 
+you encrypt it:
 """
 )
 bullet(
-    """Apply password protection to it, so a user must supply a valid password before being able to read it,
+    """Apply password protection to it, so a user must supply a valid 
+    password before being able to read it,
 """
 )
 bullet(
-    """Encrypt the contents of the file to make it useless until it is decrypted, and
+    """Encrypt the contents of the file to make it useless until it is 
+    decrypted, and
 """
 )
 bullet(
-    """Control whether the user can print, copy and paste or modify the document while viewing it.
+    """Control whether the user can print, copy and paste or modify the 
+    document while viewing it.
 """
 )
 
 disc(
     """
-The PDF security handler allows two different passwords to be specified for a document:
+The PDF security handler allows two different passwords to be specified for a 
+document:
 """
 )
 
@@ -403,22 +446,27 @@ bullet(
 
 disc(
     """
-When a user supplies either one of these passwords, the PDF file will be opened, decrypted and displayed on
+When a user supplies either one of these passwords, the PDF file will be 
+opened, decrypted and displayed on
 screen.
 """
 )
 
 disc(
     """
-If the owner password is supplied, then the file is opened with full control - you can do anything to it,
-including changing the security settings and passwords, or re-encrypting it with a new password.
+If the owner password is supplied, then the file is opened with full control 
+- you can do anything to it,
+including changing the security settings and passwords, or re-encrypting it 
+with a new password.
 """
 )
 
 disc(
     """
-     If the user password was the one that was supplied, you open it up in a more restricted mode. The restrictions were put in
-place when the file was encrypted, and will either allow or deny the user permission to do the following:
+     If the user password was the one that was supplied, you open it up in a 
+     more restricted mode. The restrictions were put in
+place when the file was encrypted, and will either allow or deny the user 
+permission to do the following:
 """
 )
 
@@ -448,12 +496,18 @@ Printing the document
 
 disc(
     """
-Note that all password protected PDF files are encrypted, but not all encrypted PDFs are password protected. If
-a document's user password is an empty string, there will be no prompt for the password when the file is
-opened. If you only secure a document with the owner password, there will also not be a prompt for the
-password when you open the file. If the owner and user passwords are set to the same string when encrypting
-the PDF file, the document will always open with the user access privileges. This means that it is possible to
-create a file which, for example, is impossible for anyone to print out, even the person who created it.
+Note that all password protected PDF files are encrypted, but not all 
+encrypted PDFs are password protected. If
+a document's user password is an empty string, there will be no prompt for 
+the password when the file is
+opened. If you only secure a document with the owner password, there will 
+also not be a prompt for the
+password when you open the file. If the owner and user passwords are set to 
+the same string when encrypting
+the PDF file, the document will always open with the user access privileges. 
+This means that it is possible to
+create a file which, for example, is impossible for anyone to print out, 
+even the person who created it.
 """
 )
 
@@ -463,17 +517,20 @@ t = Table(
         [
             'Y',
             '-',
-            'No password required when opening file. \nRestrictions apply to everyone.',
+            'No password required when opening file. \nRestrictions apply to '
+            'everyone.',
         ],
         [
             '-',
             'Y',
-            'User password required when opening file. \nRestrictions apply to everyone.',
+            'User password required when opening file. \nRestrictions apply '
+            'to everyone.',
         ],
         [
             'Y',
             'Y',
-            'A password required when opening file. \nRestrictions apply only if user password supplied.',
+            'A password required when opening file. \nRestrictions apply only '
+            'if user password supplied.',
         ],
     ],
     [90, 90, 260],
@@ -494,17 +551,22 @@ getStory().append(t)
 
 disc(
     """
-When a PDF file is encrypted, encryption is applied to all the strings and streams in the file. This prevents
-people who don't have the password from simply removing the password from the PDF file to gain access to it - 
+When a PDF file is encrypted, encryption is applied to all the strings and 
+streams in the file. This prevents
+people who don't have the password from simply removing the password from the 
+PDF file to gain access to it - 
 it renders the file useless unless you actually have the password.
 """
 )
 disc(
     """
 PDF's standard encryption methods use the
-MD5 message digest algorithm (as described in RFC 1321, The MD5 Message-Digest Algorithm) and an
-encryption algorithm known as RC4. RC4 is a symmetric stream cipher - the same algorithm is used both for
-encryption and decryption, and the algorithm does not change the length of the data.
+MD5 message digest algorithm (as described in RFC 1321, The MD5 
+Message-Digest Algorithm) and an
+encryption algorithm known as RC4. RC4 is a symmetric stream cipher - the 
+same algorithm is used both for
+encryption and decryption, and the algorithm does not change the length of 
+the data.
 """
 )
 
@@ -518,13 +580,15 @@ disc(
 
 disc(
     """
-     If the argument is a string object, it is used as the User password to the PDF.
+     If the argument is a string object, it is used as the User password to 
+     the PDF.
      """
 )
 
 disc(
     """
-     The argument can also be an instance of the class $reportlab.lib.pdfencrypt.StandardEncryption$,
+     The argument can also be an instance of the class 
+     $reportlab.lib.pdfencrypt.StandardEncryption$,
      which allows more finegrained control over encryption settings.
      """
 )
@@ -549,19 +613,23 @@ eg(
 
 disc(
     """
-     The $userPassword$ and $ownerPassword$ parameters set the relevant password on the encrypted PDF.
+     The $userPassword$ and $ownerPassword$ parameters set the relevant 
+     password on the encrypted PDF.
      """
 )
 
 disc(
     """
-     The boolean flags $canPrint$, $canModify$, $canCopy$, $canAnnotate$ determine wether a user can
-    perform the corresponding actions on the PDF when only a user password has been supplied.
+     The boolean flags $canPrint$, $canModify$, $canCopy$, $canAnnotate$ 
+     determine wether a user can
+    perform the corresponding actions on the PDF when only a user password 
+    has been supplied.
     """
 )
 disc(
     """
-    If the user supplies the owner password while opening the PDF, all actions can be performed regardless
+    If the user supplies the owner password while opening the PDF, 
+    all actions can be performed regardless
     of the flags.
     """
 )
@@ -570,7 +638,8 @@ heading3("Example")
 
 disc(
     """
-     To create a document named hello.pdf with a user password of 'rptlab' on which printing is not allowed,
+     To create a document named hello.pdf with a user password of 'rptlab' on 
+     which printing is not allowed,
      use the following code:
      """
 )
@@ -597,14 +666,18 @@ heading3("Overview of Interactive Forms")
 
 disc(
     """The PDF standard allows for various kinds of interactive elements,
-the ReportLab toolkit currently supports only a fraction of the possibilities and should be considered a work in progress.
+the ReportLab toolkit currently supports only a fraction of the possibilities 
+and should be considered a work in progress.
 At present we allow choices with
-<i>checkbox</i>, <i>radio</i>, <i>choice</i> &amp; <i>listbox</i> widgets; text values can be entered with a
-<i>textfield</i> widget. All the widgets are created by calling methods on the <i>canvas.acroform</i> property."""
+<i>checkbox</i>, <i>radio</i>, <i>choice</i> &amp; <i>listbox</i> widgets; 
+text values can be entered with a
+<i>textfield</i> widget. All the widgets are created by calling methods on 
+the <i>canvas.acroform</i> property."""
 )
 heading3("Example")
 disc(
-    "This shows the basic mechanism of creating an interactive element on the current page."
+    "This shows the basic mechanism of creating an interactive element on the "
+    "current page."
 )
 eg(
     """
@@ -638,11 +711,15 @@ alStyle = TableStyle(
 )
 
 disc(
-    """<b>NB</b> note that the <i>acroform</i> canvas property is created automatically on demand and that there is only one form allowd in a document."""
+    """<b>NB</b> note that the <i>acroform</i> canvas property is created 
+    automatically on demand and that there is only one form allowd in a 
+    document."""
 )
 heading3("Checkbox Usage")
 disc(
-    """The <i>canvas.acroform.checkbox</i> method creates a <i>checkbox</i> widget on the current page. The value of the checkbox is either <b>YES</b> or <b>OFF</b>.
+    """The <i>canvas.acroform.checkbox</i> method creates a <i>checkbox</i> 
+    widget on the current page. The value of the checkbox is either 
+    <b>YES</b> or <b>OFF</b>.
 The arguments are"""
 )
 t = Table(
@@ -696,7 +773,9 @@ getStory().append(t)
 
 heading3("Radio Usage")
 disc(
-    """The <i>canvas.acroform.radio</i> method creates a <i>radio</i> widget on the current page. The value of the radio is the value of the radio group's
+    """The <i>canvas.acroform.radio</i> method creates a <i>radio</i> widget 
+    on the current page. The value of the radio is the value of the radio 
+    group's
 selected value or <b>OFF</b> if none are selected.
 The arguments are"""
 )
@@ -759,7 +838,8 @@ t = Table(
 getStory().append(t)
 heading3("Listbox Usage")
 disc(
-    """The <i>canvas.acroform.listbox</i> method creates a <i>listbox</i> widget on the current page. The listbox contains a
+    """The <i>canvas.acroform.listbox</i> method creates a <i>listbox</i> 
+    widget on the current page. The listbox contains a
 list of options one or more of which (depending on fieldFlags) may be selected.
 """
 )
@@ -815,8 +895,10 @@ t = Table(
 getStory().append(t)
 heading3("Choice Usage")
 disc(
-    """The <i>canvas.acroform.choice</i> method creates a <i>dropdown</i> widget on the current page. The dropdown contains a
-list of options one or more of which (depending on fieldFlags) may be selected. If you add <i>edit</i> to the <i>fieldFlags</i>
+    """The <i>canvas.acroform.choice</i> method creates a <i>dropdown</i> 
+    widget on the current page. The dropdown contains a
+list of options one or more of which (depending on fieldFlags) may be 
+selected. If you add <i>edit</i> to the <i>fieldFlags</i>
 then the result may be edited.
 """
 )
@@ -874,7 +956,8 @@ getStory().append(t)
 
 heading3("Textfield Usage")
 disc(
-    """The <i>canvas.acroform.textfield</i> method creates a <i>textfield</i> entry widget on the current page. The textfield may be edited
+    """The <i>canvas.acroform.textfield</i> method creates a <i>textfield</i> 
+    entry widget on the current page. The textfield may be edited
 to change tha value of the widget
 """
 )
@@ -931,7 +1014,8 @@ getStory().append(t)
 
 heading3("Button styles")
 disc(
-    """The button style argument indicates what style of symbol should appear in the button when it is selected. There are several choices"""
+    """The button style argument indicates what style of symbol should appear 
+    in the button when it is selected. There are several choices"""
 )
 eg(
     """  check
@@ -942,13 +1026,16 @@ eg(
 """
 )
 disc(
-    """note that the document renderer can make some of these symbols wrong for their intended application.  Acrobat reader
-prefers to use its own rendering on top of what the specification says should be shown (especially when the forms hihlighting features are used"""
+    """note that the document renderer can make some of these symbols wrong 
+    for their intended application.  Acrobat reader
+prefers to use its own rendering on top of what the specification says should 
+be shown (especially when the forms hihlighting features are used"""
 )
 
 heading3("Widget shape")
 disc(
-    """The shape argument describes how the outline of the checkbox or radio widget should appear you can use"""
+    """The shape argument describes how the outline of the checkbox or radio 
+    widget should appear you can use"""
 )
 eg(
     """  circle
@@ -957,12 +1044,14 @@ eg(
 )
 
 disc(
-    """The renderer may make its own decisions about how the widget should look; so Acrobat Reader prefers circular outlines for radios."""
+    """The renderer may make its own decisions about how the widget should 
+    look; so Acrobat Reader prefers circular outlines for radios."""
 )
 
 heading3("Border style")
 disc(
-    """The borderStyle argument changes the 3D appearance of the widget on the page alternatives are"""
+    """The borderStyle argument changes the 3D appearance of the widget on 
+    the page alternatives are"""
 )
 eg(
     """  solid
@@ -974,7 +1063,8 @@ eg(
 )
 heading3("fieldFlags Argument")
 disc(
-    """The fieldFlags arguments can be an integer or a string containing blank separate tokens the values are shown in the table below. For
+    """The fieldFlags arguments can be an integer or a string containing 
+    blank separate tokens the values are shown in the table below. For
 more information consult the PDF specification."""
 )
 t = Table(
@@ -1016,7 +1106,8 @@ t = Table(
 getStory().append(t)
 heading3("annotationFlags Argument")
 disc(
-    """PDF widgets are annotations and have annotation properties these are shown in the table below"""
+    """PDF widgets are annotations and have annotation properties these are 
+    shown in the table below"""
 )
 t = Table(
     [

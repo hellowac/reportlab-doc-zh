@@ -1,10 +1,42 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
 # history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch5_paragraphs.py
-from utils import *
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus.tables import Table, TableStyle
+from reportlab.lib import colors
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
+    eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+    pencilnote,
+    startKeep,
+    endKeep,
+    caption,
+    cn_caption,
+    styleSheet,
+    cn_styleSheet,
+)
 
 # begin chapter oon paragraphs
-heading1("Paragraphs")
+# heading1("Paragraphs")
+cn_heading1("段落")
+
 disc(
     """
 The $reportlab.platypus.Paragraph$ class is one of the most useful of the Platypus $Flowables$;

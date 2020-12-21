@@ -3,17 +3,41 @@
 # history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch7_custom.py
 from utils import (
     heading1,
-    disc,
+    cn_heading1,
     heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
     eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+    pencilnote,
+    startKeep,
+    endKeep,
+    caption,
+    cn_caption,
+    styleSheet,
+    cn_styleSheet,
+    npeg,
     EmbeddedCode,
     todo,
-    illust,
     handnote,
 )
 from utils import examples
 
-heading1("Writing your own $Flowable$ Objects")
+# heading1("Writing your own $Flowable$ Objects")
+cn_heading1("编写你自己的$Flowable$对象")
+
 disc(
     """
 Flowables are intended to be an open standard for creating

@@ -1,10 +1,45 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
-__version__ = '3.3.0'
-from utils import *
-from reportlab.graphics.shapes import *
 
-heading2("Shapes")
+from reportlab.lib import colors
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
+    eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+    pencilnote,
+    startKeep,
+    endKeep,
+    caption,
+    cn_caption,
+    styleSheet,
+    cn_styleSheet,
+    draw,
+    getJustFontPaths,
+)
+from reportlab.graphics.shapes import (
+    Drawing, Line, PolyLine, String, Group,
+    mmult,
+)
+
+
+# heading2("Shapes")
+cn_heading2("多边形")
 
 disc(
     """
@@ -51,9 +86,9 @@ Those with a filled green surface are also called <i>solid shapes</i>
 
 from reportlab.graphics import testshapes
 
+
 t = testshapes.getDrawing06()
 draw(t, "Basic shapes")
-
 
 heading3("Shape Properties")
 
@@ -79,6 +114,7 @@ eg(
 
 from reportlab.graphics.shapes import Rect
 from reportlab.lib.colors import red, green
+
 
 d = Drawing(220, 120)
 r = Rect(5, 5, 200, 100)
@@ -165,7 +201,6 @@ define the corner radius for a rounded rectangle.
 
 disc("All the other solid shapes share the same style properties.")
 
-
 heading3("Lines")
 
 disc(
@@ -232,7 +267,6 @@ d.add(
     )
 )
 draw(d, "Line and PolyLine examples")
-
 
 heading3("Strings")
 
@@ -315,6 +349,7 @@ eg(
 from reportlab.pdfbase import pdfmetrics
 from reportlab import rl_config
 
+
 rl_config.warnOnMissingFontGlyphs = 0
 afmFile, pfbFile = getJustFontPaths()
 T1face = pdfmetrics.EmbeddedType1Face(afmFile, pfbFile)
@@ -340,7 +375,6 @@ d.add(String(130, 120, 'Hello World', fontName='Courier', fontSize=36))
 d.add(String(150, 160, 'Hello World', fontName='DarkGardenMK', fontSize=36))
 
 draw(d, 'fancy font example')
-
 
 heading3("""Paths""")
 

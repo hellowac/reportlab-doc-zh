@@ -1,11 +1,20 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
-__version__ = '3.3.0'
-from utils import heading1, heading2, disc
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    disc,
+    cn_disc,
+    draw,
+)
 
-heading1("Graphics")
+# heading1("Graphics")
+cn_heading1("绘图")
 
-heading2("Introduction")
+# heading2("Introduction")
+cn_heading2("简介")
 
 disc(
     """
@@ -16,3 +25,6 @@ its powerful charting and graphics features to improve your PDF forms
 and reports.
 """
 )
+cn_disc("ReportLab Graphics是ReportLab库的一个子包。"
+        "它最初是作为一个独立的程序集，但现在是ReportLab工具包的一个完整的集成部分，"
+        "它允许您使用其强大的图表和图形功能来改进您的PDF表格和报表。")

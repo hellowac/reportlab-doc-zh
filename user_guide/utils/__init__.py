@@ -292,7 +292,7 @@ def cn_Appendix1(text):
         seq.setFormat('Chapter', 'A')
         seq.reset('Chapter')
         appmode = 1
-    p = Paragraph('Appendix <seq id="Chapter"/> ' + quickfix(text), cn_H1)
+    p = Paragraph('附录 <seq id="Chapter"/> ' + quickfix(text), cn_H1)
     getStory().append(p)
 
 

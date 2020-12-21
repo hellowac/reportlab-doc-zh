@@ -1,13 +1,37 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
-# history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch2a_fonts.py
-from utils import *
+# history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide
+# /ch2a_fonts.py
+import os
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
+    eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+)
 from utils import examples
 from reportlab.lib.codecharts import SingleByteEncodingChart
 from reportlab.platypus import Image
 import reportlab
 
-heading1("Fonts and encodings")
+
+# heading1("Fonts and encodings")
+cn_heading1("字体和编码")
 
 disc(
     """
@@ -34,7 +58,6 @@ text.
 """
 )
 
-
 disc(
     """
 We considered making the input encoding configurable or even locale-dependent,
@@ -58,13 +81,13 @@ includes converters for all the common encodings, including Asian ones.
 """
 )
 
-
 disc(
     u"""
 If your data is not encoded as UTF8, you will get a UnicodeDecodeError as
 soon as you feed in a non-ASCII character.  For example, this snippet below is
 attempting to read in and print a series of names, including one with a French
-accent:  ^Marc-Andr\u00e9 Lemburg^.  The standard error is quite helpful and tells you
+accent:  ^Marc-Andr\u00e9 Lemburg^.  The standard error is quite helpful and 
+tells you
 what character it doesn't like:
 """
 )
@@ -79,12 +102,12 @@ eg(
 ...
 Traceback (most recent call last):
 ...
-UnicodeDecodeError: 'utf8' codec can't decode bytes in position 9-11: invalid data
+UnicodeDecodeError: 'utf8' codec can't decode bytes in position 9-11: invalid 
+data
 -->\u00e9 L<--emburg
 >>> 
 """
 )
-
 
 disc(
     """
@@ -102,7 +125,6 @@ eg(
 """
 )
 
-
 heading2("Automatic output font substitution")
 
 disc(
@@ -115,15 +137,17 @@ viewing devices.
 
 By default the standard fonts (Helvetica, Courier, Times Roman)
 will offer the glyphs available in Latin-1.  However, if our engine detects
-a character not in the font, it will attempt to switch to Symbol or ZapfDingbats to
-display these.   For example, if you include the Unicode character for a pair of 
-right-facing scissors, \\u2702, in a call to ^drawString^, you should see them (there is
+a character not in the font, it will attempt to switch to Symbol or 
+ZapfDingbats to
+display these.   For example, if you include the Unicode character for a pair 
+of 
+right-facing scissors, \\u2702, in a call to ^drawString^, you should see 
+them (there is
 an example in ^test_pdfgen_general.py/pdf^).  It is not
 necessary to switch fonts in your code.
 
 """
 )
-
 
 heading2("Using non-standard Type 1 fonts")
 
@@ -168,7 +192,6 @@ after which we can use it like any other standard font.
 """
 )
 
-
 eg(
     """
 import os
@@ -191,7 +214,6 @@ canvas.drawString(10, 150, 'This should be in')
 canvas.drawString(10, 100, 'DarkGardenMK')
 """
 )
-
 
 disc(
     """
@@ -255,7 +277,8 @@ disc(
     """
 Unfortunately, there is no reliable standard yet for such
 locations (not even on the same platform) and, hence, you might
-have to edit one of the files $reportlab_settings.py$ or $~/.reportlab_settings$ to modify the
+have to edit one of the files $reportlab_settings.py$ or 
+$~/.reportlab_settings$ to modify the
 value of the $T1SearchPath$ identifier to contain additional
 directories.  Our own recommendation is to use the ^reportlab/fonts^
 folder in development; and to have any needed fonts as packaged parts of
@@ -286,14 +309,12 @@ reportlab.rl_config.warnOnMissingFontGlyphs = 0
 """
 )
 
-
 heading2("Standard Single-Byte Font Encodings")
 disc(
     """
 This section shows you the glyphs available in the common encodings.
 """
 )
-
 
 disc(
     """The code chart below shows the characters in the $WinAnsiEncoding$.
@@ -364,21 +385,22 @@ illust(
     cht4.height,
 )
 
-
 CPage(5)
 heading2("TrueType Font Support")
 disc(
     """
-Marius Gedminas ($mgedmin@delfi.lt$) with the help of Viktorija Zaksiene ($vika@pov.lt$)
-have contributed support for embedded TrueType fonts.  TrueType fonts work in Unicode/UTF8
+Marius Gedminas ($mgedmin@delfi.lt$) with the help of Viktorija Zaksiene (
+$vika@pov.lt$)
+have contributed support for embedded TrueType fonts.  TrueType fonts work in 
+Unicode/UTF8
 and are not limited to 256 characters."""
 )
-
 
 CPage(3)
 disc(
     """We use <b>$reportlab.pdfbase.ttfonts.TTFont$</b> to create a true type
-font object and register using <b>$reportlab.pdfbase.pdfmetrics.registerFont$</b>.
+font object and register using 
+<b>$reportlab.pdfbase.pdfmetrics.registerFont$</b>.
 In pdfgen drawing directly to the canvas we can do"""
 )
 eg(
@@ -406,10 +428,14 @@ eg(
 """
 )
 disc(
-    """so that the ReportLab internal name is given by the first argument and the second argument
-is a string(or file like object) denoting the font's TTF file. In Marius' original patch the filename
-was supposed to be exactly correct, but we have modified things so that if the filename is relative
-then a search for the corresponding file is done in the current directory and then in directories
+    """so that the ReportLab internal name is given by the first argument and 
+    the second argument
+is a string(or file like object) denoting the font's TTF file. In Marius' 
+original patch the filename
+was supposed to be exactly correct, but we have modified things so that if 
+the filename is relative
+then a search for the corresponding file is done in the current directory and 
+then in directories
 specified by $reportlab.rl_config.TTFSearchpath$!"""
 )
 
@@ -417,35 +443,41 @@ from reportlab.lib.styles import ParagraphStyle
 
 from reportlab.pdfbase.pdfmetrics import registerFontFamily
 
+
 registerFontFamily(
     'Vera', normal='Vera', bold='VeraBd', italic='VeraIt', boldItalic='VeraBI'
 )
 
 disc(
-    """Before using the TT Fonts in Platypus we should add a mapping from the family name to the
-individual font names that describe the behaviour under the $&lt;b&gt;$ and $&lt;i&gt;$ attributes."""
+    """Before using the TT Fonts in Platypus we should add a mapping from the 
+    family name to the
+individual font names that describe the behaviour under the $&lt;b&gt;$ and 
+$&lt;i&gt;$ attributes."""
 )
 
 eg(
     """
 from reportlab.pdfbase.pdfmetrics import registerFontFamily
-registerFontFamily('Vera',normal='Vera',bold='VeraBd',italic='VeraIt',boldItalic='VeraBI')
+registerFontFamily('Vera',normal='Vera',bold='VeraBd',italic='VeraIt',
+boldItalic='VeraBI')
 """
 )
 
 disc(
-    """If we only have a Vera regular font, no bold or italic then we must map all to the
-same internal fontname.  ^&lt;b&gt;^ and ^&lt;i&gt;^ tags may now be used safely, but
+    """If we only have a Vera regular font, no bold or italic then we must 
+    map all to the
+same internal fontname.  ^&lt;b&gt;^ and ^&lt;i&gt;^ tags may now be used 
+safely, but
 have no effect.
 After registering and mapping
 the Vera font as above we can use paragraph text like"""
 )
 parabox2(
     """<font name="Times-Roman" size="14">This is in Times-Roman</font>
-<font name="Vera" color="magenta" size="14">and this is in magenta <b>Vera!</b></font>""",
+<font name="Vera" color="magenta" size="14">and this is in magenta 
+<b>Vera!</b></font>""",
     "Using TTF fonts in paragraphs",
 )
-
 
 heading2("Asian Font Support")
 disc(
@@ -458,22 +490,27 @@ two main approaches for this:  Adobe's Asian Language Packs, or TrueType fonts.
 heading3("Asian Language Packs")
 disc(
     """
-This approach offers the best performance since nothing needs embedding in the PDF file;
+This approach offers the best performance since nothing needs embedding in 
+the PDF file;
 as with the standard fonts, everything is on the reader."""
 )
 
 disc(
     """
-Adobe makes available add-ons for each main language.  In Adobe Reader 6.0 and 7.0, you
-will be prompted to download and install these as soon as you try to open a document
-using them.  In earlier versions, you would see an error message on opening an Asian document
+Adobe makes available add-ons for each main language.  In Adobe Reader 6.0 
+and 7.0, you
+will be prompted to download and install these as soon as you try to open a 
+document
+using them.  In earlier versions, you would see an error message on opening 
+an Asian document
 and had to know what to do.   
 """
 )
 
 disc(
     """
-Japanese, Traditional Chinese (Taiwan/Hong Kong), Simplified Chinese (mainland China)
+Japanese, Traditional Chinese (Taiwan/Hong Kong), Simplified Chinese (
+mainland China)
 and Korean are all supported and our software knows about the following fonts:
 """
 )
@@ -498,10 +535,10 @@ $jpn$ = Japanese: '$HeiseiMin-W3$', '$HeiseiKakuGo-W5$'
 """
 )
 
-
 disc(
     """Since many users will not have the font packs installed, we have included
-a rather grainy ^bitmap^ of some Japanese characters.  We will discuss below what is needed to
+a rather grainy ^bitmap^ of some Japanese characters.  We will discuss below 
+what is needed to
 generate them."""
 )
 # include a bitmap of some Asian text
@@ -534,10 +571,13 @@ canvas.drawString(100, 675, msg)
 # had to double-escape the slashes above to get escapes into the PDF
 
 disc(
-    """The old coding style with explicit encodings should still work, but is now
-only relevant if you need to construct vertical text.  We aim to add more readable options
+    """The old coding style with explicit encodings should still work, 
+    but is now
+only relevant if you need to construct vertical text.  We aim to add more 
+readable options
 for horizontal and vertical text to the UnicodeCIDFont constructor in future.
-The following four test scripts generate samples in the corresponding languages:"""
+The following four test scripts generate samples in the corresponding 
+languages:"""
 )
 eg(
     """tests/test_multibyte_jpn.py
@@ -574,7 +614,6 @@ and has no effect if you restrict yourself to UnicodeCIDFont.
 """
 )
 
-
 heading3("TrueType fonts with Asian characters")
 disc(
     """
@@ -588,42 +627,45 @@ files ending in .ttc, which are a slight variation of .ttf.
 """
 )
 
-
 heading3("To Do")
 disc(
-    """We expect to be developing this area of the package for some time.accept2dyear
+    """We expect to be developing this area of the package for some 
+    time.accept2dyear
 Here is an outline of the main priorities.  We welcome help!"""
 )
 
 bullet(
     """
-Ensure that we have accurate character metrics for all encodings in horizontal and
+Ensure that we have accurate character metrics for all encodings in 
+horizontal and
 vertical writing."""
 )
 
 bullet(
     """
-Add options to ^UnicodeCIDFont^ to allow vertical and proportional variants where the font permits it."""
+Add options to ^UnicodeCIDFont^ to allow vertical and proportional variants 
+where the font permits it."""
 )
-
 
 bullet(
     """
 Improve the word wrapping code in paragraphs and allow vertical writing."""
 )
 
-
 CPage(5)
 heading2("RenderPM tests")
 
 disc(
-    """This may also be the best place to mention the test function of $reportlab/graphics/renderPM.py$,
-which can be considered the cannonical place for tests which exercise renderPM (the "PixMap Renderer",
+    """This may also be the best place to mention the test function of 
+    $reportlab/graphics/renderPM.py$,
+which can be considered the cannonical place for tests which exercise 
+renderPM (the "PixMap Renderer",
 as opposed to renderPDF, renderPS or renderSVG)."""
 )
 
 disc(
-    """If you run this from the command line, you should see lots of output like the following."""
+    """If you run this from the command line, you should see lots of output 
+    like the following."""
 )
 
 eg(
@@ -643,18 +685,23 @@ wrote pmout\\index.html"""
 )
 
 disc(
-    """This runs a number of tests progressing from a "Hello World" test, through various tests of
-Lines; text strings in a number of sizes, fonts, colours and alignments; the basic shapes; translated
-and rotated groups; scaled coordinates; rotated strings; nested groups; anchoring and non-standard fonts."""
+    """This runs a number of tests progressing from a "Hello World" test, 
+    through various tests of
+Lines; text strings in a number of sizes, fonts, colours and alignments; the 
+basic shapes; translated
+and rotated groups; scaled coordinates; rotated strings; nested groups; 
+anchoring and non-standard fonts."""
 )
 
 disc(
-    """It creates a subdirectory called $pmout$, writes the image files into it, and writes an
+    """It creates a subdirectory called $pmout$, writes the image files into 
+    it, and writes an
 $index.html$ page which makes it easy to refer to all the results."""
 )
 
 disc(
-    """The font-related tests which you may wish to look at are test #11 ('Text strings in a non-standard font')
+    """The font-related tests which you may wish to look at are test #11 (
+    'Text strings in a non-standard font')
 and test #12 ('Test Various Fonts')."""
 )
 

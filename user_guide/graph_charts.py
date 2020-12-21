@@ -1,10 +1,46 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
-__version__ = '3.3.0'
-from utils import *
-from reportlab.graphics.shapes import *
 
-heading2("Charts")
+from reportlab.platypus.tables import Table, TableStyle
+from reportlab.lib import colors
+from reportlab.graphics.shapes import Drawing,Circle
+
+from utils import (
+    heading1,
+    cn_heading1,
+    heading2,
+    cn_heading2,
+    heading3,
+    cn_heading3,
+    heading4,
+    cn_heading4,
+    disc,
+    cn_disc,
+    eg,
+    cn_eg,
+    illust,
+    cn_illust,
+    CPage,
+    parabox,
+    parabox2,
+    bullet,
+    getStory,
+    pencilnote,
+    startKeep,
+    endKeep,
+    caption,
+    cn_caption,
+    styleSheet,
+    cn_styleSheet,
+    npeg,
+    EmbeddedCode,
+    todo,
+    handnote,
+    draw,
+)
+
+# heading2("Charts")
+cn_heading2("图表")
 
 disc(
     """
