@@ -25,9 +25,11 @@ from reportlab.platypus import (
 from reportlab.platypus.xpreformatted import PythonPreformatted
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.sequencer import getSequencer
+from reportlab.lib.fonts import tt2ps
 from xml.sax.saxutils import escape as xmlEscape
 
 from .t_parse import Template
+
 
 logger = logging.getLogger(__name__)
 
@@ -419,10 +421,42 @@ class Illustration(figures.Figure):
         self.operation(self.canv)
 
 
+class CnIllustration(figures.Figure):
+    """The examples are all presented as functions which do
+    something to a canvas, with a constant height and width
+    used.  This puts them inside a figure box with a caption."""
+
+    def __init__(self, operation, caption, width=None, height=None):
+        stdwidth, stdheight = examplefunctiondisplaysizes
+        if not width:
+            width = stdwidth
+        if not height:
+            height = stdheight
+        # figures.Figure.__init__(self, stdwidth * 0.75, stdheight * 0.75)
+        figures.Figure.__init__(
+            self,
+            width,
+            height,
+            '图 <seq template="%(Chapter)s-%('
+            'Figure+)s"/>: ' + quickfix(caption),
+            captionFont=tt2ps('STSong-Light', 0, 1)
+        )
+        self.operation = operation
+
+    def drawFigure(self):
+        # shrink it a little...
+        # self.canv.scale(0.75, 0.75)
+        self.operation(self.canv)
+
+
 def illust(operation, caption, width=None, height=None):
     i = Illustration(operation, caption, width=width, height=height)
     getStory().append(i)
 
+
+def cn_illust(operation, caption, width=None, height=None):
+    i = CnIllustration(operation, caption, width=width, height=height)
+    getStory().append(i)
 
 class GraphicsDrawing(Illustration):
     """Lets you include reportlab/graphics drawings seamlessly,
@@ -593,7 +627,6 @@ def parabox2(text, caption):
 
 
 def pencilnote():
-
     from . import examples
 
     getStory().append(examples.NoteAnnotation())
@@ -603,7 +636,6 @@ from reportlab.lib.colors import tan, green
 
 
 def handnote(xoffset=0, size=None, fillcolor=tan, strokecolor=green):
-
     from . import examples
 
     getStory().append(
