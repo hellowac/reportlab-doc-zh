@@ -754,36 +754,45 @@ size and text color for any substring within the paragraph.
 Legal attributes are $size$, $face$, $name$ (which is the same as $face$),
 $color$, and $fg$ (which is the same as $color$). The $name$ is
 the font family name, without any 'bold' or 'italic' suffixes.
-Colors may be
-HTML color names or a hex string encoded in a variety of ways;
-see ^reportlab.lib.colors^ for the formats allowed."""
-)
-cn_disc('aaa')
+Colors may be HTML color names or a hex string encoded in a variety of ways; 
+see ^reportlab.lib.colors^ for the formats allowed.""")
+cn_disc("$&lt;font&gt;$标签可以用来改变段落中任何子串的字体名称、大小和文本颜色。"
+        "法定属性有$size$、$face$、$name$（与$face$相同）、$color$和$fg$（与$color$相同）。"
+        "$name$是字体家族的名称，没有任何'bold'或'italic'的后缀。"
+        "颜色可以是HTML的颜色名称，也可以是以各种方式编码的十六进制字符串；"
+        "请参见^reportlab.lib. colors^了解允许的格式。")
 
-parabox2(
-    """<font face="times" color="red">You are hereby charged</font> that on 
-    the 28th day of May, 1970, you did
-willfully, unlawfully, and <font size=14>with malice of forethought</font>,
-publish an
-alleged English-Hungarian phrase book with intent to cause a breach
-of the peace.  How do you plead?""",
-    "The $font$ tag",
-)
+# parabox2(
+#     """<font face="times" color="red">You are hereby charged</font> that on
+# the 28th day of May, 1970, you did willfully, unlawfully, and <font
+# size=14>with malice of forethought</font>, publish an alleged
+# English-Hungarian phrase book with intent to cause a breach
+# of the peace.  How do you plead?""",
+#     "The $font$ tag",
+# )
+cn_parabox2('你在此<font face="STSong-Light" '
+            'color="red">被控</font>于1970年5月28日故意、非法和'
+            '<font size=16>怀着预谋的恶意</font>出版一本所谓的英匈短语书，意图破坏和平。'
+            ' 你如何辩护？', "$font$ 标签")
 
-heading3("Superscripts and Subscripts")
-cn_heading3('aaa')
+# heading3("Superscripts and Subscripts")
+cn_heading3('上标和下标')
 
 disc(
     """Superscripts and subscripts are supported with the
-<![CDATA[<super>/<sup> and <sub> tags, which work exactly
+&lt;![CDATA[&lt;super&gt;/&lt;sup&gt; and &lt;sub&gt; tags, which work exactly
 as you might expect. Additionally these three tags have
 attributes rise and size to optionally set the rise/descent
 and font size for the  superscript/subscript text.
 In addition, most greek letters
-can be accessed by using the <greek></greek>
-tag, or with mathML entity names.]]>"""
+can be accessed by using the &lt;greek&gt;&lt;/greek&gt;
+tag, or with mathML entity names.]]&gt;"""
 )
-cn_disc('aaa')
+cn_disc('上标和下标是由&lt;![CDATA[&lt;super&gt;/&lt;sup&gt;和&lt;sub&gt;标签支持的，'
+        '它们的工作原理和你所期望的完全一样。'
+        '另外这三个标签还有属性 rise 和 size，可以选择设置上标/下标文本的上升/下降和字体大小。'
+        '此外，大多数希腊字母可以通过使用&lt;greek&gt;&lt;/greek&gt;标签，'
+        '或者使用mathML实体名来访问。]]&gt。')
 
 ##parabox2("""<greek>epsilon</greek><super><greek>iota</greek>
 ##<greek>pi</greek></super> = -1""", "Greek letters and subscripts")
@@ -793,9 +802,11 @@ parabox2(
     size=6><greek>ip</greek></super>  = -1""",
     "Greek letters and superscripts",
 )
+cn_parabox2('等式（&alpha;）。<greek>e</greek> <super rise=9 size=6><greek>ip</greek></super>=-1。', '希腊字母和上标')
 
-heading3("Inline Images")
-cn_heading3('aaa')
+# heading3("Inline Images")
+cn_heading3('内联图片')
+
 disc(
     """We can embed images in a paragraph with the 
 &lt;img/&gt; tag which has attributes $src$, $width$, $height$ whose meanings 
@@ -804,28 +815,46 @@ are obvious. The $valign$ attribute may be set to a css like value from
 "text-bottom"; the value may also be a numeric percentage or an absolute value.
 """
 )
-cn_disc('aaa')
+cn_disc('我们可以用&lt;img/&gt;标签在段落中嵌入图片，'
+        '该标签有$src$、$width$、$height$等属性，其含义很明显。'
+        '$valign$属性可以设置为类似css的值，'
+        '从 "baseline"、"sub"、"super"、"top"、"text-top"、"middle"、"bottom"、"text-bottom"；'
+        '该值也可以是一个数字百分比或绝对值。')
 
-parabox2(
-    """<para autoLeading="off" fontSize=12>This &lt;img/&gt; <img 
-    src="images/testimg.gif" valign="top"/> is aligned <b>top</b>.<br/><br/>
-This &lt;img/&gt; <img src="images/testimg.gif" valign="bottom"/> is aligned 
-<b>bottom</b>.<br/><br/>
-This &lt;img/&gt; <img src="images/testimg.gif" valign="middle"/> is aligned 
-<b>middle</b>.<br/><br/>
-This &lt;img/&gt; <img src="images/testimg.gif" valign="-4"/> is aligned 
-<b>-4</b>.<br/><br/>
-This &lt;img/&gt; <img src="images/testimg.gif" valign="+4"/> is aligned 
-<b>+4</b>.<br/><br/>
-This &lt;img/&gt; <img src="images/testimg.gif" width="10"/> has width 
-<b>10</b>.<br/><br/>
-</para>""",
-    "Inline images",
-)
+# parabox2(
+#     """<para autoLeading="off" fontSize=12>This &lt;img/&gt; <img
+#     src="images/testimg.gif" valign="top"/> is aligned <b>top</b>.<br/><br/>
+# This &lt;img/&gt; <img src="images/testimg.gif" valign="bottom"/> is aligned
+# <b>bottom</b>.<br/><br/>
+# This &lt;img/&gt; <img src="images/testimg.gif" valign="middle"/> is aligned
+# <b>middle</b>.<br/><br/>
+# This &lt;img/&gt; <img src="images/testimg.gif" valign="-4"/> is aligned
+# <b>-4</b>.<br/><br/>
+# This &lt;img/&gt; <img src="images/testimg.gif" valign="+4"/> is aligned
+# <b>+4</b>.<br/><br/>
+# This &lt;img/&gt; <img src="images/testimg.gif" width="10"/> has width
+# <b>10</b>.<br/><br/>
+# </para>""",
+#     "Inline images",
+# )
+cn_parabox2('<para autoLeading="off" fontSize=12>This &lt;img/&gt; '
+            '<img src="images/testimg.gif" valign="top"/> is aligned <b>top</b>.'
+            '<br/><br/>This &lt;img/&gt; '
+            '<img src="images/testimg.gif" valign="bottom"/> is aligned <b>bottom</b>.'
+            '<br/><br/> This &lt;img/&gt; '
+            '<img src="images/testimg.gif" valign="middle"/> is aligned <b>middle</b>.'
+            '<br/><br/>This &lt;img/&gt; '
+            '<img src="images/testimg.gif" valign="-4"/> is aligned <b>-4</b>.'
+            '<br/><br/>This &lt;img/&gt; '
+            '<img src="images/testimg.gif" valign="+4"/> is aligned <b>+4</b>.'
+            '<br/><br/>This &lt;img/&gt; '
+            '<img src="images/testimg.gif" width="10"/> has width<b>10</b>.'
+            '<br/><br/></para>', '内联图片')
+
 disc(
     """The $src$ attribute can refer to a remote location eg 
-    $src="https://www.reportlab.com/images/logo.gif"$. By default we set 
-    $rl_config.trustedShemes$ to $['https','http', 'file', 'data', 'ftp']$ and
+$src="https://www.reportlab.com/images/logo.gif"$. By default we set 
+$rl_config.trustedShemes$ to $['https','http', 'file', 'data', 'ftp']$ and
 $rl_config.trustedHosts=None$ the latter meaning no-restriction. You can 
 modify these variables using one of the override files eg 
 $reportlab_settings.py$ or $~/.reportlab_settings$. Or as comma separated 
@@ -835,42 +864,56 @@ the $trustedHosts$ values may contain <b>glob</b> wild cars so
 <i>*.reportlab.com</i> will match the obvious domains.
 <br/><span color="red"><b>*NB*</b></span> use of <i>trustedHosts</i> and or 
 <i>trustedSchemes</i> may not control behaviour &amp; actions when $URI$ 
-patterns
-are detected by the viewer application."""
+patterns are detected by the viewer application."""
 )
-cn_disc('aaa')
+cn_disc("$src$属性可以指向一个远程位置，"
+        "例如$src=\"https://www.reportlab.com/images/logo.gif\"$。"
+        "默认情况下，我们将$rl_config.trustedShemes$ "
+        "设置为$['https','http','file','data','ftp']$"
+        "和$rl_config.trustedHosts=None$，后者意味着没有限制。"
+        "你可以使用覆盖文件来修改这些变量，"
+        "例如$reportlab_settings.py$或$~/.reportlab_settings$。"
+        "或者在环境变量$RL_trustedSchemes$ &amp; "
+        "$RL_trustedHosts$中以逗号分隔。"
+        "请注意，$trustedHosts$值可能包含<b>glob</b>野车，"
+        "因此<i>*.reportlab.com</i>将匹配明显的域。"
+        "<br/><span color=\"red\"><b>*NB*</b></span>"
+        "使用<i>trustedHosts</i>和/或<i>trustedSchemes</i>"
+        "可能无法控制行为，以及当$URI$模式被查看器应用程序检测到时的操作。")
 
-heading3("The $&lt;u&gt;$ &amp; $&lt;strike&gt;$ tags")
-cn_heading3('aaaa')
+# heading3("The $&lt;u&gt;$ &amp; $&lt;strike&gt;$ tags")
+cn_heading3('$&lt;u&gt;$ 和 $&lt;strike&gt;$ 标签')
 
 disc(
     """These tags can be used to carry out explicit underlineing or 
-    strikethroughs. These tags have
-attributes $width$, $offset$, $color$, $gap$ &amp; $kind$. The $kind$ 
-attribute controls how many
+strikethroughs. These tags have attributes $width$, $offset$, $color$, 
+$gap$ &amp; $kind$. The $kind$ attribute controls how many
 lines will be drawn (default $kind=1$) and when $kind>1$ the $gap$ attribute 
 controls the disatnce between lines."""
 )
-cn_disc('aaa')
+cn_disc('这些标签可用于执行明确的下划线或删除线。'
+        '这些标签的属性有$width$、$offset$、$color$、$gap$ 和 $kind$。'
+        '$kind$属性控制将绘制多少行(默认$kind=1$)，当$kind>1$时，'
+        '$gap$属性控制行与行之间的间隔。')
 
-heading3("The $&lt;nobr&gt;$ tag")
-cn_heading3('aaa')
+# heading3("The $&lt;nobr&gt;$ tag")
+cn_heading3('$&lt;nobr&gt;$ 标签')
 
 disc(
     """If hyphenation is in operation the $&lt;nobr&gt;$ tag suppresses it so 
     $&lt;nobr&gt;averylongwordthatwontbebroken&lt;/nobr&gt;$ won't be broken."""
 )
-cn_disc('aaa')
+cn_disc('如果使用连字符，$&lt;nobr&gt;$标签会抑制它，'
+        '所以$&lt;nobr&gt;一个非常长的单词不会被打断&lt;/nobr&gt;$不会被打断。')
 
-heading3("Numbering Paragraphs and Lists")
-cn_heading3('aaa')
+# heading3("Numbering Paragraphs and Lists")
+cn_heading3('文字段落和列表的编号')
 
 disc(
     """The $&lt;seq&gt;$ tag provides comprehensive support
 for numbering lists, chapter headings and so on.  It acts as
 an interface to the $Sequencer$ class in ^reportlab.lib.sequencer^.
-These are used to number headings and figures throughout this
-document.
+These are used to number headings and figures throughout this document.
 You may create as many separate 'counters' as you wish, accessed
 with the $id$ attribute; these will be incremented by one each
 time they are accessed.  The $seqreset$ tag resets a counter.
@@ -878,14 +921,30 @@ If you want it to resume from a number other than 1, use
 the syntax &lt;seqreset id="mycounter" base="42"&gt;.
 Let's have a go:"""
 )
-cn_disc('aaa')
+cn_disc('$&lt;seq&gt;$标签为编号列表、章节标题等提供了全面的支持，'
+        '它作为^reportlab.lib.sequencer^中$Sequencer$类的接口。 '
+        '它是^reportlab.lib.sequencer^中$Sequencer$类的接口。'
+        '这些都是用来对整个文档中的标题和数字进行编号的。'
+        '您可以创建任意多的独立的 "计数器"，并通过$id$属性进行访问；'
+        '每次访问时，这些计数器都将以1为单位递增。 '
+        '$seqreset$标签可以重置计数器。'
+        '如果你想让它从1以外的数字开始恢复，'
+        '使用语法&lt;seqreset id="mycounter" base="42"&gt;。'
+        '让我们开始吧。')
 
-parabox2(
-    """<seq id="spam"/>, <seq id="spam"/>, <seq id="spam"/>.
-Reset<seqreset id="spam"/>.  <seq id="spam"/>, <seq id="spam"/>,
-<seq id="spam"/>.""",
-    "Basic sequences",
-)
+# parabox2(
+#     """<seq id="spam"/>, <seq id="spam"/>, <seq id="spam"/>.
+# Reset<seqreset id="spam"/>.  <seq id="spam"/>, <seq id="spam"/>,
+# <seq id="spam"/>.""",
+#     "Basic sequences",
+# )
+cn_parabox2('<seq id="spam"/>, '
+            '<seq id="spam"/>, '
+            '<seq id="spam"/>. 重置'
+            '<seqreset id="spam"/>.  '
+            '<seq id="spam"/>, '
+            '<seq id="spam"/>,'
+            '<seq id="spam"/>.', '基本序列')
 
 disc(
     """You can save specifying an ID by designating a counter ID
@@ -895,13 +954,19 @@ is not specified.  This saves some typing, especially when
 doing multi-level lists; you just change counter ID when
 stepping in or out a level."""
 )
-cn_disc('aaa')
+cn_disc('你可以通过使用&lt;seqdefault id="Counter"&gt; 标签'
+        '指定一个计数器ID作为<i>default</i>来节省指定ID的时间；'
+        '然后每当没有指定计数器ID时就会使用它。 '
+        '这样可以节省一些输入，特别是在做多级列表的时候；'
+        '您只需在进入或退出一个级别时更改计数器ID。')
 
 parabox2(
     """<seqdefault id="spam"/>Continued... <seq/>,
 <seq/>, <seq/>, <seq/>, <seq/>, <seq/>, <seq/>.""",
     "The default sequence",
 )
+cn_parabox2('<seqdefault id="spam"/>Continued... <seq/>,'
+            '<seq/>, <seq/>, <seq/>, <seq/>, <seq/>, <seq/>.', '默认序列')
 
 disc(
     """Finally, one can access multi-level sequences using
@@ -913,23 +978,31 @@ value of a counter without incrementing it; appending a
 plus sign as in $%(counter)s$ increments the counter.
 The figure captions use a pattern like the one below:"""
 )
-cn_disc('aaa')
+cn_disc('最后，我们可以使用Python字符串格式化的变体'
+        '和&lt;seq&gt;标签中的$template$属性来访问多级序列。 '
+        '这是用来做所有数字中的标题，以及二级标题。 '
+        '子串 $%(counter)s$ 提取了一个计数器的当前值，但不递增；'
+        '在 $%(counter)s$ 中添加一个加号，使计数器递增。'
+        '数字标题使用了类似下面的模式。')
 
-parabox2(
-    """Figure <seq template="%(Chapter)s-%(FigureNo+)s"/> - Multi-level 
-    templates""",
-    "Multi-level templates",
-)
+# parabox2(
+#     """Figure <seq template="%(Chapter)s-%(FigureNo+)s"/> - Multi-level
+#     templates""",
+#     "Multi-level templates",
+# )
+cn_parabox2('图 <seq template="%(Chapter)s-%(FigureNo+)s"/> - 多级模板', "多级模板",)
 
 disc(
     """We cheated a little - the real document used 'Figure',
 but the text above uses 'FigureNo' - otherwise we would have
 messed up our numbering!"""
 )
-cn_disc('aaa')
+cn_disc('我们做了点小手脚--真正的文档用的是 "Figure"，'
+        '但上面的文字用的是 "FigureNo" '
+        '--否则我们会把编号弄乱的')
 
-heading2("Bullets and Paragraph Numbering")
-cn_heading2('aaa')
+# heading2("Bullets and Paragraph Numbering")
+cn_heading2('项目符号和段落编号')
 
 disc(
     """In addition to the three indent properties, some other
@@ -948,7 +1021,16 @@ list.   Fonts may offer various bullet
 characters but we suggest first trying the Unicode bullet ($&bull;$), which may
 be written as $&amp;bull;$,  $&amp;#x2022;$ or (in utf8) $\\xe2\\x80\\xa2$):"""
 )
-cn_disc('aaa')
+cn_disc('除了三个缩进属性之外，'
+        '还需要一些其他参数来正确处理带项目符号和编号的列表。 '
+        '我们在这里讨论这个问题，因为你现在已经看到了如何处理编号。 '
+        '一个段落可以有一个可选的^bulletText^参数传递给它的构造函数；'
+        '或者，项目符号文本可以放在它头部的$<![CDATA[<bullet>...</bullet>]]>$标签中。 '
+        '这段文字将被绘制在段落的第一行，其X原点由样式的$bulletIndent$属性决定，字体由$bulletFontName$属性给出。  '
+        '"项目符号"可以是一个单一的字符，如（嘟！）一个项目符号，或者是一个文本片段，'
+        '如一些编号序列中的数字，甚至是定义列表中使用的简短标题。  '
+        '字体可能提供各种项目编号字符，但我们建议首先尝试Unicode项目编号($&bull;$)，'
+        '可以写成$&amp;bull;$，和 $#x2022;$ 或(utf8中) $\\xe2\\x80\\xa2$):')
 
 t = Table(*getAttrs(_bulletAttrMap))
 t.setStyle(
@@ -960,31 +1042,46 @@ t.setStyle(
         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
     ]
 )
-getStory().append(t)
+# getStory().append(t)
 
-caption(
-    """Table <seq template="%(Chapter)s-%(Table+)s"/> - &lt;bullet&gt; 
-    attributes &amp; synonyms"""
+cn_t = Table(*cn_getAttrs(_bulletAttrMap))
+cn_t.setStyle(
+    [
+        ('FONT', (0, 0), (-1, 1), 'STSong-Light', 10, 12),
+        ('FONT', (0, 1), (-1, -1), 'Courier', 8, 8),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+        ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+    ]
 )
-cn_caption('aaa')
+getStory().append(cn_t)
+
+# caption(
+#     """Table <seq template="%(Chapter)s-%(Table+)s"/> - &lt;bullet&gt;
+#     attributes &amp; synonyms"""
+# )
+cn_caption('表 <seq template="%(Chapter)s-%(Table+)s"/> &lt;bullet&gt; 属性和同义词')
 
 disc(
     """The &lt;bullet&gt; tag is only allowed once in a given paragraph and 
-    its use
-overrides the implied bullet style and ^bulletText^ specified in the  
-^Paragraph^
-creation.
+its use overrides the implied bullet style and ^bulletText^ specified in the  
+^Paragraph^ creation.
 """
 )
-cn_disc('aaa')
+cn_disc('在一个给定的段落中，&lt;bullet&gt;标签只允许使用一次，】它的使用会覆盖在^Paragraph'
+        '^创建中指定的隐含的项目符号样式和 ^bulletText^。 (项目符号文本)')
 
-parabox(
-    """<bullet>&bull;</bullet>this is a bullet point.  Spam
-spam spam spam spam spam spam spam spam spam spam spam
-spam spam spam spam spam spam spam spam spam spam """,
-    styleSheet['Bullet'],
-    'Basic use of bullet points',
-)
+# parabox(
+#     """<bullet>&bull;</bullet>this is a bullet point.  Spam
+# spam spam spam spam spam spam spam spam spam spam spam
+# spam spam spam spam spam spam spam spam spam spam """,
+#     styleSheet['Bullet'],
+#     'Basic use of bullet points',
+# )
+cn_parabox('<bullet>&bull;</bullet>这是一个要点。'
+           'Spam spam spam spam spam spam spam spam spam spam spam spam'
+           'spam spam spam spam spam spam spam spam spam spam',
+           cn_styleSheet['Bullet'], '项目点的基本使用')
 
 disc(
     """Exactly the same technique is used for numbers,
@@ -993,4 +1090,7 @@ to put  a multi-character string in the bullet; with a deep
 indent and bold bullet font, you can make a compact
 definition list."""
 )
-cn_disc('aaa')
+cn_disc('除了使用序列标签外，数字也使用了完全相同的技术。 '
+        '也可以在项目符号中放入一个多字符的字符串；'
+        '用深缩进和粗体子弹字体，'
+        '你可以制作一个紧凑的定义列表。')
