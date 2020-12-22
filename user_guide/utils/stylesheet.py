@@ -462,57 +462,63 @@ def getCnStyleSheet():
 
 class CnParagraphStyle(PropertySet):
     defaults = {
-        'fontName':'STSong-Light',
-        'fontSize':10,
-        'leading':12,
-        'leftIndent':0,
-        'rightIndent':0,
-        'firstLineIndent':0,
-        'alignment':TA_LEFT,
-        'spaceBefore':0,
-        'spaceAfter':0,
-        'bulletFontName':'STSong-Light',
-        'bulletFontSize':10,
-        'bulletIndent':0,
-        #'bulletColor':black,
+        'fontName': 'STSong-Light',
+        'fontSize': 10,
+        'leading': 12,
+        'leftIndent': 0,
+        'rightIndent': 0,
+        'firstLineIndent': 0,
+        'alignment': TA_LEFT,
+        'spaceBefore': 0,
+        'spaceAfter': 0,
+        'bulletFontName': 'STSong-Light',
+        'bulletFontSize': 10,
+        'bulletIndent': 0,
+        # 'bulletColor':black,
         'textColor': black,
-        'backColor':None,
-        'wordWrap':None,        #None means do nothing special
-        #CJK use Chinese Line breaking
-        #LTR RTL use left to right / right to left
-        #with support from pyfribi2 if available
+        'backColor': None,
+        'wordWrap': None,  # None means do nothing special
+        # CJK use Chinese Line breaking
+        # LTR RTL use left to right / right to left
+        # with support from pyfribi2 if available
         'borderWidth': 0,
         'borderPadding': 0,
         'borderColor': None,
         'borderRadius': None,
         'allowWidows': 1,
         'allowOrphans': 0,
-        'textTransform':None,   #uppercase lowercase (captitalize not yet) or None or absent
-        'endDots':None,         #dots on the last line of left/right justified paras
-        #string or object with text and optional fontName, fontSize, textColor & backColor
-        #dy
-        'splitLongWords':1,     #make best efforts to split long words
-        'underlineWidth': rl_settings.underlineWidth,  #underline width
-        'bulletAnchor': 'start',    #where the bullet is anchored ie start, middle, end or numeric
-        'justifyLastLine': 0,   #n allow justification on the last line for more than n words 0 means don't bother
-        'justifyBreaks': 0,     #justify lines broken with <br/>
-        'spaceShrinkage': rl_settings.spaceShrinkage,  #allow shrinkage of percentage of
+        'textTransform': None,
+        # uppercase lowercase (captitalize not yet) or None or absent
+        'endDots': None,  # dots on the last line of left/right justified paras
+        # string or object with text and optional fontName, fontSize,
+        # textColor & backColor
+        # dy
+        'splitLongWords': 1,  # make best efforts to split long words
+        'underlineWidth': rl_settings.underlineWidth,  # underline width
+        'bulletAnchor': 'start',
+        # where the bullet is anchored ie start, middle, end or numeric
+        'justifyLastLine': 0,
+        # n allow justification on the last line for more than n words 0
+        # means don't bother
+        'justifyBreaks': 0,  # justify lines broken with <br/>
+        'spaceShrinkage': rl_settings.spaceShrinkage,
+        # allow shrinkage of percentage of
         # space to fit
         # on line
-        'strikeWidth': rl_settings.strikeWidth,    #stroke width
-        #fraction of fontsize to offset underlines
+        'strikeWidth': rl_settings.strikeWidth,  # stroke width
+        # fraction of fontsize to offset underlines
         'underlineOffset': rl_settings.underlineOffset,
-        #gap for double/triple underline
+        # gap for double/triple underline
         'underlineGap': rl_settings.underlineGap,
-        #fraction of fontsize to offset strikethrough
+        # fraction of fontsize to offset strikethrough
         'strikeOffset': rl_settings.strikeOffset,
-        #gap for double/triple strike
+        # gap for double/triple strike
         'strikeGap': rl_settings.strikeGap,
         'linkUnderline': rl_settings.platypus_link_underline,
-        #'underlineColor':  None,
-        #'strikeColor': None,
+        # 'underlineColor':  None,
+        # 'strikeColor': None,
         'hyphenationLang': rl_settings.hyphenationLang,
-        #'hyphenationMinWordLength': _hyphenationMinWordLength,
+        # 'hyphenationMinWordLength': _hyphenationMinWordLength,
         'embeddedHyphenation': rl_settings.embeddedHyphenation,
         'uriWasteReduce': rl_settings.uriWasteReduce,
     }

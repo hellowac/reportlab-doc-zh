@@ -483,21 +483,7 @@ def draw(drawing, caption):
     getStory().append(d)
 
 
-class ParaBox(figures.Figure):
-    """Illustrates paragraph examples, with style attributes on the left"""
-
-    descrStyle = ParagraphStyle(
-        'description', fontName='Courier', fontSize=8, leading=9.6
-    )
-
-    def __init__(self, text, style, caption):
-        figures.Figure.__init__(self, 0, 0, caption)
-        self.text = text
-        self.style = style
-        self.para = Paragraph(text, style)
-
-        styleText = self.getStyleText(style)
-        self.pre = Preformatted(styleText, self.descrStyle)
+class ParaBoxBase(figures.Figure):
 
     def wrap(self, availWidth, availHeight):
         """Left 30% is for attributes, right 50% for sample,
@@ -576,19 +562,39 @@ class ParaBox(figures.Figure):
         return '\n'.join(lines)
 
 
-class ParaBox2(figures.Figure):
-    """Illustrates a paragraph side-by-side with the raw
-    text, to show how the XML works."""
+class ParaBox(ParaBoxBase):
+    """Illustrates paragraph examples, with style attributes on the left"""
 
-    def __init__(self, text, caption):
-        figures.Figure.__init__(self, 0, 0, caption)
-        descrStyle = ParagraphStyle(
-            'description', fontName='Courier', fontSize=8, leading=9.6
-        )
-        textStyle = B
+    descrStyle = ParagraphStyle(
+        'description', fontName='Courier', fontSize=8, leading=9.6
+    )
+
+    def __init__(self, text, style, caption):
+        super().__init__(0, 0, caption)
         self.text = text
-        self.left = Paragraph(xmlEscape(text), descrStyle)
-        self.right = Paragraph(text, B)
+        self.style = style
+        self.para = Paragraph(text, style)
+
+        styleText = self.getStyleText(style)
+        self.pre = Preformatted(styleText, self.descrStyle)
+
+
+class CnParaBox(ParaBoxBase):
+    descrStyle = ParagraphStyle(
+        'description', fontName='STSong-Light', fontSize=8, leading=9.6
+    )
+
+    def __init__(self, text, style, caption):
+        super().__init__(0, 0, caption=caption,
+                         captionFont='STSong-Light')
+        self.text = text
+        self.style = style
+        self.para = Paragraph(text, style)
+
+        styleText = self.getStyleText(style)
+        self.pre = Preformatted(styleText, self.descrStyle)
+
+class ParaBox2Base(figures.Figure):
 
     def wrap(self, availWidth, availHeight):
         self.width = availWidth * 0.9
@@ -606,13 +612,46 @@ class ParaBox2(figures.Figure):
             self.canv, self.width * 0.55, self.figureHeight * 0.95 - self.rh
         )
 
+class ParaBox2(ParaBox2Base):
+    """Illustrates a paragraph side-by-side with the raw
+    text, to show how the XML works."""
+
+    def __init__(self, text, caption):
+        figures.Figure.__init__(self, 0, 0, caption)
+        descrStyle = ParagraphStyle(
+            'description', fontName='Courier', fontSize=8, leading=9.6
+        )
+        self.text = text
+        self.left = Paragraph(xmlEscape(text), descrStyle)
+        self.right = Paragraph(text, B)
+
+
+class CnParaBox2(ParaBox2Base):
+
+    def __init__(self, text, caption):
+        figures.Figure.__init__(self, 0, 0, caption, captionFont='STSong-Light')
+        descrStyle = ParagraphStyle(
+            'description', fontName='STSong-Light', fontSize=8, leading=9.6
+        )
+        self.text = text
+        self.left = Paragraph(xmlEscape(text), descrStyle)
+        self.right = Paragraph(text, cn_B)
+
 
 def parabox(text, style, caption):
     p = ParaBox(
         text,
         style,
-        'Figure <seq template="%(Chapter)s-%(Figure+)s"/>: '
-        + quickfix(caption),
+        'Figure <seq template="%(Chapter)s-%(Figure+)s"/>: ' + quickfix(caption)
+    )
+    getStory().append(p)
+
+
+def cn_parabox(text, style, caption):
+    p = CnParaBox(
+        text,
+        style,
+        '图 <seq template="%(Chapter)s-%(Figure+)s"/>: ' + quickfix(caption)
     )
     getStory().append(p)
 
@@ -621,6 +660,15 @@ def parabox2(text, caption):
     p = ParaBox2(
         text,
         'Figure <seq template="%(Chapter)s-%(Figure+)s"/>: '
+        + quickfix(caption),
+    )
+    getStory().append(p)
+
+
+def cn_parabox2(text, caption):
+    p = CnParaBox2(
+        text,
+        '图 <seq template="%(Chapter)s-%(Figure+)s"/>: '
         + quickfix(caption),
     )
     getStory().append(p)
