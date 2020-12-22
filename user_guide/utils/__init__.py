@@ -76,7 +76,7 @@ exampletextstyle = styleSheet['Code']
 
 cn_lessonnamestyle = cn_H2
 cn_discussiontextstyle = cn_B
-cn_exampletextstyle = styleSheet['Code']
+cn_exampletextstyle = cn_styleSheet['Code']
 
 # size for every example
 examplefunctionxinches = 5.5
@@ -210,6 +210,8 @@ def cn_eg(text, before=0.1, after=0, klass=PythonPreformatted):
 def npeg(text, before=0.1, after=0):
     eg(text, before=before, after=after, klass=XPreformatted)
 
+def cn_npeg(text, before=0.1, after=0):
+    cn_eg(text, before=before, after=after, klass=XPreformatted)
 
 def space(inches=1.0 / 6):
     if inches:
