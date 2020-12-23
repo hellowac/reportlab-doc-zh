@@ -52,7 +52,7 @@ class OneColumnTemplate(PageTemplate):
         )
         PageTemplate.__init__(self, id, [frame1])  # note lack of onPage
 
-    def afterDrawPage(self, canvas, doc):
+    def afterDrawPage_bak(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
         canvas.setFont('Times-Roman', 10)
@@ -62,6 +62,17 @@ class OneColumnTemplate(PageTemplate):
         canvas.drawCentredString(
             doc.pagesize[0] / 2, 0.75 * inch, 'Page %d' % canvas.getPageNumber()
         )
+        canvas.restoreState()
+
+    def afterDrawPage(self, canvas, doc):
+        y = self.pageHeight - 50
+        canvas.saveState()
+        canvas.setFont('STSong-Light', 10)
+        canvas.drawString(inch, y + 8, doc.title)
+        canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
+        canvas.line(inch, y, self.pageWidth - inch, y)
+        canvas.drawCentredString(
+            doc.pagesize[0] / 2, 0.75 * inch, f'第 {canvas.getPageNumber()} 页')
         canvas.restoreState()
 
 
@@ -78,7 +89,7 @@ class TOCTemplate(PageTemplate):
         )
         PageTemplate.__init__(self, id, [frame1])  # note lack of onPage
 
-    def afterDrawPage(self, canvas, doc):
+    def afterDrawPage_bak(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
         canvas.setFont('Times-Roman', 10)
@@ -90,6 +101,19 @@ class TOCTemplate(PageTemplate):
         canvas.drawCentredString(
             doc.pagesize[0] / 2, 0.75 * inch, 'Page %d' % canvas.getPageNumber()
         )
+        canvas.restoreState()
+
+    def afterDrawPage(self, canvas, doc):
+        y = self.pageHeight - 50
+        canvas.saveState()
+        canvas.setFont('STSong-Light', 10)
+        canvas.drawString(inch, y + 8, doc.title)
+        canvas.drawRightString(
+            self.pageWidth - inch, y + 8, '目录'
+        )
+        canvas.line(inch, y, self.pageWidth - inch, y)
+        canvas.drawCentredString(
+            doc.pagesize[0] / 2, 0.75 * inch, f'第 {canvas.getPageNumber()} 页')
         canvas.restoreState()
 
 
@@ -110,7 +134,7 @@ class TwoColumnTemplate(PageTemplate):
         )
         PageTemplate.__init__(self, id, [frame1, frame2])  # note lack of onPage
 
-    def afterDrawPage(self, canvas, doc):
+    def afterDrawPage_bak(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
         canvas.setFont('Times-Roman', 10)
@@ -120,6 +144,17 @@ class TwoColumnTemplate(PageTemplate):
         canvas.drawCentredString(
             doc.pagesize[0] / 2, 0.75 * inch, 'Page %d' % canvas.getPageNumber()
         )
+        canvas.restoreState()
+
+    def afterDrawPage(self, canvas, doc):
+        y = self.pageHeight - 50
+        canvas.saveState()
+        canvas.setFont('STSong-Light', 10)
+        canvas.drawString(inch, y + 8, doc.title)
+        canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
+        canvas.line(inch, y, self.pageWidth - inch, y * inch)
+        canvas.drawCentredString(
+            doc.pagesize[0] / 2, 0.75 * inch, f'第 {canvas.getPageNumber()} 页')
         canvas.restoreState()
 
 
