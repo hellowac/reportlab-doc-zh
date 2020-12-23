@@ -384,6 +384,7 @@ def getCnStyleSheet():
             leftIndent=36,
             firstLineIndent=0,
             hyphenationLang='',
+            wordWrap='CJK'
         )
     )
 

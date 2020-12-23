@@ -512,8 +512,8 @@ you to 'pretty print' output over multiple lines rather than having
 one very long line.</i>
 """
 )
-cn_disc('<i><font color=red>注意</font>：$pprint$是标准的Python库模块，'
-        '它允许您在多行上 "漂亮地打印" 输出，而不是只有一行很长的内容。')
+cn_disc('<i><font color=red>注意</font>：$pprint$ 是标准的Python库模块，'
+        '它允许您在多行上 "漂亮地打印" 输出，而不是只有一行很长的内容。</i>')
 
 disc(
     """

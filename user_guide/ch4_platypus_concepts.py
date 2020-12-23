@@ -31,7 +31,7 @@ from utils import examples
 cn_heading1("PLATYPUS - 使用脚本进行页面布局和排版。")
 
 # heading2("Design Goals")
-cn_heading2("全局设计")
+cn_heading2("设计目标")
 
 disc(
     """

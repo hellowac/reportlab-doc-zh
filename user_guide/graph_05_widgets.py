@@ -43,9 +43,12 @@ Using many examples it is shown how widgets make reusable
 graphics components.
 """
 )
+cn_disc('aaa')
+
 
 
 heading3("Shapes vs. Widgets")
+cn_heading3('aaa')
 
 disc(
     """Up until now, Drawings have been 'pure data'. There is no code in them
@@ -54,6 +57,8 @@ disc(
        concept and is what lets us achieve portability - a renderer only
        needs to implement the primitive shapes."""
 )
+cn_disc('aaa')
+
 
 disc(
     """We want to build reusable graphic objects, including a powerful chart
@@ -62,6 +67,8 @@ disc(
        to reuse - arrows, gears, text boxes, UML diagram nodes, even fully
        fledged charts."""
 )
+cn_disc('aaa')
+
 
 disc(
     """
@@ -72,6 +79,8 @@ so you can inspect and modify as well as document them in a uniform
 way.
 """
 )
+cn_disc('aaa')
+
 
 bullet("A widget is a reusable shape ")
 bullet(
@@ -103,12 +112,15 @@ disc(
 
 
 heading3("Using a Widget")
+cn_heading3('aaa')
 
 disc(
     """
 Let's imagine a simple new widget.
 We will use a widget to draw a face, then show how it was implemented."""
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -142,6 +154,8 @@ Let's see what properties it has available, using the $setProperties()$
 method we have seen earlier:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -168,6 +182,8 @@ window, and you move or resize them by setting properties such as
 x, y, width and so on after creation.
 """
 )
+cn_disc('aaa')
+
 
 disc(
     """
@@ -179,6 +195,8 @@ The documentation tool calls $demo()$ so that your fancy new chart
 class can create a drawing showing what it can do.
 """
 )
+cn_disc('aaa')
+
 
 disc(
     """
@@ -186,6 +204,8 @@ Here are a handful of simple widgets available in the module
 <i>signsandsymbols.py</i>:
 """
 )
+cn_disc('aaa')
+
 
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.widgets import signsandsymbols
@@ -214,6 +234,8 @@ disc(
 And this is the code needed to generate them as seen in the drawing above:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -241,11 +263,14 @@ d.add(ns)
 
 
 heading3("Compound Widgets")
+cn_heading3('aaa')
 
 disc(
     """Let's imagine a compound widget which draws two faces side by side.
        This is easy to build when you have the Face widget."""
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -276,23 +301,31 @@ disc(
        can get at them directly. There could also be top-level attributes,
        but there aren't in this case."""
 )
+cn_disc('aaa')
+
 
 
 heading3("Verifying Widgets")
+cn_heading3('aaa')
 
 disc(
     """The widget designer decides the policy on verification, but by default
        they work like shapes - checking every assignment - if the designer
        has provided the checking information."""
 )
+cn_disc('aaa')
+
 
 
 heading3("Implementing Widgets")
+cn_heading3('aaa')
 
 disc(
     """We tried to make it as easy to implement widgets as possible. Here's
        the code for a Face widget which does not do any type checking:"""
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -323,12 +356,16 @@ disc(
     """We left out all the code to draw the shapes in this document, but you
        can find it in the distribution in $widgetbase.py$."""
 )
+cn_disc('aaa')
+
 
 disc(
     """By default, any attribute without a leading underscore is returned by
        setProperties. This is a deliberate policy to encourage consistent
        coding conventions."""
 )
+cn_disc('aaa')
+
 
 disc(
     """Once your widget works, you probably want to add support for
@@ -341,6 +378,8 @@ disc(
        restrict the "mood" custom attribute to the values "happy", "sad" or
        "ok". So we do this:"""
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -365,9 +404,12 @@ disc(
     """This checking will be performed on every attribute assignment; or, if
        $config.shapeChecking$ is off, whenever you call $myFace.verify()$."""
 )
+cn_disc('aaa')
+
 
 
 heading3("Documenting Widgets")
+cn_heading3('aaa')
 
 disc(
     """
@@ -377,6 +419,8 @@ generate a reference for the ReportLab package.
 When it encounters widgets, it adds extra sections to the
 manual including:"""
 )
+cn_disc('aaa')
+
 
 bullet("the doc string for your widget class ")
 bullet(
@@ -393,9 +437,12 @@ and in print; and that you can do the same for your own widgets,
 too!
 """
 )
+cn_disc('aaa')
+
 
 
 heading3("Widget Design Strategies")
+cn_heading3('aaa')
 
 disc(
     """We could not come up with a consistent architecture for designing
@@ -403,6 +450,8 @@ disc(
        like the default verification strategy, or the way
        $setProperties/getProperties$ works, you can override them yourself."""
 )
+cn_disc('aaa')
+
 
 disc(
     """For simple widgets it is recommended that you do what we did above:
@@ -412,6 +461,8 @@ disc(
        attributes are set. Consider a pie chart. If you want to expose the
        individual slices, you might write code like this:"""
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -433,6 +484,8 @@ disc(
        get a simple one working before exposing 'child objects' whose
        existence depends on other properties' values :-)"""
 )
+cn_disc('aaa')
+
 
 disc(
     """We also discussed rules by which parent widgets could pass properties
@@ -445,11 +498,15 @@ disc(
        certainly can write monolithic chart widgets which work like the ones
        in, say, Visual Basic and Delphi."""
 )
+cn_disc('aaa')
+
 
 disc(
     """For now have a look at the following sample code using an early
        version of a pie chart widget and the output it generates:"""
 )
+cn_disc('aaa')
+
 
 eg(
     """

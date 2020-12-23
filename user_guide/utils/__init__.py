@@ -439,8 +439,8 @@ class CnIllustration(figures.Figure):
             self,
             width,
             height,
-            '图 <seq template="%(Chapter)s-%('
-            'Figure+)s"/>: ' + quickfix(caption),
+            '图 <seq template="%(Chapter)s - %('
+            'Figure+)s"/> : ' + quickfix(caption),
             captionFont=tt2ps('STSong-Light', 0, 1)
         )
         self.operation = operation
@@ -480,10 +480,34 @@ class GraphicsDrawing(Illustration):
         d.drawOn(self.canv, 0, 0)
 
 
+class CnGraphicsDrawing(CnIllustration):
+    """Lets you include reportlab/graphics drawings seamlessly,
+    with the right numbering."""
+
+    def __init__(self, drawing, caption):
+        figures.Figure.__init__(
+            self,
+            drawing.width,
+            drawing.height,
+            '图 <seq template="%(Chapter)s - %('
+            'Figure+)s"/> : ' + quickfix(caption),
+            captionFont=tt2ps('STSong-Light', 0, 1),
+            )
+        self.drawing = drawing
+
+    def drawFigure(self):
+        d = self.drawing
+        d.wrap(d.width, d.height)
+        d.drawOn(self.canv, 0, 0)
+
+
 def draw(drawing, caption):
     d = GraphicsDrawing(drawing, caption)
     getStory().append(d)
 
+def cn_draw(drawing, caption):
+    d = CnGraphicsDrawing(drawing, caption)
+    getStory().append(d)
 
 class ParaBoxBase(figures.Figure):
 

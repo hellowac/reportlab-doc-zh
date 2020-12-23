@@ -2,6 +2,10 @@
 # see license.txt for license details
 
 from reportlab.lib import colors
+from reportlab.graphics.shapes import (
+    Drawing, Line, PolyLine, String, Group,
+    mmult, translate, rotate
+)
 from utils import (
     heading1,
     cn_heading1,
@@ -32,10 +36,6 @@ from utils import (
     draw,
     getJustFontPaths,
 )
-from reportlab.graphics.shapes import (
-    Drawing, Line, PolyLine, String, Group,
-    mmult,
-)
 
 
 # heading2("Shapes")
@@ -50,8 +50,11 @@ diagrams are presented and the notion of having different renderers
 for different output formats is briefly introduced.
 """
 )
+cn_disc('aaa')
+
 
 heading3("Available Shapes")
+cn_heading3('aaa')
 
 disc(
     """
@@ -63,6 +66,8 @@ constructs which can be added to a drawing.
 They are:
 """
 )
+cn_disc('aaa')
+
 
 bullet("Rect")
 bullet("Circle")
@@ -83,6 +88,8 @@ Those with a filled green surface are also called <i>solid shapes</i>
 (these are $Rect$, $Circle$, $Ellipse$, $Wedge$ and $Polygon$).
 """
 )
+cn_disc('aaa')
+
 
 from reportlab.graphics import testshapes
 
@@ -91,6 +98,7 @@ t = testshapes.getDrawing06()
 draw(t, "Basic shapes")
 
 heading3("Shape Properties")
+cn_heading3('aaa')
 
 disc(
     """
@@ -99,6 +107,8 @@ and some to define their style.
 Let's create a red rectangle with 3-point thick green borders:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -129,6 +139,8 @@ disc(
 <i>Note: In future examples we will omit the import statements.</i>
 """
 )
+cn_disc('aaa')
+
 
 disc(
     """
@@ -138,6 +150,8 @@ method to list these.
 Here's what you can use to configure a Rect:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -169,6 +183,8 @@ much sense without those properties.
 The others are optional and come with sensible defaults.
 """
 )
+cn_disc('aaa')
+
 
 disc(
     """
@@ -177,6 +193,8 @@ as optional arguments to the constructor.
 We could also have created our rectangle this way:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -198,10 +216,15 @@ $rx$ and $ry$ are optional geometric properties and are used to
 define the corner radius for a rounded rectangle.
 """
 )
+cn_disc('aaa')
+
 
 disc("All the other solid shapes share the same style properties.")
+cn_disc('aaa')
+
 
 heading3("Lines")
+cn_heading3('aaa')
 
 disc(
     """
@@ -211,6 +234,8 @@ Here are a few Line and PolyLine examples and the corresponding
 graphics output:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -269,6 +294,7 @@ d.add(
 draw(d, "Line and PolyLine examples")
 
 heading3("Strings")
+cn_heading3('aaa')
 
 disc(
     """
@@ -278,6 +304,8 @@ left/right/center alignment.
 Let's specify a $String$ object and look at its properties:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -303,6 +331,8 @@ string, and so on.
 This provides an easy way to align text.
 """
 )
+cn_disc('aaa')
+
 
 disc(
     """
@@ -314,6 +344,8 @@ We have recently also added support for extra Type 1 fonts
 and the renderers all know how to render Type 1 fonts.
 """
 )
+cn_disc('aaa')
+
 
 ##Until now we have worked with bitmap renderers which have to use
 ##TrueType fonts and which make some substitutions; this could lead
@@ -327,6 +359,8 @@ Please consult the ReportLab User Guide to see how non-standard
 like 'DarkGardenMK' fonts are being registered!
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -377,6 +411,7 @@ d.add(String(150, 160, 'Hello World', fontName='DarkGardenMK', fontSize=36))
 draw(d, 'fancy font example')
 
 heading3("""Paths""")
+cn_heading3('aaa')
 
 disc(
     """
@@ -385,6 +420,8 @@ They are not implemented in $reportlab/graphics$ as yet, but they
 will be, soon.
 """
 )
+cn_disc('aaa')
+
 
 # NB This commented out section is for 'future compatibility' - paths haven't
 #    been implemented yet, but when they are we can uncomment this back in.
@@ -425,6 +462,7 @@ will be, soon.
 
 
 heading3("Groups")
+cn_heading3('aaa')
 
 disc(
     """
@@ -437,6 +475,8 @@ Otherwise it provides methods to rotate, scale and so on.
 Here we make a group which is rotated and translated:
 """
 )
+cn_disc('aaa')
+
 
 eg(
     """
@@ -456,8 +496,12 @@ translation and rotation, and you get a bunch of axis.
 It is still the same group, being drawn in different places.
 """
 )
+cn_disc('aaa')
+
 
 disc("""Let's do this with some only slightly more code:""")
+cn_disc('aaa')
+
 
 eg(
     """
