@@ -45,12 +45,13 @@ cn_heading2("图表")
 disc(
     """
 The motivation for much of this is to create a flexible chart
-package.
-This section presents a treatment of the ideas behind our charting
-model, what the design goals are and what components of the chart
-package already exist.
+package. This section presents a treatment of the ideas behind our charting
+model, what the design goals are and what components of the chart package already exist.
 """
 )
+cn_disc('其中大部分的动机是为了创建一个灵活的图表包。'
+        '本节将介绍我们的图表模型背后的想法，'
+        '设计目标是什么，以及图表包的哪些组件已经存在。')
 
 
 heading3("Design Goals")
