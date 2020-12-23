@@ -6,6 +6,12 @@ from reportlab.graphics.shapes import (
     Drawing, Line, PolyLine, String, Group,
     mmult, translate, rotate
 )
+from reportlab.graphics import testshapes
+from reportlab.graphics.shapes import Rect
+from reportlab.lib.colors import red, green
+from reportlab.pdfbase import pdfmetrics
+from reportlab import rl_config
+
 from utils import (
     heading1,
     cn_heading1,
@@ -25,6 +31,7 @@ from utils import (
     parabox,
     parabox2,
     bullet,
+    cn_bullet,
     getStory,
     pencilnote,
     startKeep,
@@ -34,6 +41,7 @@ from utils import (
     styleSheet,
     cn_styleSheet,
     draw,
+    cn_draw,
     getJustFontPaths,
 )
 
@@ -50,23 +58,24 @@ diagrams are presented and the notion of having different renderers
 for different output formats is briefly introduced.
 """
 )
-cn_disc('aaa')
+cn_disc('本节介绍形状的概念及其作为图形库生成的所有输出的构建块的重要性。 '
+        '介绍了现有形状的一些属性及其与图表的关系，'
+        '并简要介绍了针对不同输出格式使用不同渲染器的概念。')
 
 
 heading3("Available Shapes")
-cn_heading3('aaa')
+cn_heading3('可用形状')
 
 disc(
     """
-Drawings are made up of Shapes.
-Absolutely anything can be built up by combining the same set of
-primitive shapes.
-The module $shapes.py$ supplies a number of primitive shapes and
-constructs which can be added to a drawing.
-They are:
+Drawings are made up of Shapes. Absolutely anything can be built up by 
+combining the same set of
+primitive shapes. The module $shapes.py$ supplies a number of primitive 
+shapes and constructs which can be added to a drawing. They are:
 """
 )
-cn_disc('aaa')
+cn_disc('绘画是由形状组成的。任何东西都可以通过组合相同的原始图形集来构建。'
+        '模块$shapes.py$提供了一些可以添加到图形中的基本形状和构造。它们是')
 
 
 bullet("Rect")
@@ -78,7 +87,8 @@ bullet("Line")
 bullet("PolyLine")
 bullet("String")
 bullet("Group")
-bullet("Path (<i>not implemented yet, but will be added in the future</i>)")
+# bullet("Path (<i>not implemented yet, but will be added in the future</i>)")
+cn_bullet("$Path$ (<i>还没有完全实现，但将来会加入</i>)")
 
 disc(
     """
@@ -88,17 +98,16 @@ Those with a filled green surface are also called <i>solid shapes</i>
 (these are $Rect$, $Circle$, $Ellipse$, $Wedge$ and $Polygon$).
 """
 )
-cn_disc('aaa')
-
-
-from reportlab.graphics import testshapes
+cn_disc('下面的图画来自于我们的测试套件，显示了大部分的基本形状（除了组）。那些有绿色填充面的图形也被称为<i>实体图形</i>。'
+        '(这些是$Rect$、$Circle$、$Ellipse$、$Wedge$和$Polygon$)。')
 
 
 t = testshapes.getDrawing06()
-draw(t, "Basic shapes")
+# draw(t, "Basic shapes")
+cn_draw(t, '基本的图形')
 
-heading3("Shape Properties")
-cn_heading3('aaa')
+# heading3("Shape Properties")
+cn_heading3('形状属性')
 
 disc(
     """
@@ -107,7 +116,8 @@ and some to define their style.
 Let's create a red rectangle with 3-point thick green borders:
 """
 )
-cn_disc('aaa')
+cn_disc('形状有两种属性 --有的用来定义其几何形状，'
+        '有的用来定义其样式。让我们创建一个红色的矩形，有3点粗的绿色边框。')
 
 
 eg(
@@ -119,11 +129,8 @@ eg(
 >>> r.strokeColor = green
 >>> r.strokeWidth = 3
 >>>
-"""
-)
+""")
 
-from reportlab.graphics.shapes import Rect
-from reportlab.lib.colors import red, green
 
 
 d = Drawing(220, 120)
@@ -132,25 +139,27 @@ r.fillColor = red
 r.strokeColor = green
 r.strokeWidth = 3
 d.add(r)
-draw(d, "red rectangle with green border")
+# draw(d, "red rectangle with green border")
+cn_draw(d, '红色矩形和绿色边框')
 
 disc(
     """
 <i>Note: In future examples we will omit the import statements.</i>
 """
 )
-cn_disc('aaa')
+cn_disc('<i><font color="red">注意</font>：在未来的例子中，我们将省略导入语句。</i>')
 
 
 disc(
     """
 All shapes have a number of properties which can be set.
 At an interactive prompt, we can use their <i>dumpProperties()</i>
-method to list these.
-Here's what you can use to configure a Rect:
+method to list these. Here's what you can use to configure a Rect:
 """
 )
-cn_disc('aaa')
+cn_disc('所有的形状都有一些可以设置的属性。'
+        '在交互式提示下，我们可以使用它们的<i>$dumpProperties()$</i>方法来列出这些属性。'
+        '下面是你可以用来配置一个Rect.Rex的方法。')
 
 
 eg(
@@ -183,7 +192,10 @@ much sense without those properties.
 The others are optional and come with sensible defaults.
 """
 )
-cn_disc('aaa')
+cn_disc('形状一般有<i>style属性</i>和<i>geometry属性</i>。'
+        '$x$, $y$, $width$ 和 $height$ 是几何属性的一部分，'
+        '在创建矩形时必须提供，因为没有这些属性就没有什么意义。'
+        '其他的属性是可选的，并且有合理的默认值。')
 
 
 disc(
@@ -193,7 +205,8 @@ as optional arguments to the constructor.
 We could also have created our rectangle this way:
 """
 )
-cn_disc('aaa')
+cn_disc('你可以在随后的行中设置其他属性，或者将它们作为可选参数传递给构造函数。'
+        '我们也可以用这种方式来创建我们的矩形。')
 
 
 eg(
@@ -211,20 +224,24 @@ Let's run through the style properties. $fillColor$ is obvious.
 $stroke$ is publishing terminology for the edge of a shape;
 the stroke has a color, width, possibly a dash pattern, and
 some (rarely used) features for what happens when a line turns
-a corner.
-$rx$ and $ry$ are optional geometric properties and are used to
+a corner. $rx$ and $ry$ are optional geometric properties and are used to
 define the corner radius for a rounded rectangle.
 """
 )
-cn_disc('aaa')
+cn_disc('我们来看看样式属性。'
+        '$fillColor$是显而易见的。'
+        '$stroke$ 是形状边缘的发布术语；$stroke$有一个颜色、宽度，'
+        '可能还有一个破折号图案，以及一些（很少使用的）功能，'
+        '用于当一条线转角时发生的情况。'
+        '$rx$ 和 $ry$ 是可选的几何属性，用于定义圆角矩形的角半径。')
 
 
 disc("All the other solid shapes share the same style properties.")
-cn_disc('aaa')
+cn_disc('其他所有的实体形状都具有相同的样式属性。')
 
 
-heading3("Lines")
-cn_heading3('aaa')
+# heading3("Lines")
+cn_heading3('线')
 
 disc(
     """
@@ -234,8 +251,9 @@ Here are a few Line and PolyLine examples and the corresponding
 graphics output:
 """
 )
-cn_disc('aaa')
-
+cn_disc('我们提供单条直线、多条直线和曲线。'
+        '线条具有所有的$stroke*$属性，但没有$fillColor$。'
+        '下面是一些直线和多线的例子以及相应的图形输出。')
 
 eg(
     """
@@ -291,10 +309,11 @@ d.add(
         strokeColor=colors.purple,
     )
 )
-draw(d, "Line and PolyLine examples")
+# draw(d, "Line and PolyLine examples")
+cn_draw(d, "线型和多线型示例")
 
-heading3("Strings")
-cn_heading3('aaa')
+# heading3("Strings")
+cn_heading3('字符串')
 
 disc(
     """
@@ -304,7 +323,10 @@ left/right/center alignment.
 Let's specify a $String$ object and look at its properties:
 """
 )
-cn_disc('aaa')
+cn_disc('$ReportLab$ 图形包并不是为花哨的文本布局而设计的，'
+        '但它可以将字符串放置在所需的位置上，'
+        '并进行 $left/right/center$ 对齐。'
+        '让我们指定一个$String$对象，看看它的属性。')
 
 
 eg(
@@ -325,26 +347,27 @@ y = 50
 disc(
     """
 Strings have a textAnchor property, which may have one of the
-values 'start', 'middle', 'end'.
-If this is set to 'start', x and y relate to the start of the
-string, and so on.
-This provides an easy way to align text.
+values 'start', 'middle', 'end'. If this is set to 'start', x and y relate to the start of the
+string, and so on. This provides an easy way to align text.
 """
 )
-cn_disc('aaa')
+cn_disc("字符串有一个 $textAnchor$ 属性，它的值可以是 $'start'$、$'middle'$、$'end'$之一。"
+        "如果设置为$'start'$，则 x 和  y与字符串的开始相关，以此类推。"
+        "这提供了一个简单的方法来对齐文本。")
 
 
 disc(
     """
 Strings use a common font standard: the Type 1 Postscript fonts
-present in Acrobat Reader.
-We can thus use the basic 14 fonts in ReportLab and get accurate
-metrics for them.
-We have recently also added support for extra Type 1 fonts
-and the renderers all know how to render Type 1 fonts.
+present in Acrobat Reader. We can thus use the basic 14 fonts in ReportLab 
+and get accurate metrics for them. We have recently also added support for 
+extra Type 1 fonts and the renderers all know how to render Type 1 fonts.
 """
 )
-cn_disc('aaa')
+cn_disc('字符串使用一个通用的字体标准：$Acrobat Reader$ 中存在的 $Type 1 Postscript$ 字体。'
+        '因此，我们可以在 $ReportLab$ 中使用基本的14种字体，并获得准确的指标。'
+        '我们最近还增加了对额外的$Type 1$字体的支持，'
+        '渲染器都知道如何渲染$Type 1$字体。')
 
 
 ##Until now we have worked with bitmap renderers which have to use
@@ -359,7 +382,8 @@ Please consult the ReportLab User Guide to see how non-standard
 like 'DarkGardenMK' fonts are being registered!
 """
 )
-cn_disc('aaa')
+cn_disc("下面是一个使用下面代码片段的更漂亮的例子。"
+        "请查阅 $ReportLab$ 用户指南，了解像 $'DarkGardenMK'$ 这样的非标准字体是如何被注册的。")
 
 
 eg(
@@ -379,9 +403,6 @@ eg(
                  fontSize=36))
 """
 )
-
-from reportlab.pdfbase import pdfmetrics
-from reportlab import rl_config
 
 
 rl_config.warnOnMissingFontGlyphs = 0
@@ -408,10 +429,11 @@ d.add(String(130, 120, 'Hello World', fontName='Courier', fontSize=36))
 
 d.add(String(150, 160, 'Hello World', fontName='DarkGardenMK', fontSize=36))
 
-draw(d, 'fancy font example')
+# draw(d, 'fancy font example')
+cn_draw(d, '花式字体样例')
 
-heading3("""Paths""")
-cn_heading3('aaa')
+# heading3("""Paths""")
+cn_heading3('$Paths$')
 
 disc(
     """
@@ -420,7 +442,8 @@ They are not implemented in $reportlab/graphics$ as yet, but they
 will be, soon.
 """
 )
-cn_disc('aaa')
+cn_disc('$Postscript paths$ 是图形学中一个广为人知的概念。'
+        '它们在$reportlab/graphics$中还没有实现，但很快就会实现。')
 
 
 # NB This commented out section is for 'future compatibility' - paths haven't
@@ -461,21 +484,24 @@ cn_disc('aaa')
 ##         should be finished off accurately for PDF and PS.</b>""")
 
 
-heading3("Groups")
-cn_heading3('aaa')
+# heading3("Groups")
+cn_heading3('$Groups$')
 
 disc(
     """
-Finally, we have Group objects.
-A group has a list of contents, which are other nodes.
-It can also apply a transformation - its contents can be rotated,
-scaled or shifted.
-If you know the math, you can set the transform directly.
-Otherwise it provides methods to rotate, scale and so on.
-Here we make a group which is rotated and translated:
+Finally, we have Group objects. A group has a list of contents, which are 
+other nodes. It can also apply a transformation - its contents can be rotated,
+scaled or shifted. If you know the math, you can set the transform directly.
+Otherwise it provides methods to rotate, scale and so on. Here we make a 
+group which is rotated and translated:
 """
 )
-cn_disc('aaa')
+cn_disc('最后，我们有 $Group$ 对象。'
+        '一个组有一个内容列表，就是其他节点。'
+        '它还可以应用变换 -- 它的内容可以被旋转、缩放或移动。'
+        '如果你懂数学，你可以直接设置变换。'
+        '否则它提供了旋转、缩放等方法。'
+        '在这里，我们做一个旋转和转换的组。')
 
 
 eg(
@@ -488,19 +514,22 @@ eg(
 
 disc(
     """
-Groups provide a tool for reuse.
-You can make a bunch of shapes to represent some component - say,
-a coordinate system - and put them in one group called "Axis".
-You can then put that group into other groups, each with a different
+Groups provide a tool for reuse. You can make a bunch of shapes to represent 
+some component - say, a coordinate system - and put them in one group called 
+"Axis". You can then put that group into other groups, each with a different
 translation and rotation, and you get a bunch of axis.
 It is still the same group, being drawn in different places.
 """
 )
-cn_disc('aaa')
+cn_disc('组提供了一个重复使用的工具。'
+        '你可以做一堆形状来表示某个组件 '
+        '--比如说，一个坐标系--并把它们放在一个叫做 "Axis" (轴) 的组里。'
+        '然后你可以把这个组放到其他组中，每个组都有不同的平移和旋转，'
+        '你就会得到一堆轴。它仍然是同一个组，被画在不同的地方。')
 
 
 disc("""Let's do this with some only slightly more code:""")
-cn_disc('aaa')
+cn_disc('让我们用一些只稍微多一点的代码来做这件事。')
 
 
 eg(
@@ -571,4 +600,5 @@ secondAxisGroup.rotate(15)
 d.add(secondAxisGroup)
 thirdAxisGroup = Group(Axis, transform=mmult(translate(300, 10), rotate(30)))
 d.add(thirdAxisGroup)
-draw(d, "Groups examples")
+# draw(d, "Groups examples")
+cn_draw(d, "$Groups$ 示例")
