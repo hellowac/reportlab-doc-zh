@@ -36,8 +36,6 @@ from utils import (
     EmbeddedCode
 )
 
-from reportlab.platypus import Image
-
 # heading1("Tables and TableStyles")
 cn_heading1('表格和表格样式')
 
