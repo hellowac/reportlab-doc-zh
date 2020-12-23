@@ -153,7 +153,7 @@ The value of i is 1
 )
 
 # heading1("""Other Useful $Flowables$""")
-cn_heading2("其他可用的$Flowables$")
+cn_heading1("其他可用的$Flowables$")
 
 heading2(
     """$Preformatted(text, style, bulletText=None, dedent=0, maxLineLength=None, splitChars=None, newLineChars=None)$"""
@@ -271,7 +271,7 @@ cn_disc('创建一个 $flowable$，它将包含由文件 $filename$ 中的数据
         '如果指定了 $width$和$height$，那么它们决定了显示图像的尺寸，单位是<i>points</i>。'
         '如果没有指定任何一个尺寸(或者指定为$None$)，那么图像的相应像素尺寸被假定为<i>points</i>并使用。')
 
-I = "../images/lj8100.jpg"
+I = "images/lj8100.jpg"
 eg(
     """
 Image("lj8100.jpg")
