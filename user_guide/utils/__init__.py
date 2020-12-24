@@ -95,8 +95,8 @@ def quickfix(text):
     format the arg as replaceable.  The escape sequence for literal
     $ is $\\$ (^ is ^\\^.
     """
-    logger.info('<<' + '=' * 100)
-    logger.info(f'text: {text}')
+    # logger.info('<<' + '=' * 100)
+    # logger.info(f'text: {text}')
 
     for (template, subst) in [
         (QFcodetemplate, codesubst),
@@ -122,8 +122,8 @@ def quickfix(text):
             parts.append(fragment)
         text = ''.join(parts)
 
-    logger.info(f'quickfix text: {text}')
-    logger.info('=' * 100 + '>> \n\n')
+    # logger.info(f'quickfix text: {text}')
+    # logger.info('=' * 100 + '>> \n\n')
     return text
 
 
