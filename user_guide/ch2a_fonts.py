@@ -168,17 +168,18 @@ necessary to switch fonts in your code.
 """
 )
 cn_disc('在代码中还有很多地方，包括^rl_config.defaultEncoding^参数，'
-        '以及传递给各种Font构造函数的参数，这些参数都是指编码。 '
-        '在过去，当人们需要使用PDF浏览设备支持的Symbol和ZapfDingbats字体的字形时，'
-        '这些参数非常有用。默认情况下，标准字体（Helvetica、Courier、Times Roman）将提供Latin-1的字形。 '
-        '然而，如果我们的引擎检测到一个字体中没有的字符，它将尝试切换到Symbol或ZapfDingbats来显示这些字符。'
-        '例如，如果你在对^drawString^的调用中包含了一对右面剪刀的Unicode字符，\\u2702(\u2702),'
+        '以及传递给各种 $Font$ 构造函数的参数，这些参数都是指编码。 '
+        '在过去，当人们需要使用 $PDF$ 浏览设备支持的 $Symbol$ 和 $ZapfDingbats$ 字体的字形时，'
+        '这些参数非常有用。'
+        '默认情况下，标准字体（$Helvetica$、$Courier$、$Times Roman$）将提供 $Latin-1$ 的字形。 '
+        '然而，如果我们的引擎检测到一个字体中没有的字符，它将尝试切换到 $Symbol$ 或 $ZapfDingbats$ 来显示这些字符。'
+        '例如，如果你在对^drawString^的调用中包含了一对右面剪刀的 $Unicode$ 字符，\\u2702(\u2702),'
         '你应该会看到它们（在^test_pdfgen_general.py/pdf^中有一个例子）。 '
         '在你的代码中不需要切换字体。')
 
 
 # heading2("Using non-standard Type 1 fonts")
-cn_heading2('使用非标准的 Type 1 字体')
+cn_heading2('使用非标准的 $Type 1$ 字体')
 
 
 disc(
@@ -189,9 +190,9 @@ PDF Library only needs to refer to these by name.  If you want
 to use other fonts, they must be available to your code and
 will be embedded in the PDF document."""
 )
-cn_disc('正如前一章所讨论的那样，每份Acrobat Reader都内置了14种标准字体。 '
-        '因此，ReportLab PDF库只需要通过名称来引用这些字体。 '
-        '如果您想使用其他字体，它们必须对您的代码可用，并将被嵌入到PDF文档中。')
+cn_disc('正如前一章所讨论的那样，每份 $Acrobat Reader$ 都内置了14种标准字体。 '
+        '因此，$ReportLab PDF$ 库只需要通过名称来引用这些字体。 '
+        '如果您想使用其他字体，它们必须对您的代码可用，并将被嵌入到$PDF$文档中。')
 
 
 disc(
@@ -205,7 +206,7 @@ distribution in the directory $reportlab/fonts$.
 )
 cn_disc('您可以使用下面描述的机制在您的文档中包含任意字体。'
         '我们有一个名为<i>DarkGardenMK</i>的开源字体，'
-        '我们可以将其用于测试和/或文档目的（您也可以使用它）。'
+        '我们可以将其用于测试 和或 文档目的（您也可以使用它）。'
         '它与ReportLab发行版捆绑在一起，在$reportlab/fonts$目录下。')
 
 
@@ -221,9 +222,9 @@ $'DarkGardenMK.afm'$ and $'DarkGardenMK.pfb'$ that are used as an example
 font.
 """
 )
-cn_disc('目前，字体嵌入依赖于Adobe AFM（"Adobe Font Metrics"）'
-        '和PFB（"Printer Font Binary"）格式的字体描述文件。'
-        '前者是一个ASCII文件，包含字体中的字符（"字形"）信息，如高度、宽度、边界框信息和其他 "指标"，'
+cn_disc('目前，字体嵌入依赖于$Adobe AFM("Adobe Font Metrics")$'
+        '和$PFB("Printer Font Binary")$格式的字体描述文件。'
+        '前者是一个$ASCII$文件，包含字体中的字符（"字形"）信息，如高度、宽度、边界框信息和其他 "$metrics$"(指标)，'
         '而后者是一个二进制文件，描述字体的形状。'
         '在$reportlab/fonts$目录下，'
         '包含了$"DarkGardenMK.afm"$和$"DarkGardenMK.pfb"$两个文件，'
@@ -271,7 +272,7 @@ it's to say which set of characters within the font file will be active
 and available.
 """
 )
-cn_disc('请注意，参数 "WinAnsiEncoding "与输入无关，它是说字体文件内的哪一组字符将被激活并可用。')
+cn_disc('请注意，参数 "$WinAnsiEncoding$"与输入无关，它是说字体文件内的哪一组字符将被激活并可用。')
 
 
 # illust(examples.customfont1, "Using a very non-standard font")
@@ -288,9 +289,9 @@ automatically. When lacking a more sophisticated method you can use some
 code as simple as this:
 """
 )
-cn_disc('字体的名称来自AFM文件的$FontName$字段。'
+cn_disc('字体的名称来自$AFM$文件的$FontName$字段。'
         '在上面的例子中，我们事先知道了这个名字，但是很多时候字体描述文件的名字是非常神秘的，'
-        '那么你可能会想从AFM文件中自动检索到这个名字。'
+        '那么你可能会想从$AFM$文件中自动检索到这个名字。'
         '当缺乏更复杂的方法时，你可以使用一些像这样简单的代码。')
 
 

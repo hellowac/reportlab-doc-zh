@@ -40,7 +40,7 @@ cn_heading1("编写 $Flowables$")
 disc(
     """The following flowables let you conditionally evaluate and execute expressions and statements at wrap time:"""
 )
-cn_disc('下面的flowables可以让你在 $wrap$ 时间有条件地评估和执行表达式和语句。')
+cn_disc('下列$flowable$使您可以在包装文本时有条件地求值并执行表达式和语句：')
 
 
 heading2("""$DocAssign(self, var, expr, life='forever')$""")
@@ -81,9 +81,9 @@ If format is specified it should use %(__expr__)s for string interpolation
 of the expression expr (if any). It may also use %(name)s interpolations
 for other variables in the namespace. E.g.:"""
 )
-cn_disc('创建一个以 expr 的值为文本的段落。'
-        '如果指定了格式，它应该使用 %(__expr__)s 对表达式 expr (如果有的话) 进行字符串插值。'
-        '它也可以使用%(name)s对命名空间中的其他变量进行插值。'
+cn_disc('创建一个以 $expr$ 的值为文本的段落。'
+        '如果指定了格式，它应该使用 %($__expr__$)s 对表达式 $expr$ (如果有的话) 进行字符串插值。'
+        '它也可以使用%($name$)s对命名空间中的其他变量进行插值。'
         '例如')
 
 
@@ -128,7 +128,7 @@ heading2("""$DocWhile(self, cond, whileBlock)$""")
 # cn_heading2('aaa')
 
 disc("""Runs the $whileBlock$ while $cond$ evaluates to $True$. E.g.:""")
-cn_disc('当$cond$值为$True时，运行$whileBlock$。例如：$')
+cn_disc('当$cond$值为$True$时，运行$whileBlock$。例如：')
 
 
 eg(
