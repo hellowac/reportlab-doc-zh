@@ -12,13 +12,13 @@ from utils import (
 )
 
 # Appendix1("ReportLab Demos")
-cn_Appendix1("ReportLab 示例")
+cn_Appendix1("$ReportLab$ 示例")
 
 disc(
     """In the subdirectories of $reportlab/demos$ there are a number of working examples showing
 almost all aspects of reportlab in use."""
 )
-cn_disc("在$reportlab/demos$的子目录中，有许多工作实例，几乎展示了reportlab使用的所有方面。")
+cn_disc("在$reportlab/demos$的子目录中，有许多工作实例，几乎展示了 $reportlab$ 使用的所有方面。")
 
 # heading2("""Odyssey""")
 cn_heading2("奥德赛")
@@ -30,9 +30,11 @@ and produce PDF documents. The included odyssey.txt is short; a longer and more 
 can be found at ftp://ftp.reportlab.com/odyssey.full.zip.
 """
 )
-cn_disc("odyssey.py、dodyssey.py和fodyssey.py这三个脚本都是取文件oddyssey.txt并生成PDF文档。"
-        "包含的 odyssey.txt 很短；"
-        "更长和更多的测试版本可以在 ftp://ftp.reportlab.com/odyssey.full.zip 找到。")
+cn_disc("$odyssey.py$、$dodyssey.py$和$fodyssey.py$"
+        "这三个脚本都是取文件$oddyssey.txt$并生成PDF文档。"
+        "包含的 $odyssey.txt$ 很短；"
+        "更长和更多的测试版本可以在 <a href=\"ftp://ftp.reportlab.com/odyssey.full.zip\">"
+        "$ftp://ftp.reportlab.com/odyssey.full.zip$</a> 找到。")
 
 eg(
     """
@@ -54,9 +56,9 @@ but all it does is gather the text and force it onto the canvas pages. It does n
 manipulation at all so you get to see the XML &lt; &amp; &gt; tags.
 """
 )
-cn_disc("odyssey.py脚本显示了简单的格式化。"
+cn_disc("$odyssey.py$ 脚本显示了简单的格式化。"
         "它的运行速度相当快，但它所做的只是收集文本并将其强行放到画布页面上。"
-        "它完全不进行段落操作，所以你可以看到XML &lt; &amp; &gt; 标签。")
+        "它完全不进行段落操作，所以你可以看到 $XML$ &lt; 和 &gt; 标签。")
 
 disc(
     """The scripts fodyssey.py and dodyssey.py handle paragraph formatting so you get
@@ -65,12 +67,12 @@ use the document template class and the dodyssey.py script shows the ability to 
 layout and uses multiple page templates.
 """
 )
-cn_disc("脚本fodyssey.py和dodyssey.py处理段落格式，"
+cn_disc("脚本 $fodyssey.py$ 和 $dodyssey.py$ 处理段落格式，"
         "所以你可以看到颜色变化等。"
-        "这两个脚本都使用了文档模板类，dodyssey.py脚本显示了做双列布局的能力，并使用了多个页面模板。")
+        "这两个脚本都使用了文档模板类， $dodyssey.py$ 脚本显示了做双列布局的能力，并使用了多个页面模板。")
 
 
-heading2("""Standard Fonts and Colors""")
+# heading2("""Standard Fonts and Colors""")
 cn_heading2("标准字体和颜色")
 
 disc(
@@ -78,7 +80,7 @@ disc(
 ReportLab's standard fonts. Run the script using"""
 )
 cn_disc("在$reportlab/demos/stdfonts$中，"
-        "脚本stdfonts.py可以用来说明ReportLab的标准字体。"
+        "脚本 $stdfonts.py$ 可以用来说明 $ReportLab$ 的标准字体。"
         "使用以下方法运行该脚本")
 
 eg(
@@ -94,14 +96,15 @@ StandardFonts_WinAnsi.pdf which show the two most common built in
 font encodings.
 """
 )
-cn_disc("生成两个PDF文档，StandardFonts_MacRoman.pdf &amp; StandardFonts_WinAnsi.pdf，"
+cn_disc("生成两个PDF文档，$StandardFonts_MacRoman.pdf$ 和 $StandardFonts_WinAnsi.pdf$，"
         "其中显示了两种最常见的内置字体编码。")
 
 disc(
     """The colortest.py script in $reportlab/demos/colors$ demonstrates the different ways in which
 reportlab can set up and use colors."""
 )
-cn_disc("在$reportlab/demos/colors$中的colortest.py脚本展示了reportlab设置和使用颜色的不同方式。")
+cn_disc("在$reportlab/demos/colors$中的 $colortest.py$ 脚本展示了 "
+        " $reportlab$ 设置和使用颜色的不同方式。")
 
 disc(
     """Try running the script and viewing the output document, colortest.pdf. This shows
@@ -109,7 +112,7 @@ different color spaces and a large selection of the colors which are named
 in the $reportlab.lib.colors$ module.
 """
 )
-cn_disc("试着运行该脚本并查看输出文档，colortest.pdf。"
+cn_disc("试着运行该脚本并查看输出文档，$colortest.pdf$。"
         "这显示了不同的颜色空间和大量在$reportlab.lib.cols$模块中命名的颜色选择。")
 
 # heading2("""Py2pdf""")
@@ -121,8 +124,8 @@ which uses reportlab to produce nicely colorized PDF documents from Python
 scripts including bookmarks for classes, methods and functions.
 To get a nice version of the main script try"""
 )
-cn_disc("Dinu Gherman贡献了这个有用的脚本，"
-        "它使用reportlab从Python脚本中生成漂亮的彩色PDF文档，包括类、方法和函数的书签。"
+cn_disc("$Dinu Gherman$ 贡献了这个有用的脚本，"
+        "它使用 $reportlab$ 从 $Python$ 脚本中生成漂亮的彩色$PDF$文档，包括类、方法和函数的书签。"
         "要得到一个漂亮的主脚本版本，可以尝试一下")
 
 
@@ -138,7 +141,7 @@ disc(
 the document with the same rootname and a .pdf extension.
 """
 )
-cn_disc("即我们使用py2pdf在文档中生成一个漂亮的py2pdf.py版本，根名相同，扩展名为.pdf。")
+cn_disc("即我们使用$py2pdf$在文档中生成一个漂亮的$py2pdf.py$版本，根名相同，扩展名为$.pdf$。")
 
 
 disc(
@@ -147,7 +150,7 @@ The py2pdf.py script has many options which are beyond the scope of this
 simple introduction; consult the comments at the start of the script.
 """
 )
-cn_disc("py2pdf.py脚本有很多选项，这些选项超出了这个简单介绍的范围，请参考脚本开头的注释。")
+cn_disc("$py2pdf.py$脚本有很多选项，这些选项超出了这个简单介绍的范围，请参考脚本开头的注释。")
 
 heading2("Gadflypaper")
 # cn_heading2("Gadflypaper")
@@ -159,9 +162,9 @@ document preparation. The script almost entirely produced by Aaron Watters produ
 describing Aaron's $gadfly$ in memory database for Python. To generate the document use
 """
 )
-cn_disc("$reportlab/demos/gadflypaper$中的Python脚本gfe.py使用了内联式的文档编制方式。"
-        "这个脚本几乎完全由Aaron Watters制作，"
-        "产生了一个描述Aaron的$gadfly$内存数据库的Python文档。"
+cn_disc("$reportlab/demos/gadflypaper$中的$Python$脚本$gfe.py$使用了内联式的文档编制方式。"
+        "这个脚本几乎完全由$Aaron Watters$制作，"
+        "产生了一个描述$Aaron$的$gadfly$内存数据库的Python文档。"
         "要生成该文档，请使用")
 
 eg(
@@ -203,12 +206,12 @@ pythonpoint.py takes as a default input the file pythonpoint.xml and produces py
 which is documentation for Pythonpoint! You can also see it in action with an older paper
 """
 )
-cn_disc("Andy Robinson改进了pythonpoint.py脚本("
+cn_disc("$Andy Robinson$改进了$pythonpoint.py$脚本("
         "在$reportlab\\demos\\pythonpoint$中)，直到它成为一个真正有用的脚本。"
-        "它接收一个包含XML标记的输入文件，并使用一个xmllib样式分析器将标记映射到PDF幻灯片中。"
-        "当在它自己的目录下运行时，pythonpoint.py "
-        "将文件 pythonpoint.xml 作为默认输入，并生成 pythonpoint.pdf，"
-        "这是 Pythonpoint 的文档。您也可以通过一篇较早的文章看到它的运行情况。")
+        "它接收一个包含XML标记的输入文件，并使用一个 $xmllib$样式 分析器将标记映射到$PDF$幻灯片中。"
+        "当在它自己的目录下运行时，$pythonpoint.py$ "
+        "将文件 $pythonpoint.xml$ 作为默认输入，并生成 $pythonpoint.pdf$，"
+        "这是 $Pythonpoint$ 的文档。您也可以通过一篇较早的文章看到它的运行情况。")
 
 eg(
     """
@@ -227,9 +230,9 @@ an XML document can be contrasted with the <i>inline</i> style of the gadflypape
 content is completely separate from the formatting
 """
 )
-cn_disc("pythonpoint不仅是自文档，而且还演示了reportlab和PDF。"
-        "它使用了reportlab的许多功能（文档模板、表格等）。"
-        "PDF的奇特功能，如淡入和书签也被展示得很好。"
-        "XML文档的使用可以与gadflypaper演示中的<i>inline</i>风格形成对比；"
+cn_disc("$pythonpoint$ 不仅是自文档，而且还演示了 $reportlab$ 和 $PDF$ 。"
+        "它使用了 $reportlab$ 的许多功能（文档模板、表格等）。"
+        "$PDF$ 的奇特功能，如淡入和书签也被展示得很好。"
+        "$XML$ 文档的使用可以与 $gadflypaper$ 演示中的<i>$inline$</i>风格形成对比；"
         "内容与格式完全分离。")
 
