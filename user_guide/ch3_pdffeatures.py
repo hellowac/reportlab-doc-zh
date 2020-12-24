@@ -1,7 +1,3 @@
-# Copyright ReportLab Europe Ltd. 2000-2017
-# see license.txt for license details
-# history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide
-# /ch3_pdffeatures.py
 from reportlab.lib import colors
 from reportlab.platypus.tables import Table, TableStyle
 from utils import (

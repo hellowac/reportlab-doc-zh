@@ -1,8 +1,10 @@
 # Copyright ReportLab Europe Ltd. 2000-2017
 # see license.txt for license details
-# history https://hg.reportlab.com/hg-public/reportlab/log/tip/tools/docco/t_parse.py
+# history https://hg.reportlab.com/hg-public/reportlab/log/tip/tools/docco
+# /t_parse.py
 """
-Template parsing module inspired by REXX (with thanks to Donn Cave for discussion).
+Template parsing module inspired by REXX (with thanks to Donn Cave for
+discussion).
 
 Template initialization has the form:
    T = Template(template_string, wild_card_marker, single_char_marker,
@@ -69,11 +71,14 @@ Template directives:
     Here id, str, and int are regular expression conveniences provided by
     this module.
 
-  Directive markers may be mixed and matched, except that wildcards cannot precede
+  Directive markers may be mixed and matched, except that wildcards cannot
+  precede
   wildcards or single character markers.
   Example:
->>> T = Template("ssnum: NNN-NN-NNNN, fn=X, ln=X, age=I, quote=Q", "X", "N", I=int, Q=str)
->>> T.PARSE("ssnum: 123-45-6789, fn=Aaron, ln=Watters, age=13, quote='do be do be do'")
+>>> T = Template("ssnum: NNN-NN-NNNN, fn=X, ln=X, age=I, quote=Q", "X", "N",
+I=int, Q=str)
+>>> T.PARSE("ssnum: 123-45-6789, fn=Aaron, ln=Watters, age=13, quote='do be
+do be do'")
 (['123', '45', '6789', 'Aaron', 'Watters', '13', "'do be do be do'"], 72)
 >>>
 
@@ -82,13 +87,16 @@ Template directives:
 import re, string
 from reportlab.lib.utils import ascii_letters
 
+
 #
 # template parsing
 #
 # EG: T = Template("(NNN)NNN-NNNN X X", "X", "N")
-#     ([area, exch, ext, fn, ln], index) = T.PARSE("(908)949-2726 Aaron Watters")
+#     ([area, exch, ext, fn, ln], index) = T.PARSE("(908)949-2726 Aaron
+#     Watters")
 #
 class Template:
+
     def __init__(
         self,
         template,
@@ -96,6 +104,7 @@ class Template:
         single_char_marker=None,
         **marker_to_regex_dict,
     ):
+        global _str
         self.template = template
         self.wild_card = wild_card_marker
         self.char = single_char_marker
@@ -116,7 +125,7 @@ class Template:
         # compile the regular expressions if needed
         self.marker_dict = marker_dict = {}
         for mark, rgex in marker_to_regex_dict.items():
-            if isinstance(rgex, str):
+            if isinstance(rgex, _str):
                 rgex = re.compile(rgex)
             marker_dict[mark] = rgex
         # determine the parse sequence
@@ -188,10 +197,12 @@ class Template:
                 # anything else is a directive
                 # is it a wildcard?
                 if indicator == wild_card:
-                    # if it is the last directive then it matches the rest of the string
+                    # if it is the last directive then it matches the rest of
+                    # the string
                     if parse_index == lparse_seq:
                         last = len(s)
-                    # otherwise must look at next directive to find end of wildcard
+                    # otherwise must look at next directive to find end of
+                    # wildcard
                     else:
                         # next directive must be re or literal
                         (nextindicator, nextdata) = parse_seq[parse_index + 1]
@@ -237,9 +248,9 @@ USERNAMEREGEX = (
 )
 STRINGLITREGEX = "'[^\n']*'"
 SIMPLEINTREGEX = "[" + string.digits + "]+"
-id = re.compile(USERNAMEREGEX)
-str = re.compile(STRINGLITREGEX)
-int = re.compile(SIMPLEINTREGEX)
+_id = re.compile(USERNAMEREGEX)
+_str = re.compile(STRINGLITREGEX)
+_int = re.compile(SIMPLEINTREGEX)
 
 
 def test():
@@ -248,14 +259,14 @@ def test():
     T = Template("(NNN)NNN-NNNN X X", "X", "N")
     print(T.PARSE("(908)949-2726 Aaron Watters"))
 
-    T1 = Template("s --> s blah", s=str)
+    T1 = Template("s --> s blah", s=_str)
     s = "' <-- a string --> ' --> 'blah blah another string blah' blah"
     print(T1.PARSE(s))
 
-    T2 = Template("s --> NNNiX", "X", "N", s=str, i=int)
+    T2 = Template("s --> NNNiX", "X", "N", s=_str, i=_int)
     print(T2.PARSE("'A STRING' --> 15964653alpha beta gamma"))
 
-    T3 = Template("XsXi", "X", "N", s=str, i=int)
+    T3 = Template("XsXi", "X", "N", s=_str, i=_int)
     print(T3.PARSE("prefix'string'interior1234junk not parsed"))
 
     T4 = Template("MMDDYYX", "X", "MDY")

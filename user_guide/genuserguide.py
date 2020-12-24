@@ -1,4 +1,3 @@
-import sys, os
 import logging
 from time import time
 from datetime import datetime
@@ -72,7 +71,7 @@ def run():
         'ch5_paragraphs.py',
         'ch6_tables.py',
         'ch7_flowable.py',
-        'ch8_custom.py',
+        'ch8_custom_flowable.py',
         'graph_01_intro.py',
         'graph_02_concepts.py',
         'graph_03_charts.py',

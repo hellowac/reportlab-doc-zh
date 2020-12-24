@@ -1,6 +1,3 @@
-# Copyright ReportLab Europe Ltd. 2000-2017
-# see license.txt for license details
-# history https://hg.reportlab.com/hg-public/reportlab/log/tip/docs/userguide/ch6_tables.py
 from reportlab.platypus.flowables import Spacer
 from reportlab.lib.units import inch
 from utils import (
