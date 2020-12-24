@@ -79,6 +79,7 @@ def run():
         'graph_04_shapes.py',
         'graph_05_widgets.py',
         'app_demos.py',
+        'translate_note.py'
     ):
         logger.info(filename)
         script = open_and_read(filename)
