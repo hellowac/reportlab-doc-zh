@@ -649,7 +649,7 @@ cn_disc('日文、繁体中文(台湾/香港)、简体中文(中国大陆)和韩
 
 bullet(
     """
-$chs$ = Chinese Simplified (mainland): '$STSong-Light$'
+$chs$ = Chinese Simplified (mainland): '$SourceHanSansSC$'
 """
 )
 
@@ -677,9 +677,7 @@ what is needed to generate them."""
 cn_disc('由于许多用户不会安装字体包，我们已经包含了一些日文字符的相当颗粒状的^bitmap^。 下面我们将讨论生成它们所需要的内容。')
 
 # include a bitmap of some Asian text
-I = os.path.join(
-    os.path.dirname(reportlab.__file__), 'docs', 'images', 'jpnchars.jpg'
-)
+I = os.path.join('images', 'jpnchars.jpg')
 try:
     getStory().append(Image(I))
 except:

@@ -1,3 +1,4 @@
+import os
 import logging
 from time import time
 from datetime import datetime
@@ -35,6 +36,8 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def run():
     G = {}
@@ -44,7 +47,7 @@ def run():
     pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
     pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
     pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
-    pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
+    # pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'))
 
     registerFontFamily(
         'Vera',
@@ -53,6 +56,25 @@ def run():
         italic='VeraIt',
         boldItalic='VeraBI',
     )
+
+    # 思源黑体
+
+    pdfmetrics.registerFont(TTFont('SourceHanSansSC',
+                                   os.path.join(BASE_DIR, 'fonts',
+                                                'SourceHanSans-ExtraLight.ttf')))
+    pdfmetrics.registerFont(TTFont('SourceHanSansBd',
+                                   os.path.join(BASE_DIR, 'fonts',
+                                                'SourceHanSans-Bold.ttf')))
+    pdfmetrics.registerFont(TTFont('SourceHanSansIt',
+                                   os.path.join(BASE_DIR, 'fonts',
+                                                'SourceHanSans-ExtraLight.ttf')))
+
+    pdfmetrics.registerFontFamily('SourceHanSansSC',
+                                  normal='SourceHanSansSC',
+                                  bold='SourceHanSansSCBd',
+                                  italic='SourceHanSansSC',
+                                  boldItalic='SourceHanSansSC')
+
 
     exec('from utils import *', G, G)
     doc = RLDocTemplate(pdf_file, pagesize=defaultPageSize)

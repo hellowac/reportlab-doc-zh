@@ -96,7 +96,7 @@ cn_toc = CnTableOfContents()
 PS = ParagraphStyle
 cn_toc.levelStyles= [
     PS(
-        fontName='STSong-Light',
+        fontName='SourceHanSansSC',
         fontSize=14,
         name='TOCHeading1',
         leftIndent=20,
@@ -105,7 +105,7 @@ cn_toc.levelStyles= [
         leading=16,
     ),
     PS(
-        fontName='STSong-Light',
+        fontName='SourceHanSansSC',
         fontSize=12,
         name='TOCHeading2',
         leftIndent=40,
@@ -114,7 +114,7 @@ cn_toc.levelStyles= [
         leading=12,
     ),
     PS(
-        fontName='STSong-Light',
+        fontName='SourceHanSansSC',
         fontSize=10,
         name='TOCHeading3',
         leftIndent=60,
@@ -123,7 +123,7 @@ cn_toc.levelStyles= [
         leading=12,
     ),
     PS(
-        fontName='STSong-Light',
+        fontName='SourceHanSansSC',
         fontSize=10,
         name='TOCHeading4',
         leftIndent=100,

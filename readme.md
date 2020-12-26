@@ -12,3 +12,12 @@
 cd user_guid
 python genuserguide.py
 ```
+
+
+开源字体解决方案：
+
+参考:
+   1. <https://github.com/adobe-fonts/source-han-sans/blob/master/README-CN.md>  
+   2. <https://sspai.com/post/26251#!>
+
+True Type 字体介绍：<https://blog.csdn.net/gaojinshan/article/details/80319856>

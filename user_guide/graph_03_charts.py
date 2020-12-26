@@ -468,9 +468,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -547,7 +547,7 @@ xAxis.labels.boxAnchor = 'n'
 xAxis.labels[3].dy = -15
 xAxis.labels[3].angle = 30
 # xAxis.labels[3].fontName = 'Times-Bold'
-xAxis.labels.fontName = 'STSong-Light'
+xAxis.labels.fontName = 'SourceHanSansSC'
 
 yAxis = YValueAxis()
 yAxis.setPosition(50, 50, 125)
@@ -582,7 +582,7 @@ xAxis.labels.boxAnchor = 'n'
 xAxis.labels[3].dy = -15
 xAxis.labels[3].angle = 30
 # xAxis.labels[3].fontName = 'Times-Bold'
-xAxis.labels.fontName = 'STSong-Light'
+xAxis.labels.fontName = 'SourceHanSansSC'
 
 yAxis = YValueAxis()
 yAxis.setPosition(50, 50, 125)
@@ -745,9 +745,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -971,9 +971,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -1115,9 +1115,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -1417,9 +1417,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -1804,9 +1804,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -2034,9 +2034,9 @@ cn_t = Table(cn_data, colWidths=(100, 330))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -2261,9 +2261,9 @@ cn_t = Table(cn_data, colWidths=(130, 300))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -2383,9 +2383,9 @@ cn_t = Table(cn_data, colWidths=(130, 300))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
-            ('FONT', (1, 1), (1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),

@@ -233,21 +233,21 @@ def getStyleSheet():
     return stylesheet
 
 
-# STSong-Light
+# SourceHanSansSC
 def getCnStyleSheet():
     stylesheet = StyleSheet1()
 
     stylesheet.add(
         ParagraphStyle(
             name='Normal',
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             fontSize=10,
             leading=12,
             spaceBefore=6,
         )
     )
 
-    stylesheet.add(ParagraphStyle(name='Comment', fontName='STSong-Light'))
+    stylesheet.add(ParagraphStyle(name='Comment', fontName='SourceHanSansSC'))
 
     stylesheet.add(
         ParagraphStyle(
@@ -281,7 +281,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Italic',
             parent=stylesheet['BodyText'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
         )
     )
 
@@ -289,7 +289,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Heading1',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             alignment=TA_CENTER,
             fontSize=18,
             leading=22,
@@ -302,7 +302,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Heading2',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             fontSize=14,
             leading=17,
             spaceBefore=12,
@@ -315,7 +315,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Heading3',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             fontSize=12,
             leading=14,
             spaceBefore=12,
@@ -328,7 +328,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Heading4',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             spaceBefore=10,
             spaceAfter=4,
         ),
@@ -339,7 +339,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Title',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             fontSize=32,
             leading=40,
             spaceAfter=36,
@@ -378,7 +378,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Code',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             fontSize=8,
             leading=8.8,
             leftIndent=36,
@@ -402,7 +402,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='FunctionHeader',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             fontSize=8,
             leading=8.8,
         )
@@ -445,7 +445,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Centred',
             parent=stylesheet['Normal'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
             alignment=TA_CENTER,
         )
     )
@@ -454,7 +454,7 @@ def getCnStyleSheet():
         ParagraphStyle(
             name='Caption',
             parent=stylesheet['Centred'],
-            fontName='STSong-Light',
+            fontName='SourceHanSansSC',
         )
     )
 
@@ -463,7 +463,7 @@ def getCnStyleSheet():
 
 class CnParagraphStyle(PropertySet):
     defaults = {
-        'fontName': 'STSong-Light',
+        'fontName': 'SourceHanSansSC',
         'fontSize': 10,
         'leading': 12,
         'leftIndent': 0,
@@ -472,7 +472,7 @@ class CnParagraphStyle(PropertySet):
         'alignment': TA_LEFT,
         'spaceBefore': 0,
         'spaceAfter': 0,
-        'bulletFontName': 'STSong-Light',
+        'bulletFontName': 'SourceHanSansSC',
         'bulletFontSize': 10,
         'bulletIndent': 0,
         # 'bulletColor':black,

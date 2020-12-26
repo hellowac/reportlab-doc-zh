@@ -441,7 +441,7 @@ class CnIllustration(figures.Figure):
             height,
             '图 <seq template="%(Chapter)s - %('
             'Figure+)s"/> : ' + quickfix(caption),
-            captionFont=tt2ps('STSong-Light', 0, 1)
+            captionFont=tt2ps('SourceHanSansSC', 0, 1)
         )
         self.operation = operation
 
@@ -491,7 +491,7 @@ class CnGraphicsDrawing(CnIllustration):
             drawing.height,
             '图 <seq template="%(Chapter)s - %('
             'Figure+)s"/> : ' + quickfix(caption),
-            captionFont=tt2ps('STSong-Light', 0, 1),
+            captionFont=tt2ps('SourceHanSansSC', 0, 1),
             )
         self.drawing = drawing
 
@@ -607,12 +607,12 @@ class ParaBox(ParaBoxBase):
 
 class CnParaBox(ParaBoxBase):
     descrStyle = ParagraphStyle(
-        'description', fontName='STSong-Light', fontSize=8, leading=9.6
+        'description', fontName='SourceHanSansSC', fontSize=8, leading=9.6
     )
 
     def __init__(self, text, style, caption):
         super().__init__(0, 0, caption=caption,
-                         captionFont='STSong-Light')
+                         captionFont='SourceHanSansSC')
         self.text = text
         self.style = style
         self.para = Paragraph(text, style)
@@ -655,9 +655,9 @@ class ParaBox2(ParaBox2Base):
 class CnParaBox2(ParaBox2Base):
 
     def __init__(self, text, caption):
-        figures.Figure.__init__(self, 0, 0, caption, captionFont='STSong-Light')
+        figures.Figure.__init__(self, 0, 0, caption, captionFont='SourceHanSansSC')
         descrStyle = ParagraphStyle(
-            'description', fontName='STSong-Light', fontSize=8, leading=9.6
+            'description', fontName='SourceHanSansSC', fontSize=8, leading=9.6
         )
         self.text = text
         self.left = Paragraph(xmlEscape(text), descrStyle)

@@ -67,7 +67,7 @@ class OneColumnTemplate(PageTemplate):
     def afterDrawPage(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
-        canvas.setFont('STSong-Light', 10)
+        canvas.setFont('SourceHanSansSC', 10)
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
         canvas.line(inch, y, self.pageWidth - inch, y)
@@ -106,7 +106,7 @@ class TOCTemplate(PageTemplate):
     def afterDrawPage(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
-        canvas.setFont('STSong-Light', 10)
+        canvas.setFont('SourceHanSansSC', 10)
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(
             self.pageWidth - inch, y + 8, '目录'
@@ -149,7 +149,7 @@ class TwoColumnTemplate(PageTemplate):
     def afterDrawPage(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
-        canvas.setFont('STSong-Light', 10)
+        canvas.setFont('SourceHanSansSC', 10)
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
         canvas.line(inch, y, self.pageWidth - inch, y * inch)

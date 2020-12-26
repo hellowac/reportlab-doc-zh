@@ -626,7 +626,7 @@ cn_t = Table(*cn_getAttrs(_paraAttrMap))
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, 1), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, 1), 'SourceHanSansSC', 10, 12),
             ('FONT', (0, 1), (-1, -1), 'Courier', 8, 8),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
@@ -700,7 +700,7 @@ cn_parabox2("<b>兹指控</b> 你于1970年5月28日故意、非法和恶意地�
 cn_parabox2('这是一个锚标签的<a href="#MYANCHOR" color="blue">链接</a>，'
             '即<a name="MYANCHOR"/><font color="green">这里</font>。'
             '这是另一个指向同一锚标签的'
-            '<link href="#MYANCHOR" color="blue" fontName="STSong-Light">'
+            '<link href="#MYANCHOR" color="blue" fontName="SourceHanSansSC">'
             '链接</link>。', '锚和链接')
 
 disc(
@@ -766,7 +766,7 @@ cn_disc("$&lt;font&gt;$标签可以用来改变段落中任何子串的字体名
 # of the peace.  How do you plead?""",
 #     "The $font$ tag",
 # )
-cn_parabox2('你在此<font face="STSong-Light" '
+cn_parabox2('你在此<font face="SourceHanSansSC" '
             'color="red">被控</font>于1970年5月28日故意、非法和'
             '<font size=16>怀着预谋的恶意</font>出版一本所谓的英匈短语书，意图破坏和平。'
             ' 你如何辩护？', "$font$ 标签")
@@ -1043,7 +1043,7 @@ t.setStyle(
 cn_t = Table(*cn_getAttrs(_bulletAttrMap))
 cn_t.setStyle(
     [
-        ('FONT', (0, 0), (-1, 1), 'STSong-Light', 10, 12),
+        ('FONT', (0, 0), (-1, 1), 'SourceHanSansSC', 10, 12),
         ('FONT', (0, 1), (-1, -1), 'Courier', 8, 8),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),

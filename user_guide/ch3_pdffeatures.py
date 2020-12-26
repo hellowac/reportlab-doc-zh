@@ -175,7 +175,7 @@ cn_t = Table([
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -677,7 +677,7 @@ cn_t = Table(
 cn_t.setStyle(
     TableStyle(
         [
-            ('FONT', (0, 0), (-1, -1), 'STSong-Light', 10, 12),
+            ('FONT', (0, 0), (-1, -1), 'SourceHanSansSC', 10, 12),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -858,11 +858,11 @@ alStyle = TableStyle(
 cn_alStyle = TableStyle(
     [
         ('SPAN', (0, 0), (-1, 0)),
-        ('FONT', (0, 0), (-1, 0), 'STSong-Light', 10, 12),
-        ('FONT', (0, 1), (-1, 1), 'STSong-Light', 8, 9.6),
-        ('FONT', (0, 2), (0, -1), 'STSong-Light', 7, 8.4),
-        ('FONT', (1, 2), (1, -1), 'STSong-Light', 7, 8.4),
-        ('FONT', (2, 2), (2, -1), 'STSong-Light', 7, 8.4),
+        ('FONT', (0, 0), (-1, 0), 'SourceHanSansSC', 10, 12),
+        ('FONT', (0, 1), (-1, 1), 'SourceHanSansSC', 8, 9.6),
+        ('FONT', (0, 2), (0, -1), 'SourceHanSansSC', 7, 8.4),
+        ('FONT', (1, 2), (1, -1), 'SourceHanSansSC', 7, 8.4),
+        ('FONT', (2, 2), (2, -1), 'SourceHanSansSC', 7, 8.4),
         ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
         ('ALIGN', (1, 1), (1, 1), 'CENTER'),
         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
