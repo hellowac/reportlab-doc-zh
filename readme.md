@@ -21,3 +21,9 @@ python genuserguide.py
    2. <https://sspai.com/post/26251#!>
 
 True Type 字体介绍：<https://blog.csdn.net/gaojinshan/article/details/80319856>
+
+思源黑体、思源宋体TTF介绍：<https://www.v2ex.com/t/399030>
+
+1. <https://github.com/be5invis/source-han-sans-ttf/releases>
+2. <https://github.com/junmer/source-han-serif-ttf>
+3. <https://github.com/Pal3love/Source-Han-TrueType>
