@@ -1,0 +1,3 @@
+
+class FontNameNotFoundError(Exception):
+    pass
