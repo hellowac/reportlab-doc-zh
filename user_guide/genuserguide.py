@@ -58,15 +58,15 @@ def run():
     )
 
     # 思源黑体
-
+    fonts_dir = os.path.join(os.path.dirname(BASE_DIR), 'font')
     pdfmetrics.registerFont(TTFont('SourceHanSansSC',
-                                   os.path.join(BASE_DIR, 'fonts',
+                                   os.path.join(fonts_dir,
                                                 'SourceHanSans-ExtraLight.ttf')))
     pdfmetrics.registerFont(TTFont('SourceHanSansBd',
-                                   os.path.join(BASE_DIR, 'fonts',
+                                   os.path.join(fonts_dir,
                                                 'SourceHanSans-Bold.ttf')))
     pdfmetrics.registerFont(TTFont('SourceHanSansIt',
-                                   os.path.join(BASE_DIR, 'fonts',
+                                   os.path.join(fonts_dir,
                                                 'SourceHanSans-ExtraLight.ttf')))
 
     pdfmetrics.registerFontFamily('SourceHanSansSC',
