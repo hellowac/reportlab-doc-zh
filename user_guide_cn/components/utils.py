@@ -41,6 +41,5 @@ def find_file_name(file_path):
     """ 获取文件名称 """
     basename = os.path.basename(file_path)
     name, ext = os.path.splitext(basename)
-    logger.info(basename)
 
     return name

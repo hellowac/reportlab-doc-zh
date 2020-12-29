@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 class PDF(object):
-    _default_font = 'STSong-Light'  # reportlab 支持的默认中文字体名称
+    _default_font = 'SourceHanSans-Normal'  # reportlab 支持的默认中文字体名称
 
     def __init__(
         self,
@@ -47,7 +47,7 @@ class PDF(object):
             os.path.dirname(reportlab.__file__), 'fonts'
         )
         self._load_fonts(reportlab_fonts_dir)
-
+        # 检查字体名称是否在指定目录下和默认是否支持
         self._check_font_name(
             font_regular, font_normal, font_bold, font_italic, font_bold_italic
         )
