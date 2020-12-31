@@ -1,4 +1,3 @@
-
 __version__ = '$Id$'
 
 from utils import (
@@ -25,9 +24,9 @@ from utils import (
     todo,
     cn_todo,
 )
+import reportlab
 from reportlab.platypus.tableofcontents import TableOfContents
 from reportlab.lib.styles import ParagraphStyle
-import reportlab
 from reportlab.lib.utils import TimeStamp
 
 from utils.table_of_contents import CnTableOfContents
@@ -94,7 +93,7 @@ toc.levelStyles = [
 
 cn_toc = CnTableOfContents()
 PS = ParagraphStyle
-cn_toc.levelStyles= [
+cn_toc.levelStyles = [
     PS(
         fontName='SourceHanSansSC',
         fontSize=14,
@@ -195,10 +194,12 @@ which is signposted from <a href="http://www.reportlab.com/">www.reportlab
 .com</a>.
 """
 )
-cn_todo("""
+cn_todo(
+    """
 我们需要您的帮助以确保本手册完整且有用。请将任何反馈发送到我们的用户邮件列表，
 请参考:<a href="http://www.reportlab.com/">www.reportlab.com</a>。
-""")
+"""
+)
 
 # heading2("What is the ReportLab PDF Library?")
 cn_heading2("什么是 ReportLab PDF Library?")
@@ -227,13 +228,15 @@ PDF files must provide precise byte offsets -- a single extra
 character placed anywhere in a valid PDF document can render it
 invalid.  This makes it harder to generate than HTML."""
 )
-cn_disc("""PDF是电子文档的全球标准。 它支持高质量打印并且完全跨平台支持，这要归功于免费提供的 Acrobat Reader。 任何
+cn_disc(
+    """PDF是电子文档的全球标准。 它支持高质量打印并且完全跨平台支持，这要归功于免费提供的 Acrobat Reader。 任何
 先前生成纸质报告或驱动打印机的应用程序可以从制作PDF文档中受益； 
 这些都可以存档通过电子邮件发送，放在网络上或以老式方式打印出来。
 但是，PDF文件格式很复杂索引二进制格式，无法直接键入。
 PDF格式规范的长度超过600页，PDF文件必须提供精确的字节偏移量-额外增加一个放置在有效PDF文档中任何位置的字符都可以呈现它无效。 
 这使得它比HTML难生成。
-""")
+"""
+)
 
 disc(
     """Most of the world's PDF documents have been produced
@@ -244,10 +247,12 @@ with macros or plugins, connected to Acrobat. Pipelines of several
 languages and products can be slow and somewhat unwieldy.
 """
 )
-cn_disc("""世界上大多数PDF文档都是由Adobe的Acrobat工具 或 JAWS PDF Creator等竞争对手产生的，这些工具充当“打印驱动程序”。 
+cn_disc(
+    """世界上大多数PDF文档都是由Adobe的Acrobat工具 或 JAWS PDF Creator等竞争对手产生的，这些工具充当“打印驱动程序”。 
 任何想要自动化PDF制作的人通常都会使用Quark，Word或Framemaker之类的产品，该产品与宏或插件循环连接到Acrobat，并在其中循环运行。 
 几种语言和产品的管道传输速度可能很慢，而且有些笨拙。
-""")
+"""
+)
 
 disc(
     """The ReportLab library directly creates PDF based on
@@ -259,11 +264,13 @@ iText for Java, iTextSharp for .NET and others.  However, The ReportLab library
 differs in that it can work at much higher levels, with a full featured engine
 for laying out documents complete with tables and charts.  """
 )
-cn_disc("""ReportLab库根据您的图形命令直接创建PDF。 没有干预步骤。 
+cn_disc(
+    """ReportLab库根据您的图形命令直接创建PDF。 没有干预步骤。 
 您的应用程序可以非常快速地生成报告-有时比传统的报告编写工具快几个数量级。 
 此方法由其他几个库共享-C的PDFlib，Java的iText，.NET的iTextSharp等。 
 但是，ReportLab库的不同之处在于它可以在更高的层次上运行，并具有一个功能齐全的引擎，用于布局包含表格和图表的文档。
-""")
+"""
+)
 
 
 disc(
@@ -274,9 +281,11 @@ how you transform it, and the kind of output
 you can create.  And you can reuse code across
 whole families of reports."""
 )
-cn_disc("""此外，由于您正在使用功能强大的通用语言编写程序，因此从何处获取数据，如何转换数据以及输出的类型都没有任何限制。
+cn_disc(
+    """此外，由于您正在使用功能强大的通用语言编写程序，因此从何处获取数据，如何转换数据以及输出的类型都没有任何限制。
 您可以创建。 您可以在整个报表系列中重用代码。
-""")
+"""
+)
 
 disc(
     """The ReportLab library is expected to be useful
@@ -296,9 +305,11 @@ This is particularly relevant to cross-platform apps which cannot
 rely on a consistent printing or previewing API on each operating
 system</i>."""
 )
-cn_bullet("""用于其他应用程序的可嵌入打印引擎，包括“报告语言”，以便用户可以自定义自己的报告。 
+cn_bullet(
+    """用于其他应用程序的可嵌入打印引擎，包括“报告语言”，以便用户可以自定义自己的报告。 
 <i>这尤其适用于跨平台应用程序，这些应用程序不能依赖每个操作系统上一致的打印或预览API。</i>
-""")
+"""
+)
 
 bullet(
     """A 'build system' for complex documents with charts, tables
@@ -326,12 +337,14 @@ reportlab.com.
 Key differences:
 """
 )
-cn_disc("""ReportLab库构成了我们用于生成PDF的商业解决方案（报告标记语言（RML））的基础。 
+cn_disc(
+    """ReportLab库构成了我们用于生成PDF的商业解决方案（报告标记语言（RML））的基础。 
 可以在我们的网站上通过完整的文档进行评估。 我们相信RML是开发丰富的PDF工作流程的最快，最简单的方法。 
 您可以使用最喜欢的模板系统来填充RML文档，并使用与HTML类似的标记语言。 
 然后调用我们的rml2pdf API函数以生成PDF。 这就是ReportLab员工用来构建您可以在 reportlab.com 上面看到的所有解决方案的东西。
 主要区别：
-""")
+"""
+)
 
 bullet(
     """Fully documented with two manuals, a formal specification (the DTD) 
@@ -339,7 +352,9 @@ bullet(
     the open source documentation isn't wrong, but we don't always keep up 
     with the code)"""
 )
-cn_bullet("""完整记录了两本手册，一份正式规范（DTD）和大量的自记录测试。 （通过对比，我们尝试确保开源文档没有错，但是我们并不总是跟上代码）""")
+cn_bullet(
+    """完整记录了两本手册，一份正式规范（DTD）和大量的自记录测试。 （通过对比，我们尝试确保开源文档没有错，但是我们并不总是跟上代码）"""
+)
 
 bullet(
     """Work in high-level markup rather than constructing graphs of Python 
@@ -376,10 +391,12 @@ The costs are reasonable and linked to the volume of the project, and the
 revenue
 helps us spend more time developing this software."""
 )
-cn_disc("""我们要求开源开发人员考虑在适当的地方尝试RML。 
+cn_disc(
+    """我们要求开源开发人员考虑在适当的地方尝试RML。 
 您可以在我们的网站上注册并尝试购买之前的副本。 
 成本是合理的，并且与项目的规模有关，而收入则帮助我们花费更多的时间来开发此软件。
-""")
+"""
+)
 
 # heading2("What is Python?")
 cn_heading2("什么是 Python?")
@@ -388,7 +405,8 @@ disc(
     """
 Python is an <i>interpreted, interactive, object-oriented</i> programming 
 language. It is often compared to Tcl, Perl,
-Scheme or Java.""")
+Scheme or Java."""
+)
 cn_disc("""Python是一种<i>解释型，交互式，面向对象的</i>编程语言。 通常将它与Tcl，Perl Scheme或Java进行比较。""")
 
 disc(
@@ -403,11 +421,13 @@ Python is also usable as an extension language for applications that need a
 programmable interface.
 """
 )
-cn_disc("""Python将非凡的功能与非常清晰的语法结合在一起。 
+cn_disc(
+    """Python将非凡的功能与非常清晰的语法结合在一起。 
 它具有模块，类，异常，非常高级的动态数据类型和动态类型。 
 有许多系统调用和库以及各种窗口系统（X11，Motif，Tk，Mac，MFC）的接口。 
 新的内置模块很容易用C或C ++编写。
-Python还可用作需要可编程接口的应用程序的扩展语言。""")
+Python还可用作需要可编程接口的应用程序的扩展语言。"""
+)
 
 disc(
     """
@@ -422,10 +442,12 @@ to get
 data from anywhere.
 """
 )
-cn_disc("""Python与Java一样古老，并且多年来一直稳步增长。 
+cn_disc(
+    """Python与Java一样古老，并且多年来一直稳步增长。 
 自从我们的ReportLab包首次问世以来，它已经成为主流。 
 许多ReportLab库用户已经是Python的忠实拥护者，但如果您不是Python的忠实拥护者，
-我们认为该语言是文档生成应用程序的绝佳选择，因为它的表达能力和从任何地方获取数据的能力。""")
+我们认为该语言是文档生成应用程序的绝佳选择，因为它的表达能力和从任何地方获取数据的能力。"""
+)
 
 disc(
     """
@@ -440,10 +462,12 @@ cn_heading2("""致谢""")
 
 disc(
     """Many people have contributed to ReportLab.  We would like to thank in 
-    particular (in alphabetical order): """)
+    particular (in alphabetical order): """
+)
 cn_disc("""许多人为ReportLab做出了贡献。 我们要特别感谢（按字母顺序）：""")
 
-disc("""
+disc(
+    """
 <nobr>Albertas Agejevas, 
 Alex Buck, 
 Andre Reitz, 
@@ -532,8 +556,10 @@ are glad to include these in the toolkit. Finally we thank Michal Kosmulski
 for the DarkGarden font
 for and Bitstream Inc. for the Vera fonts."""
 )
-cn_disc("""Marius Gedminas在TrueType字体方面的工作值得一臂之力，我们很高兴将其包含在工具包中。 
-最后，我们感谢Michal Kosmulski的DarkGarden字体和Bitstream Inc.的Vera字体。""")
+cn_disc(
+    """Marius Gedminas在TrueType字体方面的工作值得一臂之力，我们很高兴将其包含在工具包中。 
+最后，我们感谢Michal Kosmulski的DarkGarden字体和Bitstream Inc.的Vera字体。"""
+)
 
 
 # heading2("Installation and Setup")
@@ -545,8 +571,10 @@ disc(
 in our distribution, which can be viewed online at 
 ^https://hg.reportlab.com/hg-public/reportlab/^"""
 )
-cn_disc("""为避免重复，安装说明保存在我们发行版的README文件中，可以在以下位置在线查看。
-^https://hg.reportlab.com/hg-public/reportlab/^ """)
+cn_disc(
+    """为避免重复，安装说明保存在我们发行版的README文件中，可以在以下位置在线查看。
+^https://hg.reportlab.com/hg-public/reportlab/^ """
+)
 
 
 disc(
@@ -557,9 +585,13 @@ disc(
 """
     % ((reportlab.Version,) + reportlab.__min_python_version__)
 )
-cn_disc("""此版本（{}）的ReportLab需要Python版本2.7，{}.{} +或更高版本。 
+cn_disc(
+    """此版本（{}）的ReportLab需要Python版本2.7，{}.{} +或更高版本。 
 如果您需要使用Python 2.5或2.6，请使用最新的ReportLab 2.7软件包。
-""".format(reportlab.Version, *reportlab.__min_python_version__))
+""".format(
+        reportlab.Version, *reportlab.__min_python_version__
+    )
+)
 
 
 # heading2("Getting Involved")
@@ -572,18 +604,22 @@ from these modules.  We also welcome help from the community
 as much as any other Open Source project.  There are many
 ways in which you can help:"""
 )
-cn_disc("""ReportLab是一个开源项目。 
+cn_disc(
+    """ReportLab是一个开源项目。 
 尽管我们是一家商业公司，但我们免费提供核心PDF生成源，即使出于商业目的，我们也不会直接从这些模块中获得收入。 
 我们也欢迎社区以及其他任何开源项目的帮助。 您可以通过多种方式提供帮助：
-""")
+"""
+)
 
 
 bullet(
     """General feedback on the core API. Does it work for you?
 Are there any rough edges?  Does anything feel clunky and awkward?"""
 )
-cn_bullet("""有关核心API的一般反馈。 对你起作用吗？
-有粗糙的边缘吗？ 有什么感觉笨拙而笨拙的吗？""")
+cn_bullet(
+    """有关核心API的一般反馈。 对你起作用吗？
+有粗糙的边缘吗？ 有什么感觉笨拙而笨拙的吗？"""
+)
 
 
 bullet(
@@ -591,8 +627,10 @@ bullet(
 We have an open standard for report objects, so if you have written a nice
 chart or table class, why not contribute it?"""
 )
-cn_bullet("""放入报告的新对象，或库的有用工具。
-我们有一个针对报表对象的开放标准，因此，如果您编写了不错的图表或表类，为什么不贡献它呢？""")
+cn_bullet(
+    """放入报告的新对象，或库的有用工具。
+我们有一个针对报表对象的开放标准，因此，如果您编写了不错的图表或表类，为什么不贡献它呢？"""
+)
 
 
 bullet(
@@ -604,10 +642,12 @@ And if your web site uses our tools to make reports, let us link to it.
 We will be happy to display your work (and credit it with your name
 and company) on our site!"""
 )
-cn_bullet("""片段和案例研究：如果您产生了不错的输出，请在^http://www.reportlab.com^上在线注册并提交输出片段（带或不带脚本）。 
+cn_bullet(
+    """片段和案例研究：如果您产生了不错的输出，请在^http://www.reportlab.com^上在线注册并提交输出片段（带或不带脚本）。 
 如果ReportLab为您解决了工作中的问题，请编写一些“案例研究”并提交。 
 如果您的网站使用我们的工具制作报告，请让我们链接到它。
-我们很乐意在我们的网站上显示您的作品（并用您的名字和公司来称赞）！""")
+我们很乐意在我们的网站上显示您的作品（并用您的名字和公司来称赞）！"""
+)
 
 
 bullet(
@@ -626,9 +666,11 @@ From there you can also browse through the group's archives
 and contributions.  The mailing list is
 the place to report bugs and get support. """
 )
-cn_bullet("""想要了解更多信息或参与其中的任何人的第一步是加入邮件列表。 
+cn_bullet(
+    """想要了解更多信息或参与其中的任何人的第一步是加入邮件列表。 
 要订阅，请访问 $http://two.pairlist.net/mailman/listinfo/reportlab-users$。 
-您还可以从那里浏览小组的档案和贡献。 邮件列表是报告错误并获得支持的地方。""")
+您还可以从那里浏览小组的档案和贡献。 邮件列表是报告错误并获得支持的地方。"""
+)
 
 
 disc(
@@ -640,10 +682,12 @@ feel free to contribute, but if you are working actively on some improvements
 or want to draw attention to an issue, please use the mailing list to let us 
 know."""
 )
-cn_bullet("""他的代码现在位于Mercurial信息库中的我们网站
+cn_bullet(
+    """他的代码现在位于Mercurial信息库中的我们网站
 （$http://hg.reportlab.com/hg-public/reportlab/$）上，以及问题跟踪器和Wiki。 
 每个人都可以随时做出贡献，但是如果您正在积极地进行一些改进，或者想引起人们对问题的关注，请使用邮件列表告知我们。
-""")
+"""
+)
 
 
 # heading2("Site Configuration")
@@ -663,7 +707,8 @@ can be made using evironment variables which
 are the variables from $rl_settings.py$ prefixed with $RL_$ eg $RL_verbose=1$.
 """
 )
-cn_disc("""有许多选项很可能需要为程序进行全局配置。 
+cn_disc(
+    """有许多选项很可能需要为程序进行全局配置。 
 python脚本模块$reportlab/rl_config.py$汇总了各种设置文件。 
 您可能需要检查文件$reportlab/rl_settings.py$，其中包含当前使用的变量的默认值。 
 $rl_settings$模块$reportlab.local_rl_settings$，
@@ -671,7 +716,8 @@ $reportlab_settings$（位于python路径上任何位置的脚本文件）以及
 （请注意，没有.py）有多个替代项。
 可以进行临时更改。 
 使用环境变量，这些变量是$rl_settings.py$中以$RL_$开头的变量，例如$RL_verbose=1$。
-""")
+"""
+)
 
 # heading3("Useful rl_config variables")
 cn_heading3("有用的rl_config变量")
@@ -693,19 +739,25 @@ bullet(
     reportlab/lib/pagesizes.py; as delivered
 it is set to pagesizes.A4; other values are pagesizes.letter etc."""
 )
-cn_bullet("""defaultPageSize：将其设置为reportlab/lib/pagesizes.py中定义的值之一；
- 交付时将其设置为pagesizes.A4; 其他值是pagesizes.letter等。""")
+cn_bullet(
+    """defaultPageSize：将其设置为reportlab/lib/pagesizes.py中定义的值之一；
+ 交付时将其设置为pagesizes.A4; 其他值是pagesizes.letter等。"""
+)
 
 bullet(
     """defaultImageCaching: set to zero to inhibit the creation of .a85 files on your hard-drive. The default is to create these preprocessed PDF compatible image files for faster loading"""
 )
-cn_bullet("""defaultImageCaching：设置为零以禁止在硬盘驱动器上创建.a85文件。 默认设置是创建这些经过预处理的PDF兼容图像文件，以加快加载速度""")
+cn_bullet(
+    """defaultImageCaching：设置为零以禁止在硬盘驱动器上创建.a85文件。 默认设置是创建这些经过预处理的PDF兼容图像文件，以加快加载速度"""
+)
 
 bullet(
     """T1SearchPath: this is a python list of strings representing directories that may be queried for information on Type 1 fonts"""
 )
-cn_bullet("""T1SearchPath：这是表示目录的字符串的python列表，可以查询有关类型1字体的信息
-""")
+cn_bullet(
+    """T1SearchPath：这是表示目录的字符串的python列表，可以查询有关类型1字体的信息
+"""
+)
 
 bullet(
     """TTFSearchPath: this is a python list of strings representing 
@@ -730,8 +782,10 @@ bullet(
 cn_bullet("""ZLIB_WARNINGS：如果未找到Python压缩扩展，则设置为非零以获得警告。""")
 
 bullet("""pageCompression: set to non-zero to try and get compressed PDF.""")
-cn_bullet("""pageCompression：设置为非零以尝试获取压缩的PDF。
-""")
+cn_bullet(
+    """pageCompression：设置为非零以尝试获取压缩的PDF。
+"""
+)
 
 bullet(
     """allowtableBoundsErrors: set to 0 to force an error on very large 
@@ -743,22 +797,28 @@ bullet(
     """emptyTableAction: Controls behaviour for empty tables, can be 'error' 
     (default), 'indicate' or 'ignore'."""
 )
-cn_bullet("""emptyTableAction：控制空表的行为，可以为“error”（默认），“indicate”或“ignore”。
-""")
+cn_bullet(
+    """emptyTableAction：控制空表的行为，可以为“error”（默认），“indicate”或“ignore”。
+"""
+)
 
 bullet(
     """trustedHosts: if not $None$ a list of glob patterns of trusted hosts; 
     these may be used in places like &lt;img&gt; tags in paragraph texts."""
 )
-cn_bullet("""TrustedHosts：如果不是$None$，则列出受信任主机的全局模式；
-这些可以在＆lt; img＆gt;之类的地方使用。 段落文字中的标签。""")
+cn_bullet(
+    """TrustedHosts：如果不是$None$，则列出受信任主机的全局模式；
+这些可以在＆lt; img＆gt;之类的地方使用。 段落文字中的标签。"""
+)
 
 bullet(
     """trustedSchemes: a list of allowed $URL$ schemes used with 
     $trustedHosts$"""
 )
-cn_bullet("""trustedSchemes：与$trustedHosts$一起使用的允许的$URL$方案的列表
-""")
+cn_bullet(
+    """trustedSchemes：与$trustedHosts$一起使用的允许的$URL$方案的列表
+"""
+)
 
 disc(
     """For the full list of variables see the file $reportlab/rl_settings.py$."""
@@ -772,9 +832,11 @@ disc(
     """More complex modifications to the reportlab toolkit environment may be made using one of the modules $rep[ortlab.local_rl_mods$ (.py script in reportlab folder),
 $reportlab_mods$ (.py file on the python path) or $~/.reportlab_mods$ (note no .py)."""
 )
-cn_disc("""可以使用以下模块之一对reportlab工具箱环境进行更复杂的修改：$rep[ortlab.local_rl_mods$（reportlab文件夹中的.py脚本），
+cn_disc(
+    """可以使用以下模块之一对reportlab工具箱环境进行更复杂的修改：$rep[ortlab.local_rl_mods$（reportlab文件夹中的.py脚本），
 $reportlab_mods$（python路径上的.py文件）或$~/.reportlab_mods$（注意是.py）。
-""")
+"""
+)
 
 
 # heading2("Learning More About Python")
@@ -796,8 +858,10 @@ A list of documentation on the Python.org web site.
 $http://www.python.org/doc/$
 """
 )
-cn_bullet("""<b>Python文档</b> 
-Python.org网站上的文档列表。$http://www.python.org/doc/$ """)
+cn_bullet(
+    """<b>Python文档</b> 
+Python.org网站上的文档列表。$http://www.python.org/doc/$ """
+)
 
 
 bullet(
@@ -806,10 +870,12 @@ The official Python Tutorial , originally written by Guido van Rossum himself.
 $http://docs.python.org/tutorial/$
 """
 )
-cn_bullet("""<b>Python教程</b>
+cn_bullet(
+    """<b>Python教程</b>
 官方的Python教程，最初由Guido van Rossum亲自编写。
 $http://docs.python.org/tutorial/$
-""")
+"""
+)
 
 
 bullet(
@@ -819,10 +885,12 @@ Python, but also uses other languages.
 $http://www.freenetpages.co.uk/hp/alan.gauld/$
 """
 )
-cn_bullet("""<b>学习编程</b>
+cn_bullet(
+    """<b>学习编程</b>
 Alan Gauld撰写的编程指南。 非常重视Python，但也使用其他语言。
 $http://www.freenetpages.co.uk/hp/alan.gauld/$
-""")
+"""
+)
 
 
 bullet(
@@ -831,10 +899,12 @@ A 6-page minimal crash course by Magnus Lie Hetland.
 $http://www.hetland.org/python/instant-python.php$
 """
 )
-cn_bullet("""<b>即时Python</b>
+cn_bullet(
+    """<b>即时Python</b>
 Magnus Lie Hetland撰写的长达6页的速成课程。
 $http://www.hetland.org/python/instant-python.php$
-""")
+"""
+)
 
 
 bullet(
@@ -843,10 +913,12 @@ A free Python tutorial for experienced programmers.
 $http://www.diveintopython.net/$
 """
 )
-cn_bullet("""<b>深入Python</b>
+cn_bullet(
+    """<b>深入Python</b>
 适用于经验丰富的程序员的免费Python教程。
 $http://www.diveintopython.net/$
-""")
+"""
+)
 
 
 from reportlab.lib.codecharts import SingleByteEncodingChart
@@ -863,9 +935,11 @@ cn_heading2("""3.x版本系列的目标""")
 disc(
     """ReportLab 3.0 has been produced to help in the migration to Python     3.x.  Python 3.x will be standard in future Ubuntu releases and is gaining popularity, and a good proportion of major Python packages now run on Python 3.  """
 )
-cn_disc("""已生成ReportLab 3.0，以帮助迁移到Python3.x。 
+cn_disc(
+    """已生成ReportLab 3.0，以帮助迁移到Python3.x。 
 Python 3.x将在将来的Ubuntu版本中成为标准配置，并且越来越受欢迎，并且现在有很大一部分主要的Python程序包都在Python 3上运行。
-""")
+"""
+)
 
 
 bullet(
@@ -884,14 +958,18 @@ cn_bullet("""__init__.py允许导入可选的reportlab.local_rl_mods，以允许
 bullet(
     """rl_config now imports rl_settings, optionally local_rl_settings, reportlab_settings.py & finally ~/.reportlab_settings"""
 )
-cn_bullet("""rl_config现在可以导入rl_settings，还可以导入local_rl_settings
+cn_bullet(
+    """rl_config现在可以导入rl_settings，还可以导入local_rl_settings
 ，reportlab_settings.py，最后是 ~/.reportlab_settings
-""")
+"""
+)
 
 bullet(
     """ReportLab C extensions now live inside reportlab; _rl_accel is no longer required. All _rl_accel imports now pass through reportlab.lib.rl_accel"""
 )
-cn_bullet("""ReportLab C扩展现在位于reportlab中。 不再需要_rl_accel。 现在，所有_rl_accel导入都通过reportlab.lib.rl_accel""")
+cn_bullet(
+    """ReportLab C扩展现在位于reportlab中。 不再需要_rl_accel。 现在，所有_rl_accel导入都通过reportlab.lib.rl_accel"""
+)
 
 bullet(
     """xmllib is gone, alongside the paraparser stuff that caused issues in favour of HTMLParser."""
@@ -910,7 +988,9 @@ cn_bullet("""_rl_accel C扩展模块对多线程系统的改进支持。""")
 bullet(
     """Removed reportlab/lib/para.py & pycanvas.py.  These would better belong in third party packages, which can make use of the monkeypatching feature above."""
 )
-cn_bullet("""删除了reportlab/lib/para.py和pycanvas.py。 这些最好属于第三方程序包，可以利用上面的Monkeypatching功能。""")
+cn_bullet(
+    """删除了reportlab/lib/para.py和pycanvas.py。 这些最好属于第三方程序包，可以利用上面的Monkeypatching功能。"""
+)
 
 bullet(
     """Add ability to output greyscale and 1-bit PIL images without conversion to RGB. (contributed by Matthew Duggan)"""
@@ -928,6 +1008,7 @@ disc(
     """Detailed release notes are available at 
 $http://www.reportlab.com/software/documentation/relnotes/30/$"""
 )
-cn_disc("""有关详细的发行说明，请访问：$http://www.reportlab.com/software/documentation/relnotes/30/$
-""")
-
+cn_disc(
+    """有关详细的发行说明，请访问：$http://www.reportlab.com/software/documentation/relnotes/30/$
+"""
+)

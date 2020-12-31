@@ -7,8 +7,8 @@ from .stylesheet import getStyleSheet, getCnStyleSheet, CnParagraphStyle
 
 from reportlab.lib import colors
 from reportlab.lib.units import inch
-from reportlab.platypus import figures
 from reportlab.platypus import (
+    figures,
     Paragraph,
     Spacer,
     Preformatted,
@@ -210,8 +210,10 @@ def cn_eg(text, before=0.1, after=0, klass=PythonPreformatted):
 def npeg(text, before=0.1, after=0):
     eg(text, before=before, after=after, klass=XPreformatted)
 
+
 def cn_npeg(text, before=0.1, after=0):
     cn_eg(text, before=before, after=after, klass=XPreformatted)
+
 
 def space(inches=1.0 / 6):
     if inches:
@@ -229,9 +231,9 @@ def startKeep():
 
 
 def endKeep(s):
-    S = getStory()
-    k = KeepTogether(S[s:])
-    S[s:] = [k]
+    store = getStory()
+    k = KeepTogether(store[s:])
+    store[s:] = [k]
 
 
 def title(text):
@@ -441,7 +443,7 @@ class CnIllustration(figures.Figure):
             height,
             '图 <seq template="%(Chapter)s - %('
             'Figure+)s"/> : ' + quickfix(caption),
-            captionFont=tt2ps('SourceHanSansSC', 0, 1)
+            captionFont=tt2ps('SourceHanSansSC', 0, 1),
         )
         self.operation = operation
 
@@ -459,6 +461,7 @@ def illust(operation, caption, width=None, height=None):
 def cn_illust(operation, caption, width=None, height=None):
     i = CnIllustration(operation, caption, width=width, height=height)
     getStory().append(i)
+
 
 class GraphicsDrawing(Illustration):
     """Lets you include reportlab/graphics drawings seamlessly,
@@ -492,7 +495,7 @@ class CnGraphicsDrawing(CnIllustration):
             '图 <seq template="%(Chapter)s - %('
             'Figure+)s"/> : ' + quickfix(caption),
             captionFont=tt2ps('SourceHanSansSC', 0, 1),
-            )
+        )
         self.drawing = drawing
 
     def drawFigure(self):
@@ -505,12 +508,13 @@ def draw(drawing, caption):
     d = GraphicsDrawing(drawing, caption)
     getStory().append(d)
 
+
 def cn_draw(drawing, caption):
     d = CnGraphicsDrawing(drawing, caption)
     getStory().append(d)
 
-class ParaBoxBase(figures.Figure):
 
+class ParaBoxBase(figures.Figure):
     def wrap(self, availWidth, availHeight):
         """Left 30% is for attributes, right 50% for sample,
         10% gutter each side."""
@@ -611,8 +615,7 @@ class CnParaBox(ParaBoxBase):
     )
 
     def __init__(self, text, style, caption):
-        super().__init__(0, 0, caption=caption,
-                         captionFont='SourceHanSansSC')
+        super().__init__(0, 0, caption=caption, captionFont='SourceHanSansSC')
         self.text = text
         self.style = style
         self.para = Paragraph(text, style)
@@ -620,8 +623,8 @@ class CnParaBox(ParaBoxBase):
         styleText = self.getStyleText(style)
         self.pre = Preformatted(styleText, self.descrStyle)
 
-class ParaBox2Base(figures.Figure):
 
+class ParaBox2Base(figures.Figure):
     def wrap(self, availWidth, availHeight):
         self.width = availWidth * 0.9
         colWidth = 0.4 * self.width
@@ -638,6 +641,7 @@ class ParaBox2Base(figures.Figure):
             self.canv, self.width * 0.55, self.figureHeight * 0.95 - self.rh
         )
 
+
 class ParaBox2(ParaBox2Base):
     """Illustrates a paragraph side-by-side with the raw
     text, to show how the XML works."""
@@ -653,9 +657,10 @@ class ParaBox2(ParaBox2Base):
 
 
 class CnParaBox2(ParaBox2Base):
-
     def __init__(self, text, caption):
-        figures.Figure.__init__(self, 0, 0, caption, captionFont='SourceHanSansSC')
+        figures.Figure.__init__(
+            self, 0, 0, caption, captionFont='SourceHanSansSC'
+        )
         descrStyle = ParagraphStyle(
             'description', fontName='SourceHanSansSC', fontSize=8, leading=9.6
         )
@@ -668,7 +673,8 @@ def parabox(text, style, caption):
     p = ParaBox(
         text,
         style,
-        'Figure <seq template="%(Chapter)s-%(Figure+)s"/>: ' + quickfix(caption)
+        'Figure <seq template="%(Chapter)s-%(Figure+)s"/>: '
+        + quickfix(caption),
     )
     getStory().append(p)
 
@@ -677,7 +683,7 @@ def cn_parabox(text, style, caption):
     p = CnParaBox(
         text,
         style,
-        '图 <seq template="%(Chapter)s-%(Figure+)s"/>: ' + quickfix(caption)
+        '图 <seq template="%(Chapter)s-%(Figure+)s"/>: ' + quickfix(caption),
     )
     getStory().append(p)
 
@@ -694,8 +700,7 @@ def parabox2(text, caption):
 def cn_parabox2(text, caption):
     p = CnParaBox2(
         text,
-        '图 <seq template="%(Chapter)s-%(Figure+)s"/>: '
-        + quickfix(caption),
+        '图 <seq template="%(Chapter)s-%(Figure+)s"/>: ' + quickfix(caption),
     )
     getStory().append(p)
 
