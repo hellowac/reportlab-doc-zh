@@ -36,7 +36,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def run():
@@ -58,23 +58,32 @@ def run():
     )
 
     # 思源黑体
-    fonts_dir = os.path.join(os.path.dirname(BASE_DIR), 'font')
-    pdfmetrics.registerFont(TTFont('SourceHanSansSC',
-                                   os.path.join(fonts_dir,
-                                                'SourceHanSans-ExtraLight.ttf')))
-    pdfmetrics.registerFont(TTFont('SourceHanSansBd',
-                                   os.path.join(fonts_dir,
-                                                'SourceHanSans-Bold.ttf')))
-    pdfmetrics.registerFont(TTFont('SourceHanSansIt',
-                                   os.path.join(fonts_dir,
-                                                'SourceHanSans-ExtraLight.ttf')))
+    fonts_dir = os.path.join(os.path.dirname(BASE_DIR), 'fonts')
+    pdfmetrics.registerFont(
+        TTFont(
+            'SourceHanSansSC',
+            os.path.join(fonts_dir, 'SourceHanSans-ExtraLight.ttf'),
+        )
+    )
+    pdfmetrics.registerFont(
+        TTFont(
+            'SourceHanSansBd', os.path.join(fonts_dir, 'SourceHanSans-Bold.ttf')
+        )
+    )
+    pdfmetrics.registerFont(
+        TTFont(
+            'SourceHanSansIt',
+            os.path.join(fonts_dir, 'SourceHanSans-ExtraLight.ttf'),
+        )
+    )
 
-    pdfmetrics.registerFontFamily('SourceHanSansSC',
-                                  normal='SourceHanSansSC',
-                                  bold='SourceHanSansSCBd',
-                                  italic='SourceHanSansSC',
-                                  boldItalic='SourceHanSansSC')
-
+    pdfmetrics.registerFontFamily(
+        'SourceHanSansSC',
+        normal='SourceHanSansSC',
+        bold='SourceHanSansSCBd',
+        italic='SourceHanSansSC',
+        boldItalic='SourceHanSansSC',
+    )
 
     exec('from utils import *', G, G)
     doc = RLDocTemplate(pdf_file, pagesize=defaultPageSize)
@@ -100,7 +109,7 @@ def run():
         'graph_04_shapes.py',
         'graph_05_widgets.py',
         'app_demos.py',
-        'translate_note.py'
+        'translate_note.py',
     ):
         logger.info(filename)
         script = open_and_read(filename)
