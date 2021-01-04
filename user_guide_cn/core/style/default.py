@@ -7,8 +7,9 @@ from reportlab import rl_config
 from components import constant
 
 
-def get_default_style_sheet(font_name=None):
+def get_default_style_sheet(font_name=None, font_bold=None):
     _font_name = font_name or rl_config.canvas_basefontname
+    _font_bold = font_bold or rl_config.canvas_basefontname
 
     normal_style = ParagraphStyle(
         name=constant.STYLE_NORMAL,
@@ -111,7 +112,7 @@ def get_default_style_sheet(font_name=None):
     code_style = ParagraphStyle(
         name=constant.STYLE_CODE,
         parent=normal_style,
-        fontName=_font_name,
+        fontName=_font_bold,
         fontSize=8,
         leading=8.8,
         leftIndent=36,

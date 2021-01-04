@@ -106,7 +106,9 @@ class PDF(object):
         self._keep_together_index = None
 
         # 初始化样式
-        self.stylesheet = get_default_style_sheet(font_name=self.font_regular)
+        self.stylesheet = get_default_style_sheet(
+            font_name=self.font_regular, font_bold=self.font_bold
+        )
         self.toc_class = toc_cls or TableOfContents
 
         # 计数器
@@ -125,8 +127,8 @@ class PDF(object):
         self.seq.chain(self._SEQ_CHAPTER_FLAG, self._SEQ_FIGURE_FLAG)
 
         # 示例函数宽高定义
-        self.example_function_x_inches = 5.5
-        self.example_function_y_inches = 3
+        self.example_function_x_inches = constant.EXAMPLE_FUNCTION_X_INCHES
+        self.example_function_y_inches = constant.EXAMPLE_FUNCTION_Y_INCHES
         self.example_function_display_sizes = (
             self.example_function_x_inches * inch,
             self.example_function_y_inches * inch,
@@ -373,7 +375,7 @@ class PDF(object):
         """ 添加插图 """
         _caption = (
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s - %('
-            f'{self._SEQ_FIGURE_FLAG}+)s"/> : {caption}',
+            f'{self._SEQ_FIGURE_FLAG}+)s"/> : {caption}'
         )
         illus = Illustration(
             operation,
@@ -412,6 +414,12 @@ class PDF(object):
     def add_pencil_note(self):
         """ 添加铅笔标识 """
         self.store.append(NoteAnnotation())
+
+    def add_text_note(self, text, style=None):
+        """ 添加文本注意 """
+        _style = style or self.stylesheet[constant.STYLE_BODY_TEXT]
+        _text = f"<font color=red>注意：</font>{self.quick_fix(text)}"
+        self.store.append(Paragraph(_text, _style))
 
     def add_hand_note(
         self, xoffset=0, size=None, fillcolor=tan, strokecolor=green
