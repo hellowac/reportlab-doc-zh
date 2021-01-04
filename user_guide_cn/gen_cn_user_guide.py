@@ -886,10 +886,10 @@ def chapter2(pdf):
     pdf.add_heading("色彩空间检查", level=2)
     pdf.add_paragraph(
         "画布的$enforceColorSpace$参数用于强制执行文档中使用的颜色模型的一致性。"
-        "它接受这些值。CMYK, RGB, SEP, SEP_BLACK, SEP_CMYK. "
-        "\"SEP\"指的是命名的分色，如Pantone专色--根据使用的参数，这些颜色可以与CMYK或RGB混合。 "
-        "默认值是'MIXED'，允许你使用任何颜色空间的颜色。"
-        "如果使用的任何颜色不能转换为指定的模型，例如rgb和cmyk，"
+        "它接受这些值。$CMYK$, $RGB$, $SEP$, $SEP_BLACK$, $SEP_CMYK$."
+        "\"SEP\"指的是命名的分色，如$Pantone$专色--根据使用的参数，这些颜色可以与$CMYK$或$RGB$混合。"
+        "默认值是'$MIXED$'，允许你使用任何颜色空间的颜色。"
+        "如果使用的任何颜色不能转换为指定的模型，例如^rgb^和^cmyk^，"
         "就会产生一个异常（更多信息请参见$test_pdfgen_general$）。"
         "这种方法不检查文档中包含的外部图像。"
     )
