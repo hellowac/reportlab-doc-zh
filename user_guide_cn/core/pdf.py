@@ -34,7 +34,7 @@ from components.constant import (
 )
 from components import constant
 from components.exception import FontNameNotFoundError, HeadingLevelError
-from components.utils import find_file_name
+from components.utils import find_file_name, quick_fix
 
 from core.figure import Illustration, GraphicsDrawing, ParaBox, ParaBox2
 from core.flowable import NoteAnnotation, HandAnnotation
@@ -49,11 +49,13 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 class PDF(object):
-    _default_font = 'SourceHanSans-Regular'
-    _default_font_normal = 'SourceHanSans-Normal'
-    _default_font_bold = 'SourceHanSans-Bold'
-    _default_font_italic = 'SourceHanSans-Light'
-    _default_font_bold_italic = 'SourceHanSans-ExtraLight'
+    _default_font_regular = 'SourceHanSans-ExtraLight'  # 将加细细的作为正常体
+    _default_font_normal = 'SourceHanSans-Normal'  # 将细体的作为常规体
+    _default_font_bold = 'SourceHanSans-Normal'  # 将正常的作为粗体
+    _default_font_italic = 'SourceHanSans-Light'  # 忽略，没有斜体，留在这儿只为说明有这个功能
+    _default_font_bold_italic = (
+        'SourceHanSans-ExtraLight'  # 忽略，没有斜体，留在这儿只为说明有这个功能
+    )
 
     def __init__(
         self,
@@ -89,7 +91,7 @@ class PDF(object):
         self._check_font_name(
             font_regular, font_normal, font_bold, font_italic, font_bold_italic
         )
-        self.font_regular = font_regular or self._default_font
+        self.font_regular = font_regular or self._default_font_regular
         self.font_normal = font_normal or self._default_font_normal
         self.font_bold = font_bold or self._default_font_bold
         self.font_italic = font_italic or self._default_font_italic
@@ -181,10 +183,11 @@ class PDF(object):
         font_family = self.font_regular
         pdfmetrics.registerFontFamily(
             font_family,
-            normal=self.font_normal,
-            bold=self.font_bold,
-            italic=self.font_italic,
-            boldItalic=self.font_bold_italic or self.font_italic,
+            normal=None,  # self.font_normal,
+            bold=None,  # self.font_bold,
+            # 有限支持斜体，在文本中加入 ^斜体^ 表示某个英文为斜体，且不支持中文
+            # italic=self.font_italic,
+            # boldItalic=self.font_bold_italic or self.font_italic,
         )
 
     def _check_font_name(
@@ -212,6 +215,9 @@ class PDF(object):
             if font and font not in font_names:
                 raise FontNameNotFoundError(f'未发现该字体: {font}')
 
+    def quick_fix(self, text):
+        return quick_fix(text, self.font_bold)
+
     def add_page_break(self):
         """ 添加一个新页 """
         self.store.append(PageBreak())
@@ -220,30 +226,30 @@ class PDF(object):
         """ 添加一个高度间隔 """
         self.store.append(CondPageBreak(inches * inch))
 
-    def add_title(self, title, style=None):
+    def add_title(self, text, style=None):
         """ 添加标题 """
         _style = style or self.stylesheet[constant.STYLE_TITLE]
-        self.store.append(Paragraph(title, _style))
+        self.store.append(Paragraph(self.quick_fix(text), _style))
 
     def add_centred(self, text, style=None):
         """ 添加居中文本 """
         _style = style or self.stylesheet[constant.STYLE_CENTRED]
-        self.store.append(Paragraph(text, _style))
+        self.store.append(Paragraph(self.quick_fix(text), _style))
 
-    def add_toc_title(self, title, style=None):
+    def add_toc_title(self, text, style=None):
         """ 添加目录标题 """
         # cn_headingTOC('目录')
         self.store.append(PageBreak())  # 分页
 
         _style = style or self.stylesheet[constant.STYLE_H1]
-        self.store.append(Paragraph(title, _style))
+        self.store.append(Paragraph(self.quick_fix(text), _style))
 
     def add_toc(self):
         """ 添加目录内容处理模板 """
         self.store.append(PageBreak())
         self.store.append(self.toc_class(self.font_regular))
 
-    def add_heading(self, title, level=1, style=None):
+    def add_heading(self, text, level=1, style=None):
         """ 添加标题 level """
 
         style_map = {
@@ -258,12 +264,13 @@ class PDF(object):
                 f'标题等级: {level} 不在指定范围: {set(style_map.keys())}'
             )
         _style = style or self.stylesheet[style_map[level]]
+        _text = self.quick_fix(text)
 
         if level == 1:
             self.add_page_break()
             self.store.append(
                 Paragraph(
-                    f'第 <seq id="{self._SEQ_CHAPTER_FLAG}"/> 章  {title}', _style
+                    f'第 <seq id="{self._SEQ_CHAPTER_FLAG}"/> 章  {_text}', _style
                 )
             )
         elif level == 2:
@@ -271,33 +278,33 @@ class PDF(object):
             self.store.append(
                 Paragraph(
                     f'<seq template="%({self._SEQ_CHAPTER_FLAG})s.'
-                    f'%({self._SEQ_SECTION_FLAG}+)s "/> {title}',
+                    f'%({self._SEQ_SECTION_FLAG}+)s "/> {_text}',
                     _style,
                 )
             )
         elif level in (3, 4):
             self.add_cond_page_break()
-            self.store.append(Paragraph(title, _style))
+            self.store.append(Paragraph(_text, _style))
 
     def add_caption(
-        self, title, prefix=CAPTION_IMAGE_PREFIX, category=CAPTION_IMAGE
+        self, text, prefix=CAPTION_IMAGE_PREFIX, category=CAPTION_IMAGE
     ):
-
+        _text = self.quick_fix(text)
         if category == CAPTION_TABLE:
             self.store.append(
-                f'{prefix} <seq template="%(Chapter)s-%(Table+)s"/> - {title}'
+                f'{prefix} <seq template="%(Chapter)s-%(Table+)s"/> - {_text}'
             )
 
         elif category == CAPTION_IMAGE:
             self.store.append(
-                f'{prefix} <seq template="%(Chapter)s-%(Table+)s"/> - {title}'
+                f'{prefix} <seq template="%(Chapter)s-%(Table+)s"/> - {_text}'
             )
 
     def add_paragraph(self, text, style=None):
         """ 添加段落 """
 
         _style = style or self.stylesheet[constant.STYLE_BODY_TEXT]
-        self.store.append(Paragraph(text, _style))
+        self.store.append(Paragraph(self.quick_fix(text), _style))
 
     def add_bullet(self, text, style=None):
         """ 添加列表 """
@@ -305,7 +312,8 @@ class PDF(object):
         _style = style or self.stylesheet[constant.STYLE_BULLET]
         self.store.append(
             Paragraph(
-                f'<bullet><font name="Symbol">\u2022</font></bullet> {text}',
+                f'<bullet><font name="Symbol">\u2022</font></bullet>'
+                f' {self.quick_fix(text)}',
                 _style,
             )
         )
@@ -333,7 +341,7 @@ class PDF(object):
 
         _format_cls = format_cls or XPreformatted
         self.add_code_eg(
-            text,
+            self.quick_fix(text),
             before=before,
             after=after,
             format_cls=_format_cls,
@@ -359,7 +367,7 @@ class PDF(object):
     def add_todo(self, text, style=None):
         """ 添加todo """
         _style = style or self.stylesheet[constant.STYLE_COMMENT]
-        self.store.append(Paragraph(text, _style))
+        self.store.append(Paragraph(self.quick_fix(text), _style))
 
     def add_illustration(self, operation, caption, width=None, height=None):
         """ 添加插图 """
@@ -387,7 +395,7 @@ class PDF(object):
     def add_para_box(self, text, style, caption):
         self.store.append(
             ParaBox(
-                text,
+                self.quick_fix(text),
                 style,
                 f'图 <seq template="%(Chapter)s-%(Figure+)s"/>: {caption}',
             )
@@ -399,7 +407,7 @@ class PDF(object):
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s'
             f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {caption}'
         )
-        self.store.append(ParaBox2(text, caption, _style))
+        self.store.append(ParaBox2(self.quick_fix(text), caption, _style))
 
     def add_pencil_note(self):
         """ 添加铅笔标识 """

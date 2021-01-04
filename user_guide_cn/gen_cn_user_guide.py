@@ -266,38 +266,41 @@ and many more."""
         "$rl_settings$模块$reportlab.local_rl_settings$，"
         "$reportlab_settings$（位于python路径上任何位置的脚本文件）以及文件$~/.reportlab_settings$"
         "（请注意，没有.py）有多个替代项。可以进行临时更改。"
-        "使用环境变量，这些变量是$rl_settings.py$中以$RL_$开头的变量，例如$RL_verbose=1$。"
+        "使用环境变量，这些变量是 $rl_settings.py$ 中以$RL_$开头的变量，例如$RL_verbose=1$。"
     )
 
-    pdf.add_heading('有用的rl_config变量', level=3)
-    pdf.add_bullet("verbose: 设置为整数值以控制诊断输出。")
-    pdf.add_bullet("shapeChecking: 将此设置为零可关闭图形模块中的许多错误检查")
-    pdf.add_bullet("defaultEncoding: 将此设置为WinAnsiEncoding或MacRomanEncoding。")
+    pdf.add_heading('有用的 $rl_config$ 变量', level=3)
+    pdf.add_bullet("^verbose^: 设置为整数值以控制诊断输出。")
+    pdf.add_bullet("^shapeChecking^: 将此设置为零可关闭图形模块中的许多错误检查")
     pdf.add_bullet(
-        "defaultPageSize：将其设置为reportlab/lib/pagesizes.py中定义的值之一；"
-        "交付时将其设置为pagesizes.A4; 其他值是pagesizes.letter等。"
+        "^defaultEncoding^: 将此设置为 $WinAnsiEncoding$ 或 " "$MacRomanEncoding$ 。"
     )
     pdf.add_bullet(
-        "defaultImageCaching：设置为零以禁止在硬盘驱动器上创建.a85文件。 "
+        "^defaultPageSize^：将其设置为 $reportlab/lib/pagesizes.py$ 中定义的值之一；"
+        "交付时将其设置为 $pagesizes.A4$; 其他值是 $pagesizes.letter$ 等。"
+    )
+    pdf.add_bullet(
+        "^defaultImageCaching^：设置为零以禁止在硬盘驱动器上创建.a85文件。 "
         "默认设置是创建这些经过预处理的PDF兼容图像文件，以加快加载速度"
     )
-    pdf.add_bullet("T1SearchPath：这是表示目录的字符串的python列表，可以查询有关类型1字体的信息")
+    pdf.add_bullet("^T1SearchPath^：这是表示目录的字符串的python列表，可以查询有关类型1字体的信息")
     pdf.add_bullet(
-        "TTFSearchPath：这是表示目录的字符串的python列表，可以查询该目录以获取有关TrueType字体的信息"
+        "^TTFSearchPath^：这是表示目录的字符串的python列表，可以查询该目录以获取有关$TrueType$字体的信息"
     )
-    pdf.add_bullet("CMapSearchPath：这是表示目录的字符串的python列表，可以查询该目录以获取字体代码映射的信息。")
-    pdf.add_bullet("showBoundary：设置为非零以绘制边界线。")
-    pdf.add_bullet("ZLIB_WARNINGS：如果未找到Python压缩扩展，则设置为非零以获得警告。")
-    pdf.add_bullet("pageCompression：设置为非零以尝试获取压缩的PDF。")
-    pdf.add_bullet("allowtableBoundsErrors：设置为0会在非常大的Platypus表元素上强制执行错误")
-    pdf.add_bullet("emptyTableAction：控制空表的行为，可以为“error”（默认），“indicate”或“ignore")
+    pdf.add_bullet("^CMapSearchPath^：这是表示目录的字符串的python列表，可以查询该目录以获取字体代码映射的信息。")
+    pdf.add_bullet("^showBoundary^：设置为非零以绘制边界线。")
+    pdf.add_bullet("^ZLIB_WARNINGS^：如果未找到Python压缩扩展，则设置为非零以获得警告。")
+    pdf.add_bullet("^pageCompression^：设置为非零以尝试获取压缩的PDF。")
+    pdf.add_bullet("^allowtableBoundsErrors^：设置为0会在非常大的Platypus表元素上强制执行错误")
     pdf.add_bullet(
-        "TrustedHosts：如果不是$None$，则列出受信任主机的全局模式；"
-        "这些可以在＆lt; img＆gt;之类的地方使用。 段落文字中的标签。"
+        "^emptyTableAction^：控制空表的行为，可以为“$error$”（默认），“$indicate$”或“$ignore$"
     )
-    pdf.add_bullet("trustedSchemes：与 trustedHosts 一起使用的允许的 URL 方案的列表")
+    pdf.add_bullet(
+        "^TrustedHosts^：则列出全局模式下受信任的主机列表；这些模式可用于段落文本中的$&lt;img&gt;$ 标签等地方。"
+    )
+    pdf.add_bullet("^trustedSchemes^：与 $trustedHosts$ 一起使用的允许的 URL 方案的列表")
 
-    pdf.add_paragraph("有关变量的完整列表，请参见文件$reportlab/rl_settings.py$。")
+    pdf.add_paragraph("有关变量的完整列表，请参见文件 $reportlab/rl_settings.py$。")
     pdf.add_heading("其他修改", level=3)
     pdf.add_paragraph(
         "可以使用以下模块之一对reportlab工具箱环境进行更复杂的修改："
@@ -311,27 +314,27 @@ and many more."""
     )
 
     pdf.add_bullet(
-        "<b>Python文档</b>Python.org网站上的文档列表。"
+        "$Python文档$Python.org网站上的文档列表。"
         "<a href='http://www.python.org/doc/'>http://www.python.org/doc/</a>"
     )
     pdf.add_bullet(
-        "<b>Python教程</b>"
+        "$Python教程$"
         "官方的Python教程，最初由Guido van Rossum亲自编写."
         "<a href='http://docs.python.org/tutorial/'>http://docs.python.org/tutorial/</a>"
     )
     pdf.add_bullet(
-        "<b>学习编程</b>"
+        "$学习编程$"
         "Alan Gauld撰写的编程指南。 非常重视Python，但也使用其他语言。"
-        "<a href='http://www.freenetpages.co.uk/hp/alan.gauld/'>http://www"
-        ".freenetpages.co.uk/hp/alan.gauld/</a>"
+        "<a href='http://www.freenetpages.co.uk/hp/alan.gauld/'>"
+        "http://www.freenetpages.co.uk/hp/alan.gauld/</a>"
     )
     pdf.add_bullet(
-        "<b>即时Python</b>Magnus Lie Hetland撰写的长达6页的速成课程。"
-        "<a href='http://www.hetland.org/python/instant-python.php$'>"
-        "http://www.hetland.org/python/instant-python.php$</a>"
+        "$即时Python$Magnus Lie Hetland撰写的长达6页的速成课程。"
+        "<a href='http://www.hetland.org/python/instant-python.php'>"
+        "$http://www.hetland.org/python/instant-python.php$</a>"
     )
     pdf.add_bullet(
-        "<b>深入Python</b>适用于经验丰富的程序员的免费Python教程。"
+        "$深入Python$适用于经验丰富的程序员的免费Python教程。"
         "<a href='http://www.diveintopython.net/'>http://www"
         ".diveintopython.net/</a>"
     )
@@ -343,29 +346,30 @@ and many more."""
     )
     pdf.add_bullet("Python 3.x兼容性。 一行代码应在2.7和3.6上运行")
     pdf.add_bullet("__init__.py限制为2.7或> = 3.6")
-    pdf.add_bullet("__init__.py允许导入可选的reportlab.local_rl_mods，以允许猴子打补丁等。")
+    pdf.add_bullet("__init__.py允许导入可选的 ^reportlab.local_rl_mods^ ，以允许猴子打补丁等。")
     pdf.add_bullet(
-        "rl_config现在可以导入rl_settings，还可以导入local_rl_settings，"
-        "reportlab_settings.py，最后是 ~/.reportlab_settings"
+        "rl_config现在可以导入 ^rl_settings^ ，还可以导入 ^local_rl_settings^，"
+        "^reportlab_settings.py^，最后是 ^~/.reportlab_settings^"
     )
     pdf.add_bullet(
-        "ReportLab C扩展现在位于reportlab中。 不再需要_rl_accel。 "
-        "现在，所有_rl_accel导入都通过reportlab.lib.rl_accel"
+        "ReportLab C扩展现在位于reportlab中。 不再需要 $_rl_accel$ 。 "
+        "现在，所有 $_rl_accel$ 导入都通过 ^reportlab.lib.rl_accel^ "
     )
     pdf.add_bullet("xmllib以及用于引起HTMLParser问题的paraparser东西一去不复返了。")
     pdf.add_bullet("一些过时的C扩展名（sgmlop和pyHnj）消失了")
     pdf.add_bullet("_rl_accel C扩展模块对多线程系统的改进支持。")
     pdf.add_bullet(
-        "删除了reportlab/lib/para.py和pycanvas.py。 这些最好属于第三方程序包，可以利用上面的Monkeypatching功能。"
+        "删除了 $reportlab/lib/para.py$ 和 $pycanvas.py$。 "
+        "这些最好属于第三方程序包，可以利用上面的 $Monkeypatching$ 功能。"
     )
     pdf.add_bullet("增加了无需转换为RGB即可输出灰度和1位PIL图像的功能。 （由Matthew Duggan贡献）")
     pdf.add_bullet("高亮注释（由Ben Echols提供）")
-    pdf.add_bullet("完全符合pip，easy_install，wheel等要求")
+    pdf.add_bullet("完全符合 $pip$ ，$easy_install$，$wheel$等要求")
 
     pdf.add_paragraph(
         "有关详细的发行说明，请访问："
         "<a href='http://www.reportlab.com/software/documentation/relnotes/30/'>"
-        "http://www.reportlab.com/software/documentation/relnotes/30/</a>"
+        "^http://www.reportlab.com/software/documentation/relnotes/30/^</a>"
     )
 
 

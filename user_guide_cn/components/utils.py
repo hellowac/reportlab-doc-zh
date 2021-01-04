@@ -5,7 +5,12 @@ import logging
 from contextlib import redirect_stderr
 from fontTools import ttLib
 
+from components.t_parse import Template
+
 logger = logging.getLogger(__name__)
+
+QF_CODE_TEMPLATE = Template("X$X$", "X")
+QF_REP_TEMPLATE = Template("X^X^", "X")
 
 
 def find_font_name(font_path):
@@ -43,3 +48,46 @@ def find_file_name(file_path):
     name, ext = os.path.splitext(basename)
 
     return name
+
+
+def quick_fix(text, code_font):
+    """inside text find any subsequence of form $subsequence$.
+    Format the subsequence as code.  If similarly if text contains ^arg^
+    format the arg as replaceable.  The escape sequence for literal
+    $ is $\\$ (^ is ^\\^.
+    """
+    # logger.info('<<' + '=' * 100)
+    # logger.info(f'text: {text}')
+
+    # Courier
+    code_subst = f"%s<font name={code_font}><nobr>%s</nobr></font>"  # 粗体
+    qf_subst = f"%s<font name=Courier><i><nobr>%s</nobr></i></font>"  #
+    # 斜体，不支持中文
+
+    for (template, subst) in [
+        (QF_CODE_TEMPLATE, code_subst),
+        (QF_REP_TEMPLATE, qf_subst),
+    ]:
+        fragment = text
+        parts = []
+        try:
+            while fragment:
+                try:
+                    matches, index = template.PARSE(fragment)
+                except Exception as e:
+                    raise ValueError
+                else:
+                    prefix, code = matches
+                    if code == "\\":
+                        part = fragment[:index]
+                    else:
+                        part = subst % (prefix, code)
+                    parts.append(part)
+                    fragment = fragment[index:]
+        except ValueError:
+            parts.append(fragment)
+        text = ''.join(parts)
+
+    # logger.info(f'quickfix text: {text}')
+    # logger.info('=' * 100 + '>> \n\n')
+    return text
