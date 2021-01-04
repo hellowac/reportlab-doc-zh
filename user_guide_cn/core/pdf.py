@@ -40,6 +40,7 @@ from core.figure import Illustration, GraphicsDrawing, ParaBox, ParaBox2
 from core.flowable import NoteAnnotation, HandAnnotation
 from core.style.default import get_default_style_sheet
 from core.toc import TableOfContents
+from core.templates import RLDocTemplate
 
 
 logger = logging.getLogger(__name__)
@@ -48,7 +49,11 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 class PDF(object):
-    _default_font = 'SourceHanSans-Normal'  # reportlab 支持的默认中文字体名称
+    _default_font = 'SourceHanSans-Regular'
+    _default_font_normal = 'SourceHanSans-Normal'
+    _default_font_bold = 'SourceHanSans-Bold'
+    _default_font_italic = 'SourceHanSans-Light'
+    _default_font_bold_italic = 'SourceHanSans-ExtraLight'
 
     def __init__(
         self,
@@ -85,10 +90,12 @@ class PDF(object):
             font_regular, font_normal, font_bold, font_italic, font_bold_italic
         )
         self.font_regular = font_regular or self._default_font
-        self.font_normal = font_normal or self._default_font
-        self.font_bold = font_bold or self._default_font
-        self.font_italic = font_italic or self._default_font
-        self.font_bold_italic = font_bold_italic or self._default_font
+        self.font_normal = font_normal or self._default_font_normal
+        self.font_bold = font_bold or self._default_font_bold
+        self.font_italic = font_italic or self._default_font_italic
+        self.font_bold_italic = (
+            font_bold_italic or self._default_font_bold_italic
+        )
         # 注册字体
         self.registered_fonts = []
         self._register_font()
@@ -97,7 +104,7 @@ class PDF(object):
         self._keep_together_index = None
 
         # 初始化样式
-        self.stylesheet = get_default_style_sheet(font_name=font_regular)
+        self.stylesheet = get_default_style_sheet(font_name=self.font_regular)
         self.toc_class = toc_cls or TableOfContents
 
         # 计数器
@@ -125,6 +132,11 @@ class PDF(object):
 
         # 构建的流对象
         self.store = []
+
+        # 底层canv对象
+        self._doc = RLDocTemplate(
+            self.filename, self.font_regular, pagesize=defaultPageSize
+        )
 
     def _load_fonts(self, fonts_dir):
         """
@@ -228,6 +240,7 @@ class PDF(object):
 
     def add_toc(self):
         """ 添加目录内容处理模板 """
+        self.store.append(PageBreak())
         self.store.append(self.toc_class(self.font_regular))
 
     def add_heading(self, title, level=1, style=None):
@@ -245,6 +258,7 @@ class PDF(object):
                 f'标题等级: {level} 不在指定范围: {set(style_map.keys())}'
             )
         _style = style or self.stylesheet[style_map[level]]
+
         if level == 1:
             self.add_page_break()
             self.store.append(
@@ -261,8 +275,9 @@ class PDF(object):
                     _style,
                 )
             )
-
-        pass
+        elif level in (3, 4):
+            self.add_cond_page_break()
+            self.store.append(Paragraph(title, _style))
 
     def add_caption(
         self, title, prefix=CAPTION_IMAGE_PREFIX, category=CAPTION_IMAGE
@@ -408,9 +423,18 @@ class PDF(object):
 
     def next_toc_template(self):
         """ 后面使用目录模板 """
-        self.store.append(NextPageTemplate("TOC"))
+        self.store.append(NextPageTemplate(constant.TEMPLATE_TOC))
 
     def next_normal_template(self):
         """ 后面使用常规模板 """
         # nextTemplate("Normal")
-        self.store.append(NextPageTemplate("Normal"))
+        self.store.append(NextPageTemplate(constant.TEMPLATE_NORMAL))
+
+    def build_2_save(self):
+        self._doc.multiBuild(self.store)
+
+    @property
+    def canv(self):
+        if not self._doc.canv:
+            raise AttributeError('该属性不存在')
+        return self._doc.canv

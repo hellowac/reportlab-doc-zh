@@ -1,16 +1,17 @@
+import os
 from reportlab.platypus import PageTemplate, BaseDocTemplate, Frame, Paragraph
 from reportlab.lib.units import inch, cm
 from reportlab.lib.sequencer import Sequencer
 from reportlab.rl_config import defaultPageSize
 
-COVER = 'Cover'
-TOC = 'TOC'
-NORMAL = 'Normal'
-TWO_COLUMN = 'TwoColumn'
+from components import constant
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class FrontCoverTemplate(PageTemplate):
-    def __init__(self, id, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+        self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
         self.pageHeight = pageSize[1]
         frame1 = Frame(
@@ -20,13 +21,17 @@ class FrontCoverTemplate(PageTemplate):
             self.pageHeight - 518,
             id='cover',
         )
-        PageTemplate.__init__(self, id, [frame1])  # note lack of onPage
+        PageTemplate.__init__(self, _id, [frame1])  # note lack of onPage
 
     def afterDrawPage(self, canvas, doc):
         canvas.saveState()
-        canvas.drawImage('images/replogo.gif', 2 * inch, 8 * inch)
 
-        canvas.setFont('Times-Roman', 10)
+        logo_gif = os.path.join(
+            os.path.dirname(BASE_DIR), 'images', 'replogo.gif'
+        )
+        canvas.drawImage(logo_gif, 2 * inch, 8 * inch)
+
+        canvas.setFont(self.unicode_font, 10)
         canvas.line(inch, 120, self.pageWidth - inch, 120)
 
         canvas.drawString(inch, 100, 'ReportLab')
@@ -38,7 +43,8 @@ class FrontCoverTemplate(PageTemplate):
 
 
 class OneColumnTemplate(PageTemplate):
-    def __init__(self, id, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+        self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
         self.pageHeight = pageSize[1]
         frame1 = Frame(
@@ -48,12 +54,12 @@ class OneColumnTemplate(PageTemplate):
             self.pageHeight - 2 * inch,
             id='normal',
         )
-        PageTemplate.__init__(self, id, [frame1])  # note lack of onPage
+        PageTemplate.__init__(self, _id, [frame1])  # note lack of onPage
 
     def afterDrawPage(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
-        canvas.setFont('SourceHanSansSC', 10)
+        canvas.setFont(self.unicode_font, 10)
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
         canvas.line(inch, y, self.pageWidth - inch, y)
@@ -64,7 +70,8 @@ class OneColumnTemplate(PageTemplate):
 
 
 class TOCTemplate(PageTemplate):
-    def __init__(self, id, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+        self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
         self.pageHeight = pageSize[1]
         frame1 = Frame(
@@ -74,12 +81,12 @@ class TOCTemplate(PageTemplate):
             self.pageHeight - 2 * inch,
             id='normal',
         )
-        PageTemplate.__init__(self, id, [frame1])  # note lack of onPage
+        PageTemplate.__init__(self, _id, [frame1])  # note lack of onPage
 
     def afterDrawPage(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
-        canvas.setFont('SourceHanSansSC', 10)
+        canvas.setFont(self.unicode_font, 10)
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(self.pageWidth - inch, y + 8, '目录')
         canvas.line(inch, y, self.pageWidth - inch, y)
@@ -90,7 +97,8 @@ class TOCTemplate(PageTemplate):
 
 
 class TwoColumnTemplate(PageTemplate):
-    def __init__(self, id, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+        self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
         self.pageHeight = pageSize[1]
         colWidth = 0.5 * (self.pageWidth - 2.25 * inch)
@@ -104,24 +112,14 @@ class TwoColumnTemplate(PageTemplate):
             self.pageHeight - 2 * inch,
             id='rightCol',
         )
-        PageTemplate.__init__(self, id, [frame1, frame2])  # note lack of onPage
-
-    def afterDrawPage_bak(self, canvas, doc):
-        y = self.pageHeight - 50
-        canvas.saveState()
-        canvas.setFont('Times-Roman', 10)
-        canvas.drawString(inch, y + 8, doc.title)
-        canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
-        canvas.line(inch, y, self.pageWidth - inch, y * inch)
-        canvas.drawCentredString(
-            doc.pagesize[0] / 2, 0.75 * inch, 'Page %d' % canvas.getPageNumber()
-        )
-        canvas.restoreState()
+        PageTemplate.__init__(
+            self, _id, [frame1, frame2]
+        )  # note lack of onPage
 
     def afterDrawPage(self, canvas, doc):
         y = self.pageHeight - 50
         canvas.saveState()
-        canvas.setFont('SourceHanSansSC', 10)
+        canvas.setFont(self.unicode_font, 10)
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
         canvas.line(inch, y, self.pageWidth - inch, y * inch)
@@ -132,12 +130,34 @@ class TwoColumnTemplate(PageTemplate):
 
 
 class RLDocTemplate(BaseDocTemplate):
-    def afterInit(self):
-        self.addPageTemplates(FrontCoverTemplate(COVER, self.pagesize))
-        self.addPageTemplates(TOCTemplate(TOC, self.pagesize))
-        self.addPageTemplates(OneColumnTemplate(NORMAL, self.pagesize))
-        self.addPageTemplates(TwoColumnTemplate(TWO_COLUMN, self.pagesize))
+    def __init__(self, filename, unicode_font, **kwargs):
+        super().__init__(filename=filename, **kwargs)
+
+        self.addPageTemplates(
+            FrontCoverTemplate(
+                constant.TEMPLATE_COVER, unicode_font, self.pagesize
+            )
+        )
+        self.addPageTemplates(
+            TOCTemplate(constant.TEMPLATE_TOC, unicode_font, self.pagesize)
+        )
+        self.addPageTemplates(
+            OneColumnTemplate(
+                constant.TEMPLATE_NORMAL, unicode_font, self.pagesize
+            )
+        )
+        self.addPageTemplates(
+            TwoColumnTemplate(
+                constant.TEMPLATE_TWO_COLUMN, unicode_font, self.pagesize
+            )
+        )
         self.seq = Sequencer()  # 计数器
+
+        # 初始化标题和章节
+        self.title = "(这儿是文档标题)"
+        self.chapter = "(这儿是章节标题)"
+        self.seq.reset('section')
+        self.seq.reset('chapter')
 
     def beforeDocument(self):
         self.canv.showOutline()
@@ -154,16 +174,16 @@ class RLDocTemplate(BaseDocTemplate):
             style = flowable.style.name
             txt = flowable.getPlainText()
 
-            if style == 'Title':
+            if style == constant.STYLE_TITLE:
                 self.title = txt
-            elif style == 'Heading1':
+            elif style == constant.STYLE_HEADING_1:
                 self.chapter = txt
                 key = 'ch%s' % self.seq.nextf('chapter')
                 self.canv.bookmarkPage(key)
                 self.canv.addOutlineEntry(txt, key, 0, 0)
                 self.seq.reset("section")
                 self.notify('TOCEntry', (0, txt, self.page, key))
-            elif style == 'Heading2':
+            elif style == constant.STYLE_HEADING_2:
                 self.section = flowable.text
                 key = 'ch%ss%s' % (
                     self.seq.thisf("chapter"),
