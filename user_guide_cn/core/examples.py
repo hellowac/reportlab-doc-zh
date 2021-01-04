@@ -516,12 +516,15 @@ def dashes(canvas):
 testcustomfont1 = """
 def customfont1(canvas):
     # we know some glyphs are missing, suppress warnings
+    import os
+    import reportlab
     import reportlab.rl_config
     reportlab.rl_config.warnOnMissingFontGlyphs = 0
-
-    from utils import getJustFontPaths
     from reportlab.pdfbase import pdfmetrics
-    afmFile, pfbFile = getJustFontPaths()
+
+    folder = os.path.dirname(reportlab.__file__) + os.sep + 'fonts'
+    afmFile = os.path.join(folder, 'DarkGardenMK.afm')
+    pfbFile = os.path.join(folder, 'DarkGardenMK.pfb')
     justFace = pdfmetrics.EmbeddedType1Face(afmFile, pfbFile)
     faceName = 'DarkGardenMK' # pulled from AFM file
     pdfmetrics.registerTypeFace(justFace)

@@ -375,7 +375,7 @@ class PDF(object):
         """ 添加插图 """
         _caption = (
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s - %('
-            f'{self._SEQ_FIGURE_FLAG}+)s"/> : {caption}'
+            f'{self._SEQ_FIGURE_FLAG}+)s"/> : {self.quick_fix(caption)}'
         )
         illus = Illustration(
             operation,
@@ -390,16 +390,16 @@ class PDF(object):
         """ 添加绘制 """
         _caption = (
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s - '
-            f'%({self._SEQ_FIGURE_FLAG}+)s"/> : {caption}'
+            f'%({self._SEQ_FIGURE_FLAG}+)s"/> : {self.quick_fix(caption)}'
         )
-        self.store.append(GraphicsDrawing(drawing, caption))
+        self.store.append(GraphicsDrawing(drawing, self.quick_fix(caption)))
 
     def add_para_box(self, text, style, caption):
         self.store.append(
             ParaBox(
                 self.quick_fix(text),
                 style,
-                f'图 <seq template="%(Chapter)s-%(Figure+)s"/>: {caption}',
+                f'图 <seq template="%(Chapter)s-%(Figure+)s"/>: {self.quick_fix(caption)}',
             )
         )
 
@@ -407,9 +407,10 @@ class PDF(object):
         _style = style or self.stylesheet[constant.STYLE_BODY_TEXT]
         _caption = (
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s'
-            f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {caption}'
+            f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {self.quick_fix(caption)}'
         )
-        self.store.append(ParaBox2(self.quick_fix(text), caption, _style))
+        self.store.append(ParaBox2(self.quick_fix(text), self.quick_fix(caption),
+                                   _style))
 
     def add_pencil_note(self):
         """ 添加铅笔标识 """

@@ -3,6 +3,10 @@ import logging
 from datetime import datetime
 
 import reportlab
+from reportlab.lib.codecharts import SingleByteEncodingChart
+from reportlab.pdfbase.pdfmetrics import registerFontFamily
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from components import constant
 from core import examples
 from core.pdf import PDF
@@ -1167,8 +1171,379 @@ def chapter2(pdf):
 
 
 def chapter3(pdf):
-    pass
+    pdf.add_heading("字体和编码", level=1)
+    pdf.add_paragraph('本章包括字体、编码和亚洲语言功能。'
+                      '如果你只关心生成西欧语言的PDF，你可以只读下面的 "Unicode是默认的"部分，并在第一次阅读时跳过其余部分。'
+                      '我们希望随着时间的推移，这部分内容会有很大的增长。'
+                      '我们希望开源能让我们比其他工具更好地支持世界上更多的语言，'
+                      '我们欢迎在这方面的反馈和帮助。')
 
+    pdf.add_heading('Unicode 和 UTF8 作为默认编码', level=2)
+    pdf.add_paragraph('从$reportlab 2.0$版本('
+                      '2006年5月)开始，您提供给我们API的所有文本输入都应该是UTF8或$Python Unicode$对象。'
+                      '这适用于^canvas.drawString^和相关$API$的参数、表格单元格内容、绘图对象参数和段落源文本。')
+    pdf.add_paragraph('我们曾考虑过让输入编码可配置，甚至依赖于本地，但决定"显式比隐式好"。')
+    pdf.add_paragraph('这简化了我们以前做的许多关于希腊字母、符号等的事情。'
+                      '要显示任何字符，找出它的unicode码点，并确保你使用的字体能够显示它。')
+    pdf.add_paragraph('如果您正在改编$ReportLab 1.x$应用程序，'
+                      '或者从其他包含单字节数据的源头读取数据 (例如 latin-1 或 WinAnsi)，'
+                      '您需要进行$Unicode$转换。Python编解码器包现在包含了所有常用编码的转换器，包括亚洲的编码。')
+    pdf.add_paragraph('如果你的数据不是UTF8编码，那么一旦你输入一个非ASCII字符，'
+                      '你就会得到一个UnicodeDecodeError。 '
+                      '例如，下面这个代码段试图读取并打印一系列名字，包括一个带有法国口音的名字。'
+                      '^Marc -Andr/\u00e9 Lemburg^.  标准误差非常有用，它告诉你它不喜欢什么字符。')
+    pdf.add_code_eg(u"""
+>>> from reportlab.pdfgen.canvas import Canvas
+>>> c = Canvas('temp.pdf')
+>>> y = 700
+>>> for line in file('latin_python_gurus.txt','r'):
+...     c.drawString(100, y, line.strip())
+...
+Traceback (most recent call last):
+...
+UnicodeDecodeError: 'utf8' codec can't decode bytes in position 9-11: invalid 
+data
+-->\u00e9 L<--emburg
+>>> 
+""")
+    pdf.add_paragraph('最简单的解决方法就是将你的数据转换为unicode，并说明它来自哪个编码，就像这样。')
+    pdf.add_code_eg( """
+>>> for line in file('latin_input.txt','r'):
+...     uniLine = unicode(line, 'latin-1')
+...     c.drawString(100, y, uniLine.strip())
+>>>
+>>> c.save()
+""")
+    pdf.add_heading("输出字体自动替换", level=2)
+    pdf.add_paragraph('在代码中还有很多地方，包括^rl_config.defaultEncoding^参数，'
+                      '以及传递给各种 $Font$ 构造函数的参数，这些参数都是指编码。'
+                      '在过去，当人们需要使用 $PDF$ 浏览设备支持的$Symbol$和$ZapfDingbats$字体的字形时，'
+                      '这些参数非常有用。'
+                      '默认情况下，标准字体（$Helvetica$、$Courier$、$Times Roman$）将提供$Latin-1$的字形。'
+                      '然而，如果我们的引擎检测到一个字体中没有的字符，它将尝试切换到$Symbol$或$ZapfDingbats$来显示这些字符。'
+                      '例如，如果你在对^drawString^的调用中包含了一对右面剪刀的$Unicode$字符，\\u2702(\u2702),'
+                      '你应该会看到它们(在^test_pdfgen_general.py/pdf^中有一个例子)。'
+                      '在你的代码中不需要切换字体。')
+    pdf.add_heading("使用非标准的 $Type 1$ 字体", level=2)
+    pdf.add_paragraph('正如前一章所讨论的那样，每份 $Acrobat Reader$ 都内置了14种标准字体。'
+                      '因此，$ReportLab PDF$ 库只需要通过名称来引用这些字体。'
+                      '如果您想使用其他字体，它们必须对您的代码可用，并将被嵌入到$PDF$文档中。')
+    pdf.add_paragraph('您可以使用下面描述的机制在您的文档中包含任意字体。'
+                      '我们有一个名为^DarkGardenMK^的开源字体，'
+                      '我们可以将其用于测试和或文档目的(您也可以使用它)。'
+                      '它与ReportLab发行版捆绑在一起，在$reportlab/fonts$目录下。')
+    pdf.add_paragraph('目前，字体嵌入依赖于$Adobe AFM("Adobe Font Metrics")$'
+                      '和$PFB("Printer Font Binary")$格式的字体描述文件。'
+                      '前者是一个$ASCII$文件，包含字体中的字符（"字形"）信息，如高度、宽度、边界框信息和其他 "$metrics$"(指标)，'
+                      '而后者是一个二进制文件，描述字体的形状。'
+                      '在$reportlab/fonts$目录下，'
+                      '包含了$"DarkGardenMK.afm"$和$"DarkGardenMK.pfb"$两个文件，'
+                      '这两个文件被用来作为一个例子字体。')
+    pdf.add_paragraph('在下面的例子中，找到包含测试字体的文件夹，并用$pdfmetrics$模块注册它，以便将来使用，'
+                      '之后我们可以像其他标准字体一样使用它。')
+    pdf.add_code_eg(
+        """
+    import os
+    import reportlab
+    folder = os.path.dirname(reportlab.__file__) + os.sep + 'fonts'
+    afmFile = os.path.join(folder, 'DarkGardenMK.afm')
+    pfbFile = os.path.join(folder, 'DarkGardenMK.pfb')
+    
+    from reportlab.pdfbase import pdfmetrics
+    justFace = pdfmetrics.EmbeddedType1Face(afmFile, pfbFile)
+    faceName = 'DarkGardenMK' # pulled from AFM file
+    pdfmetrics.registerTypeFace(justFace)
+    justFont = pdfmetrics.Font('DarkGardenMK',
+                               faceName,
+                               'WinAnsiEncoding')
+    pdfmetrics.registerFont(justFont)
+    
+    canvas.setFont('DarkGardenMK', 32)
+    canvas.drawString(10, 150, 'This should be in')
+    canvas.drawString(10, 100, 'DarkGardenMK')
+    """
+    )
+    pdf.add_paragraph('请注意，参数 "$WinAnsiEncoding$"与输入无关，它是说字体文件内的哪一组字符将被激活并可用。')
+    pdf.add_illustration(examples.customfont1, "使用非常不标准的字体")
+    pdf.add_paragraph('字体的名称来自$AFM$文件的$FontName$字段。'
+                      '在上面的例子中，我们事先知道了这个名字，但是很多时候字体描述文件的名字是非常神秘的，'
+                      '那么你可能会想从$AFM$文件中自动检索到这个名字。'
+                      '当缺乏更复杂的方法时，你可以使用一些像这样简单的代码。')
+    pdf.add_code_eg(
+        """
+    class FontNameNotFoundError(Exception):
+        pass
+    
+    
+    def findFontName(path):
+        "Extract a font name from an AFM file."
+    
+        f = open(path)
+    
+        found = 0
+        while not found:
+            line = f.readline()[:-1]
+            if not found and line[:16] == 'StartCharMetrics':
+                raise FontNameNotFoundError, path
+            if line[:8] == 'FontName':
+                fontName = line[9:]
+                found = 1
+    
+        return fontName
+    """
+    )
+    pdf.add_paragraph('在<i>DarkGardenMK</i>的例子中，我们明确指定了要加载的字体描述文件的位置。'
+                      '一般来说，你会更倾向于将你的字体存储在一些规范的位置，并让嵌入机制知道它们。'
+                      '使用同样的配置机制，我们已经在本节开头看到了，我们可以为Type-1字体指定一个默认的搜索路径。')
+    pdf.add_paragraph('不幸的是，目前还没有一个可靠的标准来规定这些位置（甚至在同一个平台上也没有），'
+                      '因此，你可能需要编辑$reportlab_settings.py$'
+                      '或者$~/.reportlab_settings$来修改$T1SearchPath$标识符的值，'
+                      '以包含额外的目录。'
+                      '我们自己的建议是在开发中使用^reportlab/fonts^文件夹；并且在任何受控服务器部署中，将任何需要的字体作为应用程序的打包部件。'
+                      '这样可以避免字体被其他软件或系统管理员安装和卸载。')
+    pdf.add_heading("关于缺失字形的警告", level=3)
+    pdf.add_paragraph('如果你指定了一个编码，一般会认为字体设计师已经提供了所有需要的字形。'
+                      '然而，事实并非总是如此。'
+                      '在我们的示例字体中，字母表中的字母都存在，但许多符号和重音都没有。'
+                      '默认的行为是，当传递给字体一个它无法绘制的字符时，字体会打印一个 "notdef "字符'
+                      '--通常是一个blob、点或空格。'
+                      '然而，你可以要求库警告你；'
+                      '下面的代码（在加载字体之前执行）将导致在你注册字体时，对任何不在字体中的字形产生警告。')
+    pdf.add_code_eg(
+        """
+    import reportlab.rl_config
+    reportlab.rl_config.warnOnMissingFontGlyphs = 0
+    """
+    )
+    pdf.add_heading("标准的单字节字体编码", level=2)
+    pdf.add_paragraph('本节为您展示常用编码中可用的字形。')
+    pdf.add_paragraph('下面的代码表显示了$WinAnsiEncoding$中的字符，'
+                      '这是Windows和许多美国和西欧Unix系统的标准编码。'
+                      '这是在美国和西欧的Windows和许多Unix系统上的标准编码，也被称为$Code Page 1252$，'
+                      '实际上与$ISO-Latin-1$相同（包含一个或两个额外的字符）。'
+                      '这是$Reportlab PDF$库使用的默认编码。'
+                      '它由$reportlab/lib$中的一个标准例程$codecharts.py$生成，'
+                      '可用于显示字体的内容。 沿边的索引号是以十六进制表示的。')
+    cht1 = SingleByteEncodingChart(
+        encodingName='WinAnsiEncoding', charsPerRow=32, boxSize=12
+    )
+    pdf.add_illustration(
+        lambda canv: cht1.drawOn(canv, 0, 0),
+        "WinAnsi Encoding",
+        cht1.width,
+        cht1.height,
+    )
+    pdf.add_paragraph('下面的代码表显示了$MacRomanEncoding$中的字符，'
+                      '听起来，这是美国和西欧Macintosh电脑上的标准编码。'
+                      '和通常的非unicode编码一样，前128个码点（在本例中，最上面4行）是ASCII标准，'
+                      '并与上面的WinAnsi代码表一致；但下面4行不同。')
+    cht2 = SingleByteEncodingChart(
+        encodingName='MacRomanEncoding', charsPerRow=32, boxSize=12
+    )
+    pdf.add_illustration(
+        lambda canv: cht2.drawOn(canv, 0, 0),
+        "MacRoman Encoding",
+        cht2.width,
+        cht2.height,
+    )
+    pdf.add_paragraph('这两种编码适用于标准字体（Helvetica、Times-Roman和Courier及其变体），'
+                      '并将适用于大多数商业字体，包括Adobe的字体。'
+                      '然而，有些字体包含非文本字形，这个概念并不真正适用。'
+                      '例如，ZapfDingbats和Symbol可以被视为各自拥有自己的编码。')
+
+    cht3 = SingleByteEncodingChart(
+        faceName='ZapfDingbats',
+        encodingName='ZapfDingbatsEncoding',
+        charsPerRow=32,
+        boxSize=12,
+    )
+    pdf.add_illustration(
+        lambda canv: cht3.drawOn(canv, 0, 0),
+        "ZapfDingbats和它的唯一编码。",
+        cht3.width,
+        cht3.height,
+    )
+    cht4 = SingleByteEncodingChart(
+        faceName='Symbol', encodingName='SymbolEncoding', charsPerRow=32, boxSize=12
+    )
+    pdf.add_illustration(
+        lambda canv: cht4.drawOn(canv, 0, 0),
+        "$Symbol$及其唯一的编码",
+        cht4.width,
+        cht4.height,
+    )
+    pdf.add_cond_page_break(5)
+
+    pdf.add_heading("支持TrueType字体", level=2)
+    pdf.add_paragraph('Marius Gedminas ($mgedmin@delfi.lt$)'
+                      '在$Viktorija Zaksiene$($vika@pov.lt$)的帮助下，为嵌入式TrueType字体提供了支持。'
+                      'TrueType字体可以在Unicode/UTF8中使用，并且不限于256个字符。')
+    pdf.add_cond_page_break(3)
+    pdf.add_paragraph('我们使用<b>$reportlab.pdfbase.ttfonts.TTFont$</b>来创建一个真正的字体对象，'
+                      '并使用<b>$reportlab.pdfbase.pdfmetrics.registerFont$</b>进行注册。'
+                      '在pdfgen直接在画布上绘图时我们可以这样做')
+    pdf.add_code_eg(
+        """
+    # we know some glyphs are missing, suppress warnings
+    import reportlab.rl_config
+    reportlab.rl_config.warnOnMissingFontGlyphs = 0
+    
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    
+    pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
+    canvas.setFont('Vera', 32)
+    canvas.drawString(10, 150, "Some text encoded in UTF-8")
+    canvas.drawString(10, 100, "In the Vera TT Font!")
+    """
+    )
+    pdf.add_illustration(examples.ttffont1, "使用$Vera TrueType$字体")
+    pdf.add_paragraph('在上面的例子中，$True Type$字体对象是使用')
+    pdf.add_code_eg(
+        """
+        TTFont(name,filename)
+    """
+    )
+    pdf.add_paragraph('所以ReportLab的内部名称由第一个参数给出，'
+                      '第二个参数是一个字符串（或类似文件的对象），表示字体的TTF文件。'
+                      '在Marius最初的补丁中，文件名应该是完全正确的，'
+                      '但我们已经修改了，如果文件名是相对的，'
+                      '那么在当前目录下搜索相应的文件，'
+                      '然后在$reportlab.rl_config.TTFSearchpath$!')
+
+
+    pdf.add_paragraph('在使用Platypus中的TT字体之前，'
+                      '我们应该在$&lt;b&gt;$和$&lt;i&gt;$'
+                      '属性下添加一个从家族名称到描述行为的单个字体名称的映射。')
+    pdf.add_code_eg(
+        """
+    from reportlab.pdfbase.pdfmetrics import registerFontFamily
+    registerFontFamily('Vera',normal='Vera',bold='VeraBd',italic='VeraIt',
+    boldItalic='VeraBI')
+    """
+    )
+    pdf.add_paragraph('如果我们只有一个Vera常规字体，没有粗体或斜体，那么我们必须将所有字体映射到同一个内部字体名。'
+                      '^&lt;b&gt;^和^&lt;i&gt;^标签现在可以安全使用，但没有效果。'
+                      '如上所述注册和映射Vera字体后，我们可以使用段落文本，如')
+    # 注册一下字体，后面会用到，这个字体是Reportlab包自带的
+    pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
+    pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
+    registerFontFamily(
+        'Vera', normal='Vera', bold='VeraBd', italic='VeraIt', boldItalic='VeraBI'
+    )
+    pdf.add_para_box2("""<font name="Times-Roman" size="14">This is in Times-Roman</font>
+<font name="Vera" color="magenta" size="14">and this is in magenta 
+<b>Vera!</b></font>""",
+                      "Using TTF fonts in paragraphs")
+    pdf.add_heading("亚洲字体支持", level=2)
+    pdf.add_paragraph('Reportlab PDF库旨在为亚洲字体提供全面支持。'
+                      'PDF是第一个真正可移植的亚洲文本处理解决方案。'
+                      '有两种主要的方法。 Adobe的亚洲语言包，或者TrueType字体。')
+    pdf.add_heading("亚洲语言包", level=3)
+    pdf.add_paragraph('这种方法提供了最好的性能，因为没有任何东西需要嵌入到PDF文件中；与标准字体一样，一切都在阅读器上。')
+    pdf.add_paragraph('Adobe公司为每种主要语言都提供了附加组件。'
+                      '在$Adobe Reader 6.0$和7.0中，当您尝试使用它们打开文档时，您会被提示下载并安装这些插件。'
+                      '在早期的版本中，你会在打开亚洲文档时看到一个错误信息，你必须知道该怎么做。')
+    pdf.add_paragraph('日文、繁体中文(台湾/香港)、简体中文(中国大陆)和韩文都支持，我们的软件知道以下字体。')
+    pdf.add_bullet("$chs$ = Chinese Simplified (mainland): '$SourceHanSansSC$'")
+    pdf.add_bullet("$cht$ = Chinese Traditional (Taiwan): '$MSung-Light$', '$MHei-Medium$'")
+    pdf.add_bullet("$kor$ = Korean: '$HYSMyeongJoStd-Medium$','$HYGothic-Medium$'")
+    pdf.add_bullet("$jpn$ = Japanese: '$HeiseiMin-W3$', '$HeiseiKakuGo-W5$'")
+    pdf.add_paragraph('由于许多用户不会安装字体包，我们已经包含了一些日文字符的相当颗粒状的^bitmap^。 下面我们将讨论生成它们所需要的内容。')
+
+    pdf.add_image(os.path.join(BASE_DIR, "images", 'jpnchars.jpg'))
+    pdf.add_paragraph('在2.0版本之前，当你注册一个$CIDFont$时，'
+                      '你必须指定许多本地编码之一。在2.0版本中，你应该使用一个新的^UnicodeCIDFont^类。')
+    pdf.add_code_eg(
+        """
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.cidfonts import UnicodeCIDFont
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
+    canvas.setFont('HeiseiMin-W3', 16)
+    
+    # the two unicode characters below are "Tokyo"
+    msg = u'\\u6771\\u4EAC : Unicode font, unicode input'
+    canvas.drawString(100, 675, msg)
+    """
+    )
+    pdf.add_paragraph('旧的编码风格与显式编码应该仍然有效，但现在只有当你需要构建垂直文本时才有意义。'
+                      '我们的目标是在未来为UnicodeCIDFont构造函数添加更多可读的水平和垂直文本选项。'
+                      '以下四个测试脚本会生成相应语言的样本。')
+
+    pdf.add_code_eg(
+        """tests/test_multibyte_jpn.py
+    tests/test_multibyte_kor.py
+    tests/test_multibyte_chs.py
+    tests/test_multibyte_cht.py"""
+    )
+    ## put back in when we have vertical text...
+    ##disc("""The illustration below shows part of the first page
+    ##of the Japanese output sample.  It shows both horizontal and vertical
+    ##writing, and illustrates the ability to mix variable-width Latin
+    ##characters in Asian sentences.  The choice of horizontal and vertical
+    ##writing is determined by the encoding, which ends in 'H' or 'V'.
+    ##Whether an encoding uses fixed-width or variable-width versions
+    ##of Latin characters also depends on the encoding used; see the definitions
+    ##below.""")
+    ##
+    ##Illustration(image("../images/jpn.gif", width=531*0.50,
+    ##height=435*0.50), 'Output from test_multibyte_jpn.py')
+    ##
+    ##caption("""
+    ##Output from test_multibyte_jpn.py
+    ##""")
+
+    pdf.add_paragraph('在以前版本的$ReportLab PDF$库中，'
+                      '我们不得不使用Adobe的CMap文件（如果安装了亚洲语言包，则位于$Acrobat Reader$附近）。'
+                      '现在我们只需要处理一种编码，字符宽度数据被嵌入到软件包中，生成时不需要CMap文件。'
+                      '在^rl_config.py^中的CMap搜索路径现在已经被废弃，'
+                      '如果你限制自己使用$UnicodeCIDFont$，则没有效果。')
+    pdf.add_heading("TrueType字体和亚洲字符", level=3)
+    pdf.add_paragraph('这就是简单的方法。'
+                      '在使用亚洲$TrueType$字体时，完全不需要特殊的处理。'
+                      '例如，在控制面板中安装了日语作为选项的Windows用户，'
+                      '会有一个可以使用的字体 "$msmincho.ttf$"。'
+                      '然而，请注意，解析字体需要时间，而且相当大的子集可能需要嵌入你的PDF中。'
+                      '我们现在也可以解析以$.ttc$结尾的文件，它们是$.ttf$的轻微变化。')
+    pdf.add_heading("To Do", level=3)
+
+    pdf.add_paragraph('我们预计将在一段时间内开发这个领域的包.accept2dyear这是一个主要优先事项的大纲。 我们欢迎大家的帮助')
+    pdf.add_bullet('确保我们在横写和竖写中的所有编码都有准确的字符指标。')
+    pdf.add_bullet('为^UnicodeCIDFont^添加选项，在字体允许的情况下，允许垂直和比例变体。')
+    pdf.add_bullet('改进段落中的包字代码，允许竖写。')
+    pdf.add_cond_page_break(5)
+    pdf.add_heading("RenderPM 测试", level=2)
+    pdf.add_paragraph('这可能也是提及$reportlab/graphics/renderPM.py$的测试函数的最好地方，'
+                      '它可以被认为是行使renderPM'
+                      '("$PixMap Renderer$"，相对于renderPDF、renderPS或renderSVG)的测试的规范地方。')
+    pdf.add_paragraph('如果你从命令行运行这个，你应该会看到很多像下面这样的输出。')
+    pdf.add_code_eg(
+        """C:\\code\\reportlab\\graphics>renderPM.py
+    wrote pmout\\renderPM0.gif
+    wrote pmout\\renderPM0.tif
+    wrote pmout\\renderPM0.png
+    wrote pmout\\renderPM0.jpg
+    wrote pmout\\renderPM0.pct
+    ...
+    wrote pmout\\renderPM12.gif
+    wrote pmout\\renderPM12.tif
+    wrote pmout\\renderPM12.png
+    wrote pmout\\renderPM12.jpg
+    wrote pmout\\renderPM12.pct
+    wrote pmout\\index.html"""
+    )
+    pdf.add_paragraph('它运行了许多测试，'
+                      '从 "Hello World"测试开始，到各种测试，'
+                      '包括：线条；各种尺寸、字体、颜色和对齐方式的文本字符串；'
+                      '基本形状；转换和旋转组；缩放坐标；'
+                      '旋转字符串；嵌套组；锚定和非标准字体。')
+    pdf.add_paragraph('它创建了一个名为$pmout$的子目录，将图片文件写入其中，并写了一个$index.html$的页面，便于参考所有结果。')
+    pdf.add_paragraph("与字体相关的测试，你可能会想看看#11（'非标准字体中的文本字符串'）和#12（'测试各种字体'）。")
 
 def chapter4(pdf):
     pass

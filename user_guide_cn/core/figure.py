@@ -1,3 +1,5 @@
+import logging
+
 from reportlab import rl_config
 from reportlab.lib.fonts import tt2ps
 from reportlab.lib.units import inch
@@ -14,6 +16,8 @@ example_function_display_sizes = (
     example_function_x_inches * inch,
     example_function_y_inches * inch,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class Illustration(BaseFigure):
@@ -32,6 +36,7 @@ class Illustration(BaseFigure):
             caption,
             captionFont=tt2ps(font_name, 0, 1),
         )
+        logger.info(operation)
         self.operation = operation
 
     def drawFigure(self):

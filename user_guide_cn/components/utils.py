@@ -3,7 +3,7 @@ import json
 import logging
 
 from contextlib import redirect_stderr
-from fontTools import ttLib
+# from fontTools import ttLib
 
 from components.t_parse import Template
 
