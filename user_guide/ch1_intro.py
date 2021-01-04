@@ -807,8 +807,8 @@ bullet(
     these may be used in places like &lt;img&gt; tags in paragraph texts."""
 )
 cn_bullet(
-    """TrustedHosts：如果不是$None$，则列出受信任主机的全局模式；
-这些可以在＆lt; img＆gt;之类的地方使用。 段落文字中的标签。"""
+    """TrustedHosts：如果不是$None$，则列出全局模式下受信任的主机列表；
+这些模式可用于段落文本中的&lt;img&gt; 标签等地方。"""
 )
 
 bullet(
@@ -823,7 +823,7 @@ cn_bullet(
 disc(
     """For the full list of variables see the file $reportlab/rl_settings.py$."""
 )
-cn_bullet("""有关变量的完整列表，请参见文件$reportlab/rl_settings.py$。""")
+cn_disc("""有关变量的完整列表，请参见文件$reportlab/rl_settings.py$。""")
 
 # heading3("Other modifications")
 cn_heading3("""其他修改""")
