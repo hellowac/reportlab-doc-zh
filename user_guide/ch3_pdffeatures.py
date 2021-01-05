@@ -29,7 +29,7 @@ from utils import examples
 
 
 # heading1("Exposing PDF Special Capabilities")
-cn_heading1("揭示PDF的特殊能力")
+cn_heading1("PDF的特殊功能")
 
 disc(
     """PDF provides a number of features to make electronic
@@ -52,29 +52,31 @@ file size and production time, and apparently even speed things
 up on the printer.
     """
 )
-cn_disc('表单功能让您可以在PDF文件的开头附近创建一个图形和文本块，'
-        '然后在随后的页面上简单地引用它。 '
-        '如果您要处理5000个重复的商业表格'
-        '--例如，一页的发票或工资单--您只需要存储一次背景，并简单地在每一页上绘制变化的文本。 '
-        '正确使用表格，可以大大减少文件大小和生产时间，甚至可以加快打印机的速度。')
+cn_disc(
+    "表单功能使您可以在PDF文件开头附近创建一个图形和文本块，然后在后续页面中简单地引用它。 "
+    "如果要处理5000种重复的业务表单（例如一页发票或工资单），"
+    "则只需将背景存储一次，并在每页上简单地绘制变化的文本即可。 "
+    "正确使用表格可以极大地减少文件大小和生产时间，"
+    "并且显然甚至可以加快打印机上的处理速度。"
+)
 
 disc(
     """Forms do not need to refer to a whole page; anything which might be 
 repeated often should be placed in a form."""
 )
-cn_disc('表格不需要引用整页的内容，凡是可能经常重复的内容都应该放在表格中。')
+cn_disc('表单不需要引用整个页面； 任何可能经常重复的内容都应以表格的形式放置。')
 
 disc(
     """The example below shows the basic sequence used.  A real
 program would probably define the forms up front and refer to
 them from another location."""
 )
-cn_disc('下面的例子显示了使用的基本序列。 一个真正的程序可能会在前面定义表格，并从另一个位置引用它们。')
+cn_disc('下面的示例显示了使用的基本顺序。 真正的程序可能会预先定义表单，然后从另一个位置引用它们。')
 
 eg(examples.testforms)
 
 # heading2("Links and Destinations")
-cn_heading2("链接和目的地")
+cn_heading2("链接和目的地(书签)")
 
 disc(
     """PDF supports internal hyperlinks.  There is a very wide
@@ -85,10 +87,11 @@ to another, and to control the zoom level of the window after
 the jump.  The ^bookmarkPage^ method defines a destination that
 is the endpoint of a jump."""
 )
-cn_disc('PDF支持内部超链接。 '
-        '有一个非常广泛的链接类型，目标类型和事件可以通过点击来触发。 '
-        '目前，我们只支持从文档的一个部分跳转到另一个部分的基本功能，以及控制跳转后窗口的缩放级别。 '
-        '^bookmarkPage^方法定义了一个目标，它是跳转的终点。')
+cn_disc(
+    "PDF支持内部超链接。 单击可以触发多种链接类型，目标类型和事件。"
+    "目前，我们仅支持从文档的一个部分跳转到另一部分并在跳转后控制窗口的缩放级别的基本功能。"
+    "^bookmarkPage^方法定义一个目标，该目标是跳转的终点。"
+)
 
 # todo("code example here...")
 
@@ -111,8 +114,10 @@ destination. After jumping to an endpoint defined by bookmarkPage,
 the PDF browser will display the whole page, scaling it to fit the
 screen:"""
 )
-cn_disc('默认情况下，$bookmarkPage$方法将页面本身定义为目标。'
-        '在跳转到由^bookmarkPage^定义的端点后，PDF浏览器将显示整个页面，并将其缩放以适应屏幕。')
+cn_disc(
+    "默认情况下，$ bookmarkPage $方法将页面本身定义为目标。"
+    "跳转到由^bookmarkPage^定义的端点之后，PDF浏览器将显示整个页面，并将其缩放以适合屏幕大小："
+)
 
 eg("""canvas.bookmarkPage(name)""")
 
@@ -121,7 +126,7 @@ disc(
 page in a number of different ways by providing a $fit$
 parameter."""
 )
-cn_disc('通过提供一个$fit$参数，$bookmarkPage$方法可以被指示以多种不同的方式显示页面。')
+cn_disc("通过提供一个$fit$参数，$bookmarkPage$方法可以用多种不同的方式显示页面。")
 
 eg("")
 
@@ -156,22 +161,40 @@ t.setStyle(
 )
 # getStory().append(t)
 
-cn_t = Table([
-    ['fit', '必传参数', '描述'],
-    ['Fit', None, '自适应窗口 (默认)'],
-    ['FitH', 'top', '坐标在窗口上方, 自适应宽度'],
-    ['FitV', 'left', '坐标在窗口左边, 自适应高度'],
+cn_t = Table(
     [
-        'FitR',
-        'left bottom right top',
-        '缩放窗口以适应指定的矩形',
-    ],
-    [
-        'XYZ',
-        'left top zoom',
-        '细致的控制。如果您省略了一个参数，PDF浏览器会将其解释为 "保持原样"。',
-    ],
-])
+        ['fit', '必传参数', '描述'],
+        [
+            'Fit',
+            None,
+            '自适应窗口 (默认)\nEntire page fits in window (the default)',
+        ],
+        [
+            'FitH',
+            'top',
+            '坐标在窗口上方, 自适应宽度\n'
+            'Top coord at top of window, width scaled to fit',
+        ],
+        [
+            'FitV',
+            'left',
+            '坐标在窗口左边, 自适应高度\n'
+            'Left coord at left of window, height scaled to fit',
+        ],
+        [
+            'FitR',
+            'left bottom right top',
+            '缩放窗口以适应指定的矩形\n' 'Scale window to fit the specified rectangle',
+        ],
+        [
+            'XYZ',
+            'left top zoom',
+            '细致的控制。如果您省略了一个参数，PDF浏览器会将其解释为 "保持原样"。\n'
+            'Fine grained control. If you omit a parameter\n'
+            'the PDF browser interprets it as "leave as is"',
+        ],
+    ]
+)
 cn_t.setStyle(
     TableStyle(
         [
@@ -204,8 +227,7 @@ The $FitR$ fit allows you to identify a particular rectangle, scaling
 the area to fit the entire page.
 """
 )
-cn_disc('有时你希望跳转的目标是一个页面的某个部分。'
-        '$FitR$ fit允许你确定一个特定的矩形，缩放区域以适合整个页面。')
+cn_disc('有时你希望跳转的目标是一个页面的某个部分。' '$FitR$ fit允许你确定一个特定的矩形，缩放区域以适合整个页面。')
 
 disc(
     """
@@ -228,8 +250,7 @@ at position 200. Because $zoom$ was not set the zoom remains at whatever the
 user had it set to.
 """
 )
-cn_disc('这个目标位于页面的最左边，屏幕顶部的位置是200。'
-        '因为没有设置$zoom$，所以无论用户设置成什么样子，缩放都会保持在这个位置。')
+cn_disc('这个目标位于页面的最左边，屏幕顶部的位置是200。' '因为没有设置$zoom$，所以无论用户设置成什么样子，缩放都会保持在这个位置。')
 
 eg(
     """
@@ -247,8 +268,10 @@ Note  : Both $XYZ$ and $FitR$ fit types require that their positional parameters
 They ignore any geometric transform in effect in the canvas graphic state.
 """
 )
-cn_disc('注意：$XYZ$和$FitR$的拟合类型都需要用默认的用户空间来指定它们的位置参数($top, bottom, left, right$)。'
-        '它们会忽略画布图形状态下的任何几何变换。')
+cn_disc(
+    '注意：$XYZ$和$FitR$的拟合类型都需要用默认的用户空间来指定它们的位置参数($top, bottom, left, right$)。'
+    '它们会忽略画布图形状态下的任何几何变换。'
+)
 
 pencilnote()
 
@@ -259,8 +282,10 @@ that bookmarkPage is so general.  These are $bookmarkHorizontalAbsolute$
 and $bookmarkHorizontal$.
 """
 )
-cn_disc('<i>注意：</i>之前有两个书签方法是支持的，但由于bookmarkPage的通用性，现在已经废弃了。 '
-        '这两个方法是$bookmarkHorizontalAbsolute$和$bookmarkHorizontal$。')
+cn_disc(
+    '<i>注意：</i>之前有两个书签方法是支持的，但由于bookmarkPage的通用性，现在已经废弃了。 '
+    '这两个方法是$bookmarkHorizontalAbsolute$和$bookmarkHorizontal$。'
+)
 
 # heading3("Defining internal links")
 cn_heading3("定义内部链接")
@@ -286,11 +311,13 @@ $contents$ parameter specifies a chunk of text which displays in the viewer
 if the user left-clicks on the region.
 """
 )
-cn_disc('$linkAbsolute$方法定义了一个跳跃的起点。 '
-        '当用户使用动态查看器(如Acrobat Reader)浏览生成的文档时，当鼠标在$Rect$指定的矩形内点击时，'
-        '查看器将跳转到与$destinationname$相关联的端点。'
-        '如同$bookmarkHorizontalAbsolute$一样，矩形$Rect$必须用默认的用户空间来指定。 '
-        '参数$contents$指定了当用户左键点击该区域时在查看器中显示的文本块。')
+cn_disc(
+    '$linkAbsolute$方法定义了一个跳跃的起点。 '
+    '当用户使用动态查看器(如Acrobat Reader)浏览生成的文档时，当鼠标在$Rect$指定的矩形内点击时，'
+    '查看器将跳转到与$destinationname$相关联的端点。'
+    '如同$bookmarkHorizontalAbsolute$一样，矩形$Rect$必须用默认的用户空间来指定。 '
+    '参数$contents$指定了当用户左键点击该区域时在查看器中显示的文本块。'
+)
 
 disc(
     """
@@ -317,8 +344,10 @@ $Meaning_of_life$.  To create a rectangular link to it while drawing a possibly
 different page, we would use this code:
 """
 )
-cn_disc('定义了一个位置，作为当前页面的整个标识符$Meaning_of_life$。 '
-        '为了在绘制一个可能不同的页面时创建一个矩形链接到它，我们将使用以下代码。')
+cn_disc(
+    '定义了一个位置，作为当前页面的整个标识符$Meaning_of_life$。 '
+    '为了在绘制一个可能不同的页面时创建一个矩形链接到它，我们将使用以下代码。'
+)
 
 eg(
     """
@@ -334,9 +363,11 @@ link. Use the keyword argument $Border='[0 0 0]'$ to suppress the visible
 rectangle around the during viewing link. For example
 """
 )
-cn_disc("默认情况下，在交互式浏览时，链接周围会出现一个矩形。"
-        "使用关键字参数$Border='[0 0 0]'$来抑制查看链接时周围可见的矩形。"
-        "例如")
+cn_disc(
+    "默认情况下，在交互式浏览时，链接周围会出现一个矩形。"
+    "使用关键字参数$Border='[0 0 0]'$来抑制查看链接时周围可见的矩形。"
+    "例如"
+)
 
 eg(
     """
@@ -355,19 +386,23 @@ should be a $Color$ instance) is equivalent to a keyword argument $C$ which
 should resolve to a PDF color definition (Normally a three entry PDF array).
 """
 )
-cn_disc('如果没有指定Border参数，$thickness$、$color$和$dashArray$参数可以交替使用来指定边框。'
-        '如果指定了Border参数，它必须是一个PDF数组的字符串表示，'
-        '或者是一个$PDFArray$(参见pdfdoc模块)。'
-        '$color$参数(应该是一个$Color$实例)相当于一个关键字参数$C$，'
-        '它应该解析为一个PDF颜色定义(通常是一个三条PDF数组)。')
+cn_disc(
+    '如果没有指定Border参数，$thickness$、$color$和$dashArray$参数可以交替使用来指定边框。'
+    '如果指定了Border参数，它必须是一个PDF数组的字符串表示，'
+    '或者是一个$PDFArray$(参见pdfdoc模块)。'
+    '$color$参数(应该是一个$Color$实例)相当于一个关键字参数$C$，'
+    '它应该解析为一个PDF颜色定义(通常是一个三条PDF数组)。'
+)
 
 disc(
     """The $canvas.linkRect$ method is similar in intent to the 
 $linkAbsolute$ method, but has an extra argument $relative=1$ so is 
 intended to obey the local user space transformation."""
 )
-cn_disc('$canvas.linkRect$方法的意图与$linkAbsolute$方法类似，'
-        '但多了一个参数$relative=1$，所以打算服从本地用户空间转换。')
+cn_disc(
+    '$canvas.linkRect$方法的意图与$linkAbsolute$方法类似，'
+    '但多了一个参数$relative=1$，所以打算服从本地用户空间转换。'
+)
 
 # heading2("Outline Trees")
 cn_heading2("大纲")
@@ -382,12 +417,14 @@ $canvas.addOutlineEntry(^self, title, key, level=0,
 closed=None^)$ as it reaches each heading in the document.
     """
 )
-cn_disc('Acrobat Reader有一个导航页，它可以容纳一个文档大纲；'
-        '当您打开本指南时，它通常应该是可见的。 '
-        '我们提供一些简单的方法来添加大纲条目。 '
-        '通常情况下，一个制作文档的程序（如本用户指南）在到达文档中的每个标题时，'
-        '会调用方法$canvas.addOutlineEntry(^self, title, key, level=0, '
-        'closed=None^)$。')
+cn_disc(
+    'Acrobat Reader有一个导航页，它可以容纳一个文档大纲；'
+    '当您打开本指南时，它通常应该是可见的。 '
+    '我们提供一些简单的方法来添加大纲条目。 '
+    '通常情况下，一个制作文档的程序（如本用户指南）在到达文档中的每个标题时，'
+    '会调用方法$canvas.addOutlineEntry(^self, title, key, level=0, '
+    'closed=None^)$。'
+)
 
 disc(
     """^title^ is the caption which will be displayed in
@@ -398,11 +435,13 @@ to go down more than one level at a time (for example to follow a level 0
 heading by a level 2 heading).  Finally, the ^closed^ argument specifies
 whether the node in the outline pane is closed or opened by default."""
 )
-cn_disc('^title^是将显示在左侧窗格的标题。 '
-        '^key^必须是一个字符串，它在文档中是唯一的，并且和超链接一样，可以命名一个书签。 '
-        '除非另有说明，否则^level^是0'
-        '--最上层，而且一次下行超过一层是错误的(例如，在0层标题后加上2层标题)。 '
-        '最后，^closed^参数指定大纲窗格中的节点是默认关闭还是打开。')
+cn_disc(
+    '^title^是将显示在左侧窗格的标题。 '
+    '^key^必须是一个字符串，它在文档中是唯一的，并且和超链接一样，可以命名一个书签。 '
+    '除非另有说明，否则^level^是0'
+    '--最上层，而且一次下行超过一层是错误的(例如，在0层标题后加上2层标题)。 '
+    '最后，^closed^参数指定大纲窗格中的节点是默认关闭还是打开。'
+)
 
 disc(
     """The snippet below is taken from the document template
@@ -416,11 +455,13 @@ outline entry points aims at the whole page, but it could
 as easily have been an individual paragraph.
     """
 )
-cn_disc('下面的片段来自于格式化本用户指南的文档模板。 '
-        '中央处理器依次查看每个段落，当出现新的章节时，'
-        '就会做出一个新的大纲条目，将章节标题文本作为标题文本。 '
-        '键是从章节号中获得的（这里没有显示），所以第2章的键为 "ch2"。 '
-        '大纲入口指向的书签是针对整页的，但它也可以很容易地成为一个单独的段落。')
+cn_disc(
+    '下面的片段来自于格式化本用户指南的文档模板。 '
+    '中央处理器依次查看每个段落，当出现新的章节时，'
+    '就会做出一个新的大纲条目，将章节标题文本作为标题文本。 '
+    '键是从章节号中获得的（这里没有显示），所以第2章的键为 "ch2"。 '
+    '大纲入口指向的书签是针对整页的，但它也可以很容易地成为一个单独的段落。'
+)
 
 eg(
     """
@@ -454,9 +495,11 @@ slide presentations, among other places. Please see the reference manual for
 more detail on how to use this method.
 """
 )
-cn_disc('$setPageTransition$方法指定了一个页面如何被下一个页面替换。 '
-        '例如，通过将页面转换效果设置为 "溶解"，当当前页面在交互式浏览过程中被下一个页面所取代时，它将显示为融化。 '
-        '这些效果在美化幻灯片演示等地方很有用。关于如何使用此方法，请参阅参考手册。')
+cn_disc(
+    '$setPageTransition$方法指定了一个页面如何被下一个页面替换。 '
+    '例如，通过将页面转换效果设置为 "溶解"，当当前页面在交互式浏览过程中被下一个页面所取代时，它将显示为融化。 '
+    '这些效果在美化幻灯片演示等地方很有用。关于如何使用此方法，请参阅参考手册。'
+)
 
 # heading2("Internal File Annotations")
 cn_heading2("内部文件注释")
@@ -481,14 +524,16 @@ text editor (such as $notepad$ on MS/Windows or $vi$ or $emacs$ on unix) and
 look for the string $/Author$ in the file contents.
 """
 )
-cn_disc('这些方法对文档没有自动可见的效果。'
-        '它们向文件添加内部注释。 '
-        '这些注释可以使用浏览器的 "文档信息 "菜单项来查看，'
-        '它们也可以作为一种简单的标准方式，向不需要解析整个文件的归档软件提供有关文件的基本信息。 '
-        '要找到注释，请使用标准文本编辑器'
-        '（如MS/Windows上的$notepad$或unix上的$vi$或$emacs$）'
-        '查看$*.pdf$输出文件，'
-        '并在文件内容中查找字符串$/Author$。')
+cn_disc(
+    '这些方法对文档没有自动可见的效果。'
+    '它们向文件添加内部注释。 '
+    '这些注释可以使用浏览器的 "文档信息 "菜单项来查看，'
+    '它们也可以作为一种简单的标准方式，向不需要解析整个文件的归档软件提供有关文件的基本信息。 '
+    '要找到注释，请使用标准文本编辑器'
+    '（如MS/Windows上的$notepad$或unix上的$vi$或$emacs$）'
+    '查看$*.pdf$输出文件，'
+    '并在文件内容中查找字符串$/Author$。'
+)
 
 eg(examples.testannotations)
 
@@ -574,8 +619,7 @@ If the owner password is supplied, then the file is opened with full control
 passwords, or re-encrypting it with a new password.
 """
 )
-cn_disc('如果提供了所有者密码，那么文件的打开就有了完全的控制权'
-        '--你可以对它做任何事情，包括改变安全设置和密码，或者用新密码重新加密。')
+cn_disc('如果提供了所有者密码，那么文件的打开就有了完全的控制权' '--你可以对它做任何事情，包括改变安全设置和密码，或者用新密码重新加密。')
 
 disc(
     """
@@ -585,8 +629,7 @@ place when the file was encrypted, and will either allow or deny the user
 permission to do the following:
 """
 )
-cn_disc('如果用户密码是提供的密码，你就在一个更受限制的模式下打开它。'
-        '这些限制是在文件加密时设置的，将允许或拒绝用户进行以下操作的权限。')
+cn_disc('如果用户密码是提供的密码，你就在一个更受限制的模式下打开它。' '这些限制是在文件加密时设置的，将允许或拒绝用户进行以下操作的权限。')
 
 bullet("Modifying the document's contents")
 bullet("Copying text and graphics from the document")
@@ -611,11 +654,13 @@ This means that it is possible to create a file which, for example,
 is impossible for anyone to print out, even the person who created it.
 """
 )
-cn_disc('请注意，所有受密码保护的PDF文件都是加密的，但并不是所有加密的PDF都受密码保护。'
-        '如果一个文件的用户密码是一个空字符串，当打开文件时将不会有密码提示。'
-        '如果只用所有者密码来保护文档，那么打开文件时也不会有密码提示。'
-        '如果在对PDF文件进行加密时，将所有者和用户密码设置为同一字符串，则该文件将始终以用户访问权限打开。'
-        '这就意味着，可以创建一个文件，比如说，任何人都不可能打印出来，即使是创建该文件的人。')
+cn_disc(
+    '请注意，所有受密码保护的PDF文件都是加密的，但并不是所有加密的PDF都受密码保护。'
+    '如果一个文件的用户密码是一个空字符串，当打开文件时将不会有密码提示。'
+    '如果只用所有者密码来保护文档，那么打开文件时也不会有密码提示。'
+    '如果在对PDF文件进行加密时，将所有者和用户密码设置为同一字符串，则该文件将始终以用户访问权限打开。'
+    '这就意味着，可以创建一个文件，比如说，任何人都不可能打印出来，即使是创建该文件的人。'
+)
 
 t = Table(
     [
@@ -694,9 +739,11 @@ simply removing the password from the PDF file to gain access to it - it
 renders the file useless unless you actually have the password.
 """
 )
-cn_disc('当一个PDF文件被加密时，加密将应用于文件中的所有字符串和流。'
-        '这可以防止没有密码的人简单地从PDF文件中删除密码以获得访问权'
-        ' - 它使文件无用，除非你真的有密码。')
+cn_disc(
+    '当一个PDF文件被加密时，加密将应用于文件中的所有字符串和流。'
+    '这可以防止没有密码的人简单地从PDF文件中删除密码以获得访问权'
+    ' - 它使文件无用，除非你真的有密码。'
+)
 
 disc(
     """
@@ -709,12 +756,14 @@ encryption and decryption, and the algorithm does not change the length of
 the data.
 """
 )
-cn_disc('PDF 的标准加密方法使用 MD5 消息摘要算法'
-        '（如 RFC 1321，MD5 消息摘要算法中所述）和一种称为 RC4 的加密算法。'
-        'RC4是一种对称流加密算法'
-        '--加密和解密都使用相同的算法，而且该算法不会改变数据的长度。')
+cn_disc(
+    'PDF 的标准加密方法使用 MD5 消息摘要算法'
+    '（如 RFC 1321，MD5 消息摘要算法中所述）和一种称为 RC4 的加密算法。'
+    'RC4是一种对称流加密算法'
+    '--加密和解密都使用相同的算法，而且该算法不会改变数据的长度。'
+)
 
-heading3("How To Use Encryption")
+# heading3("How To Use Encryption")
 cn_heading3("如何使用加密技术")
 
 disc('Documents can be encrypted by passing an argument to the canvas object.')
@@ -722,21 +771,27 @@ cn_disc('文档可以通过向画布对象传递一个参数来加密。')
 
 disc(
     'If the argument is a string object, it is used as the User password to '
-    'the PDF.')
+    'the PDF.'
+)
 cn_disc('如果参数是一个字符串对象，它被用作PDF的用户密码。')
 
-disc("""
+disc(
+    """
 The argument can also be an instance of the class 
 $reportlab.lib.pdfencrypt.StandardEncryption$,
 which allows more finegrained control over encryption settings.
-""")
-cn_disc('参数也可以是$reportlab.lib.pdfencrypt.StandardEncryption$类的实例，'
-        '它允许对加密设置进行更精细的控制。')
+"""
+)
+cn_disc(
+    '参数也可以是$reportlab.lib.pdfencrypt.StandardEncryption$类的实例，'
+    '它允许对加密设置进行更精细的控制。'
+)
 
 disc('The $StandardEncryption$ constructor takes the following arguments:')
 cn_disc('$StandardEncryption$构造函数接受以下参数。')
 
-eg("""
+eg(
+    """
 def __init__(self, userPassword,
     ownerPassword=None,
     canPrint=1,
@@ -744,10 +799,11 @@ def __init__(self, userPassword,
     canCopy=1,
     canAnnotate=1,
     strength=40):
-""")
+"""
+)
 
 disc(
-"""
+    """
 The $userPassword$ and $ownerPassword$ parameters set the relevant 
 password on the encrypted PDF.
 """
@@ -755,23 +811,27 @@ password on the encrypted PDF.
 cn_disc('$userPassword$和$ownerPassword$参数在加密的PDF上设置了相关密码。')
 
 disc(
-"""
+    """
 The boolean flags $canPrint$, $canModify$, $canCopy$, $canAnnotate$ 
 determine wether a user can perform the corresponding actions on the PDF when only a user password has been supplied.
 """
 )
-cn_disc('布尔标志$canPrint$, $canModify$, $canCopy$, $canAnnotate$决定了'
-        '当只有用户密码被提供时，用户是否可以在PDF上执行相应的操作。')
+cn_disc(
+    '布尔标志$canPrint$, $canModify$, $canCopy$, $canAnnotate$决定了'
+    '当只有用户密码被提供时，用户是否可以在PDF上执行相应的操作。'
+)
 
-disc('If the user supplies the owner password while opening the PDF, '
-     'all actions can be performed regardless of the flags.')
+disc(
+    'If the user supplies the owner password while opening the PDF, '
+    'all actions can be performed regardless of the flags.'
+)
 cn_disc('如果用户在打开PDF时提供了所有者密码，则无论标志如何，所有的操作都可以执行。')
 
 # heading3("Example")
 cn_heading3("示例")
 
 disc(
-"""
+    """
 To create a document named hello.pdf with a user password of 'rptlab' on 
 which printing is not allowed,
 use the following code:
@@ -810,12 +870,14 @@ and should be considered a work in progress.At present we allow choices with
 text values can be entered with a <i>textfield</i> widget. All the widgets 
 are created by calling methods on the <i>canvas.acroform</i> property."""
 )
-cn_disc('PDF标准允许各种交互式元素，'
-        'ReportLab工具包目前只支持一小部分的可能性，应该被认为是一项正在进行中的工作。'
-        '目前我们允许使用<i>checkbox</i>, <i>radio</i>, '
-        '<i>choice</i> &amp; <i>listbox</i> widget进行选择；'
-        '文本值可以使用<i>textfield</i> widget进行输入。'
-        '所有的widget都是通过调用<i>canvas.acroform</i>属性上的方法创建的。')
+cn_disc(
+    'PDF标准允许各种交互式元素，'
+    'ReportLab工具包目前只支持一小部分的可能性，应该被认为是一项正在进行中的工作。'
+    '目前我们允许使用<i>checkbox</i>, <i>radio</i>, '
+    '<i>choice</i> &amp; <i>listbox</i> widget进行选择；'
+    '文本值可以使用<i>textfield</i> widget进行输入。'
+    '所有的widget都是通过调用<i>canvas.acroform</i>属性上的方法创建的。'
+)
 
 # heading3("Example")
 cn_heading3("示例")
@@ -884,8 +946,10 @@ disc(
 widget on the current page. The value of the checkbox is either 
 <b>YES</b> or <b>OFF</b>. The arguments are"""
 )
-cn_disc('<i>canvas.acroform.checkbox</i>方法在当前页面上创建了一个<i>checkbox</i>小部件。'
-        '复选框的值是<b>YES</b>或<b>OFF</b>。参数为')
+cn_disc(
+    '<i>canvas.acroform.checkbox</i>方法在当前页面上创建了一个<i>checkbox</i>小部件。'
+    '复选框的值是<b>YES</b>或<b>OFF</b>。参数为'
+)
 
 t = Table(
     [
@@ -989,12 +1053,14 @@ heading3("Radio Usage")
 cn_heading3("单选框使用方法")
 
 disc(
-"""The <i>canvas.acroform.radio</i> method creates a <i>radio</i> widget 
+    """The <i>canvas.acroform.radio</i> method creates a <i>radio</i> widget 
 on the current page. The value of the radio is the value of the radio 
 group's selected value or <b>OFF</b> if none are selected. The arguments are"""
 )
-cn_disc('<i>canvas.acroform.radio</i>方法在当前页面上创建一个<i>radio</i>小组件。'
-        'radio的值是radio组选择的值，如果没有选择，则是<b>OFF</b>。参数是')
+cn_disc(
+    '<i>canvas.acroform.radio</i>方法在当前页面上创建一个<i>radio</i>小组件。'
+    'radio的值是radio组选择的值，如果没有选择，则是<b>OFF</b>。参数是'
+)
 
 t = Table(
     [
@@ -1120,8 +1186,10 @@ widget on the current page. The listbox contains a list of options one or
 more of which (depending on fieldFlags) may be selected.
 """
 )
-cn_disc('<i>canvas.acroform.listbox</i>方法在当前页面上创建了一个<i>listbox</i>小组件。'
-        'listbox包含一个选项列表，其中一个或多个选项（取决于fieldFlags）可以被选中。')
+cn_disc(
+    '<i>canvas.acroform.listbox</i>方法在当前页面上创建了一个<i>listbox</i>小组件。'
+    'listbox包含一个选项列表，其中一个或多个选项（取决于fieldFlags）可以被选中。'
+)
 
 t = Table(
     [
@@ -1235,9 +1303,11 @@ selected. If you add <i>edit</i> to the <i>fieldFlags</i>
 then the result may be edited.
 """
 )
-cn_disc('<i>canvas.acroform.choice</i>方法在当前页面上创建了一个<i>dropdown</i>小部件。'
-        '下拉菜单包含一个选项列表，其中一个或多个选项（取决于fieldFlags）可以被选中。'
-        '如果您在<i>fieldFlags</i>中添加<i>edit</i>，那么结果可以被编辑。')
+cn_disc(
+    '<i>canvas.acroform.choice</i>方法在当前页面上创建了一个<i>dropdown</i>小部件。'
+    '下拉菜单包含一个选项列表，其中一个或多个选项（取决于fieldFlags）可以被选中。'
+    '如果您在<i>fieldFlags</i>中添加<i>edit</i>，那么结果可以被编辑。'
+)
 
 t = Table(
     [
@@ -1351,8 +1421,10 @@ entry widget on the current page. The textfield may be edited
 to change tha value of the widget
 """
 )
-cn_disc('<i>canvas.acroform.textfield</i>方法在当前页面上创建了一个<i>textfield</i>条目部件。'
-        '文本字段可以被编辑，以改变小组件的值。')
+cn_disc(
+    '<i>canvas.acroform.textfield</i>方法在当前页面上创建了一个<i>textfield</i>条目部件。'
+    '文本字段可以被编辑，以改变小组件的值。'
+)
 
 t = Table(
     [
@@ -1464,12 +1536,14 @@ in the button when it is selected. There are several choices"""
 )
 cn_disc('按钮样式参数表示当按钮被选中时，应该在按钮中出现什么样式的符号。有几种选择')
 
-eg("""check
+eg(
+    """check
 cross
 circle
 star
 diamond
-""")
+"""
+)
 
 disc(
     """note that the document renderer can make some of these symbols wrong 
@@ -1477,8 +1551,10 @@ for their intended application.  Acrobat reader
 prefers to use its own rendering on top of what the specification says should 
 be shown (especially when the forms hihlighting features are used"""
 )
-cn_disc('请注意，文档渲染器可能会使这些符号中的某些符号在其预期应用中出现错误。 '
-        'Acrobat阅读器更喜欢在规范规定应该显示的内容上使用自己的渲染（特别是在使用表格高亮功能的时候')
+cn_disc(
+    '请注意，文档渲染器可能会使这些符号中的某些符号在其预期应用中出现错误。 '
+    'Acrobat阅读器更喜欢在规范规定应该显示的内容上使用自己的渲染（特别是在使用表格高亮功能的时候'
+)
 
 # heading3("Widget shape")
 cn_heading3("小工具形状")
@@ -1489,12 +1565,16 @@ widget should appear you can use"""
 )
 cn_disc('形状参数描述了复选框或单选部件的轮廓应该如何显示，你可以使用')
 
-eg("""circle
+eg(
+    """circle
 square
-""")
+"""
+)
 
-disc("""The renderer may make its own decisions about how the widget should look; 
-so Acrobat Reader prefers circular outlines for radios.""")
+disc(
+    """The renderer may make its own decisions about how the widget should look; 
+so Acrobat Reader prefers circular outlines for radios."""
+)
 cn_disc('渲染器可能会自行决定小组件的外观，所以Acrobat Reader更喜欢圆形轮廓的收音机。')
 
 # heading3("Border style")
@@ -1506,7 +1586,8 @@ the page alternatives are"""
 )
 cn_disc('borderStyle参数会改变页面上小组件的3D外观，你可以使用')
 
-eg("""  solid
+eg(
+    """  solid
   dashed
   inset
   bevelled
