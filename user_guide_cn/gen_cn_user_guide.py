@@ -386,7 +386,7 @@ def chapter2(pdf):
     pdf.add_heading("使用 $pdfgen$ 生成图形和文本", level=1)
     pdf.add_heading("基本概念", level=2)
     pdf.add_paragraph(
-        "$pdfgen$包是生成PDF文档的最低级别接口。 一个$pdfgen$程序本质上是一个将文档 \"绘制\"到页面序列上的指令序列。 "
+        "$pdfgen$包是生成PDF文档的最低级别接口。 一个$pdfgen引擎$本质上是一个将文档\"绘制\"到页面序列上的指令序列。 "
         "提供绘画操作的接口对象是$pdfgen canvas$。"
     )
     pdf.add_paragraph(
@@ -1114,8 +1114,8 @@ def chapter2(pdf):
     pdf.add_paragraph(
         '$arc$和$arcTo$方法可以绘制部分椭圆。'
         '$arc$方法首先 "提起画笔 "并开始一个新的形状序列。'
-        '而$arcTo$方法则是将部分椭圆的起始点与当前的形状序列用线连接起来。 '
-        '在画部分椭圆之前，先画出部分椭圆的线段。 '
+        '而$arcTo$方法则是将部分椭圆的起始点与当前的形状序列用线连接起来 。'
+        '在画部分椭圆之前，先画出部分椭圆的线段 。'
         '点^(x1,y1)^和^(x2,y2)^定义包围椭圆的矩形的相对角点。'
         '$startAng$是一个角度(度数)，指定了部分椭圆的开始位置，其中0角是右边界的中点。'
         '围成的矩形（当^(x1,y1)^为左下角，^(x2,y2)^为右上角）。'
@@ -1200,7 +1200,7 @@ def chapter3(pdf):
     )
     pdf.add_paragraph(
         '如果你的数据不是UTF8编码，那么一旦你输入一个非ASCII字符，'
-        '你就会得到一个UnicodeDecodeError。 '
+        '你就会得到一个UnicodeDecodeError 。'
         '例如，下面这个代码段试图读取并打印一系列名字，包括一个带有法国口音的名字。'
         '^Marc -Andr/\u00e9 Lemburg^.  标准误差非常有用，它告诉你它不喜欢什么字符。'
     )
@@ -1757,7 +1757,7 @@ def chapter4(pdf):
     pdf.add_paragraph("示例代码")
     pdf.add_code_eg('canvas.bookmarkPage("Meaning_of_life")')
     pdf.add_paragraph(
-        '定义了一个位置，作为当前页面的整个标识符$Meaning_of_life$。 '
+        '定义了一个位置，作为当前页面的整个标识符$Meaning_of_life$ 。'
         '为了在绘制一个可能不同的页面时创建一个矩形链接到它，我们将使用以下代码。'
     )
     pdf.add_code_eg(
@@ -1806,10 +1806,10 @@ def chapter4(pdf):
         '最后，^closed^参数指定大纲窗格中的节点是默认关闭还是打开。'
     )
     pdf.add_paragraph(
-        '下面的片段来自于格式化本用户指南的文档模板。 '
+        '下面的片段来自于格式化本用户指南的文档模板 。'
         '中央处理器依次查看每个段落，当出现新的章节时，'
-        '就会做出一个新的大纲条目，将章节标题文本作为标题文本。 '
-        '键是从章节号中获得的（这里没有显示），所以第2章的键为 "ch2"。 '
+        '就会做出一个新的大纲条目，将章节标题文本作为标题文本 。'
+        '键是从章节号中获得的（这里没有显示），所以第2章的键为 "ch2" 。'
         '大纲入口指向的书签是针对整页的，但它也可以很容易地成为一个单独的段落。'
     )
     pdf.add_code_eg(
@@ -1831,8 +1831,8 @@ def chapter4(pdf):
                             """
     )
     pdf.add_paragraph(
-        '$setPageTransition$方法指定了一个页面如何被下一个页面替换。 '
-        '例如，通过将页面转换效果设置为 "溶解"，当当前页面在交互式浏览过程中被下一个页面所取代时，它将显示为融化。 '
+        '$setPageTransition$方法指定了一个页面如何被下一个页面替换 。'
+        '例如，通过将页面转换效果设置为 "溶解"，当当前页面在交互式浏览过程中被下一个页面所取代时，它将显示为融化 。'
         '这些效果在美化幻灯片演示等地方很有用。关于如何使用此方法，请参阅参考手册。'
     )
     pdf.add_heading("内部文件注释", level=2)
@@ -1845,9 +1845,9 @@ def chapter4(pdf):
     )
     pdf.add_paragraph(
         '这些方法对文档没有自动可见的效果。'
-        '它们向文件添加内部注释。 '
+        '它们向文件添加内部注释 。'
         '这些注释可以使用浏览器的 "文档信息 "菜单项来查看，'
-        '它们也可以作为一种简单的标准方式，向不需要解析整个文件的归档软件提供有关文件的基本信息。 '
+        '它们也可以作为一种简单的标准方式，向不需要解析整个文件的归档软件提供有关文件的基本信息 。'
         '要找到注释，请使用标准文本编辑器'
         '（如MS/Windows上的$notepad$或unix上的$vi$或$emacs$）'
         '查看$*.pdf$输出文件，'
@@ -2487,7 +2487,7 @@ def chapter4(pdf):
         '有几种选择: $check$、$cross$、$circle$、$star$、$diamond$。'
     )
     pdf.add_paragraph(
-        '请注意，文档渲染器可能会使这些符号中的某些符号在其预期应用中出现错误。 '
+        '请注意，文档渲染器可能会使这些符号中的某些符号在其预期应用中出现错误 。'
         'Acrobat阅读器更喜欢在规范规定应该显示的内容上使用自己的渲染（特别是在使用表格高亮功能的时候'
     )
     pdf.add_heading("小工具形状", level=3)
@@ -2603,7 +2603,420 @@ def chapter4(pdf):
 
 
 def chapter5(pdf):
-    pass
+    pdf.add_heading("PLATYPUS - 页面布局和排版", level=1)
+    pdf.add_heading("设计目标", level=2)
+    pdf.add_paragraph(
+        '$Platypus$是$"Page Layout and Typography Using Scripts"$的缩写。'
+        '它是一个高水平的页面布局库，让你可以用最少的努力以编程方式创建复杂的文档。'
+    )
+    pdf.add_paragraph(
+        'Platypus的设计力求将 "高层次 "的布局决定与文档内容尽可能分开 。'
+        '例如，段落使用段落样式，页面使用页面模板，目的是让数百个有数千页的文件可以按照不同的样式规格重新格式化，'
+        '只需在一个包含段落样式和页面布局规格的共享文件中修改几行即可。'
+    )
+    pdf.add_paragraph('$Platypus$的整体设计可以认为有几个层次，自上而下，这些是:')
+    pdf.add_paragraph("")
+    pdf.add_bullet('$DocTemplates$作为文档的最外层容器。')
+    pdf.add_bullet('$PageTemplates$作为各种页面布局的规格。')
+    pdf.add_bullet('$Frames$页面中可包含流动文本或图形的区域规格。')
+    pdf.add_bullet(
+        '$Flowables$对应$"flowed into the document"$流入文档的文本或图形元素'
+        '（即图像、段落和表格等内容，但不包括$页脚$或$固定页面图形$等内容）。'
+    )
+    pdf.add_paragraph('$pdfgen.Canvas$为最终从其他图层接收文档绘画的最低层。')
+    pdf.add_illustration(examples.doctemplateillustration, 'DocTemplate 结构说明')
+    pdf.add_paragraph(
+        '上面的插图形象地说明了$DocTemplate$、$PageTemplate$和$Flowables$的概念 。'
+        '然而，它具有欺骗性，因为每一个$PageTemplate$实际上可以指定任何数量的页面的格式'
+        '（而不是像从图中推断的那样只指定一个）。'
+    )
+    pdf.add_paragraph(
+        '$DocTemplate$包含一个或多个$PageTemplate$，'
+        '每个$PageTemplate$包含一个或多个$Frame$。'
+        '$Flowables$ 是指可以^flowed^(流入)$Frame$的东西，'
+        '例如$Paragraph$或$Table$。'
+    )
+    pdf.add_paragraph(
+        '要使用$platypus$，你需要从$DocTemplate$类中创建一个文档，'
+        '并向其$build$方法传递一个$Flowable$s列表。'
+        '$document$的$build$方法知道如何将$flowable列表$处理成合理的东西。'
+    )
+    pdf.add_paragraph(
+        '在内部，$DocTemplate$类使用各种事件来实现页面布局和格式化。'
+        '每个事件都有一个对应的处理方法，称为$handle_XXX$ ，'
+        '其中$XXX$是事件名称。'
+        '一个典型的事件是$frameBegin$，'
+        '它发生在机械开始第一次使用一个框架的时候。'
+    )
+    pdf.add_paragraph(
+        '$Platypus$故事由一系列基本元素组成，这些元素被称为$Flowables$，'
+        '它们驱动着数据驱动的$Platypus$格式化引擎。'
+        '为了修改引擎的行为，一种特殊的可流式元素$ActionFlowables$告诉布局引擎，'
+        '例如，跳到下一列或者换成另一个$PageTemplate$。'
+    )
+    pdf.add_heading("开始", level=2)
+    pdf.add_paragraph('考虑以下代码序列，它为$Platypus$提供了一个非常简单的 "hello world "例子。')
+    pdf.add_code_eg(examples.platypussetup)
+    pdf.add_paragraph('首先，我们从其他模块中导入一些构造函数、一些段落样式和其他方便。')
+    pdf.add_code_eg(examples.platypusfirstpage)
+    pdf.add_paragraph('我们用上面的函数定义文档首页的固定特征。')
+    pdf.add_code_eg(examples.platypusnextpage)
+    pdf.add_paragraph(
+        '由于我们希望第一个页面之后的页面看起来与第一个页面不同，'
+        '我们为其他页面的固定特征定义了一个备用布局。'
+        '请注意，上面的两个函数使用 $pdfgen$ 级别的画布操作来为页面绘制注释。'
+    )
+    pdf.add_code_eg(examples.platypusgo)
+    pdf.add_paragraph(
+        '最后，我们创建一个$"store"$并构建文档。'
+        '请注意，我们在这里使用的是$"canned"$(罐头)文档模板，'
+        '它是预建的页面模板。我们还使用了预建的段落样式 。'
+        '我们在这里只使用了两种类型的$"flowables"$ --$Spacers$和$Paragraphs$ 。'
+        '第一个$Spacer$确保段落跳过标题字符串。'
+    )
+    pdf.add_paragraph(
+        '要查看这个示例程序的输出，'
+        '请以"顶层脚本"的形式运行模块$docs/userguide/examples.py$'
+        '（来自$ReportLab docs$发行版）。'
+        '脚本解释$python examples.py$将生成$Platypus$输出$phello.pdf$。'
+    )
+
+    pdf.add_heading("$Flowables$", level=2)
+    pdf.add_paragraph(
+        '$Flowables$是可以被绘制的东西，'
+        '它有$wrap$, $draw$和可能的$split$方法。'
+        '$Flowable$是一个抽象的基类，用于绘制事物，一个实例知道它的大小，'
+        '并在它自己的坐标系中绘制(这需要基API在调用$Flowable.draw$方法时提供一个绝对坐标系)。'
+        '要获得一个实例，使用 $f=Flowable()$。'
+    )
+    pdf.add_text_note('$Flowable$类是一个抽象类，通常只作为基类使用。')
+    keep_flag = pdf.start_keep_together()
+    pdf.add_paragraph(
+        '为了说明使用$Flowables$的一般方式，'
+        '我们将展示如何在画布上使用和绘制衍生类$Paragraph$。'
+        '$Paragraph$是如此重要，它们将有一整章的篇幅来介绍。'
+    )
+    pdf.add_code_eg(
+        """
+        from reportlab.lib.styles import getSampleStyleSheet
+        from reportlab.platypus import Paragraph
+        from reportlab.pdfgen.canvas import Canvas
+        styleSheet = getSampleStyleSheet()
+        style = styleSheet['BodyText']
+        P=Paragraph('This is a very silly example',style)
+        canv = Canvas('doc.pdf')
+        aW = 460    # available width and height
+        aH = 800
+        w,h = P.wrap(aW, aH)    # find required space
+        if w<=aW and h<=aH:
+            P.drawOn(canv,0,aH)
+            aH = aH - h         # reduce the available height
+            canv.save()
+        else:
+            raise ValueError, "Not enough room"
+    """
+    )
+    pdf.end_keep_together(keep_flag)
+
+    pdf.add_heading("$Flowable$ 方法", level=3)
+    pdf.add_code_eg('Flowable.draw()')
+    pdf.add_paragraph(
+        '这将被调用来要求 $flowable$ 实际渲染自己。'
+        '$Flowable$类没有实现$draw$。'
+        '调用代码应该确保 $flowable$ 有一个属性$canv$，'
+        '它是$pdfgen.Canvas$，它应该被绘制到$Canvas$上，'
+        '并且$Canvas$处于一个适当的状态(就翻译、旋转等而言)。'
+        '通常这个方法只在内部被$drawOn$方法调用，派生类必须实现这个方法。'
+        '派生类必须实现这个方法。'
+    )
+
+    pdf.add_code_eg('Flowable.drawOn(canvas,x,y)')
+    pdf.add_paragraph(
+        '这是控制引擎用来将$flowable$渲染到特定画布的方法。'
+        '它处理转换为画布坐标(^x^,^y^)，并确保$flowable$有一个$canv$属性，'
+        '这样$draw$方法(在基类中没有实现)就可以在一个绝对坐标框架中渲染。'
+    )
+
+    pdf.add_code_eg("Flowable.wrap(availWidth, availHeight)")
+    pdf.add_paragraph('在询问对象的大小、绘制或其他什么之前，这个函数将被包围的框架调用。它返回实际使用的尺寸。')
+
+    pdf.add_code_eg("Flowable.split(self, availWidth, availheight)")
+    pdf.add_paragraph(
+        '当wrap失败时，更复杂的框架会调用这个函数。'
+        '愚蠢的$flowables$应该返回$[]$,这意味着它们无法拆分。'
+        '聪明的$flowables$应该自己拆分并返回一个$flowables$列表。'
+        '客户端代码要确保避免重复尝试拆分。'
+        '如果空间足够，拆分方法应该返回[self]。'
+        '否则，$flowable$应该重新排列，并返回一个按顺序考虑的$flowable$列表$[f0,...]$。'
+        '实现的拆分方法应该避免改变$self$，因为这将允许复杂的布局机制在一个可流动的列表上进行多次传递。'
+    )
+    pdf.add_heading("流动定位的准则", level=2)
+    pdf.add_paragraph('有两种方法，默认情况下返回零，为可流动物的垂直间距提供指导。')
+    pdf.add_code_eg(
+        """
+        Flowable.getSpaceAfter(self):
+        Flowable.getSpaceBefore(self):
+    """
+    )
+    pdf.add_paragraph(
+        '这些方法会返回$flowable$后面或前面应该有多少空间。'
+        '这些空间不属于$flowable$本身，'
+        '也就是说，$flowable$的$draw$方法在渲染时不应该考虑它。'
+        '控制程序将使用返回的值来确定上下文中特定$flowable$需要多少空间。'
+    )
+    pdf.add_paragraph(
+        "所有的$flowables$都有一个$hAlign$属性："
+        "$('LEFT','RIGHT','CENTER'或'CENTRE')$。"
+        "对于占满整个框架宽度的段落，这个属性没有影响。"
+        "对于小于框架宽度的表格、图像或其他对象，这决定了它们的水平位置。"
+    )
+    pdf.add_paragraph('下面的章节将涵盖最重要的特定类型的可流动文件，段落和表格。')
+
+    pdf.add_heading("Frames", level=2)
+    pdf.add_paragraph(
+        '$Frames$是活动的容器，'
+        '它本身就包含在$PageTemplate$中，'
+        '$Frames$有一个位置和大小，并保持一个剩余可绘制空间的概念。如：'
+    )
+    pdf.add_code_eg(
+        """
+        Frame(x1, y1, width,height, leftPadding=6, bottomPadding=6,
+                rightPadding=6, topPadding=6, id=None, showBoundary=0)
+    """
+    )
+    pdf.add_paragraph(
+        '创建一个左下角坐标为$(x1,y1)$的$Frame$实例(在使用时相对于画布)，'
+        '尺寸为 $width$ x $height$。'
+        '$Padding$参数是用于减少绘画空间的正量。'
+        '参数$id$是运行时使用的标识符，例如$"LeftColumn"$或$"RightColumn"$等。'
+        '如果$showBoundary$参数是非零，那么框架的边界将在运行时被绘制出来（这有时很有用）。'
+    )
+
+    pdf.add_heading("$Frame$ 方法", level=3)
+
+    pdf.add_code_eg("Frame.addFromList(drawlist, canvas)")
+    pdf.add_paragraph('消耗$drawlist$前面的$Flowables$，直到帧满为止。如果不能容纳一个对象，则引发一个异常。')
+
+    pdf.add_code_eg("Frame.split(flowable,canv)")
+    pdf.add_paragraph('要求flowable使用可用空间进行分割，并返回flowable的列表。')
+
+    pdf.add_code_eg("Frame.drawBoundary(canvas)")
+    pdf.add_paragraph('将框架边界画成一个矩形（主要用于调试）。')
+
+    pdf.add_heading("使用 $Frames$", level=3)
+    pdf.add_paragraph(
+        '$Frames$可以直接与$canvases$和$flowables$一起使用来创建文档。'
+        '$Frame.addFromList$方法为你处理$wrap$ 和 $drawOn$调用。'
+        '你不需要所有的$Platypus引擎$来获得有用的东西到$PDF$中。'
+    )
+    pdf.add_code_eg(
+        """
+    from reportlab.pdfgen.canvas import Canvas
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.units import inch
+    from reportlab.platypus import Paragraph, Frame
+    styles = getSampleStyleSheet()
+    styleN = styles['Normal']
+    styleH = styles['Heading1']
+    story = []
+    
+    #add some flowables
+    story.append(Paragraph("This is a Heading",styleH))
+    story.append(Paragraph("This is a paragraph in <i>Normal</i> style.",
+        styleN))
+    c  = Canvas('mydoc.pdf')
+    f = Frame(inch, inch, 6*inch, 9*inch, showBoundary=1)
+    f.addFromList(story,c)
+    c.save()
+    """
+    )
+
+    pdf.add_heading("文档和模板", level=2)
+    pdf.add_paragraph(
+        '$BaseDocTemplate$类实现了文档格式化的基本机制。'
+        '该类的一个实例包含了一个或多个$PageTemplate$的列表，'
+        '这些$PageTemplate$可用于描述单页信息的布局。'
+        '$build$方法可用于处理$Flowables列表$，以生成一个$PDF$文档。'
+    )
+    pdf.add_cond_page_break(3.0)
+    pdf.add_heading("$BaseDocTemplate$", level=3)
+    pdf.add_code_eg(
+        """
+        BaseDocTemplate(self, filename,
+                        pagesize=defaultPageSize,
+                        pageTemplates=[],
+                        showBoundary=0,
+                        leftMargin=inch,
+                        rightMargin=inch,
+                        topMargin=inch,
+                        bottomMargin=inch,
+                        allowSplitting=1,
+                        title=None,
+                        author=None,
+                        _pageBreakQuick=1,
+                        encrypt=None)
+    """
+    )
+    pdf.add_paragraph(
+        '创建一个适合创建基本文档的文档模板。'
+        '它带有相当多的内部机制，但没有默认的页面模板。'
+        '所需的$filename$可以是一个字符串，一个用于接收创建的<b>PDF</b>文档的文件名；'
+        '也可以是一个有$write$方法的对象，如 $BytesIO$ 或 $file$ 或 $socket$。'
+    )
+    pdf.add_paragraph(
+        '允许的参数应该是不言自明的，但是$showBoundary$控制是否绘制$Frame$的边界，这对于调试来说是很有用的。'
+        '$allowSplitting$参数决定了内置方法是否应该尝试<i>split</i>单个$Flowables$跨越$Frame$。'
+        '$_pageBreakQuick$参数决定了在结束页面之前，是否应该尝试结束页面上的所有框架。'
+        '$encrypt$ 参数决定了是否对文档进行加密，以及如何加密。'
+        '默认情况下，文档是不加密的。'
+        '如果$encrypt$是一个字符串对象，那么它将作为pdf的用户密码。'
+        '如果$encrypt$是一个$reportlab.lib.pdfencrypt.StandardEncryption$的实例，'
+        '那么这个对象就被用来加密pdf。'
+        '这允许对加密设置进行更精细的控制。'
+    )
+    pdf.add_heading("$BaseDocTemplate$ 方法", level=4)
+    pdf.add_paragraph('这些都是客户程序员直接关心的问题，因为他们通常会被使用。')
+    pdf.add_code_eg(
+        """
+        BaseDocTemplate.addPageTemplates(self,pageTemplates)
+    """
+    )
+    pdf.add_paragraph('此方法用于在现有文档中添加一个或一系列$PageTemplate$。')
+    pdf.add_code_eg(
+        """
+        BaseDocTemplate.build(self, flowables, filename=None, canvasmaker=canvas.Canvas)
+    """
+    )
+    pdf.add_paragraph(
+        '这是应用程序程序员感兴趣的主要方法。假设文档实例被正确设置，'
+        '$build$方法将^story^以$flowables列表$的形式接收（$flowables参数$），'
+        '并在列表中循环，将$flowables列表$一次一个地强制通过格式化机制。'
+        '实际上，这使得$BaseDocTemplate$实例发出对实例$handle_XXX$方法的调用来处理各种事件。'
+    )
+
+    pdf.add_heading("$BaseDocTemplate$ 抽象方法", level=4)
+    pdf.add_paragraph(
+        '这些在基类中根本没有语义。它们的目的是作为布局机制的纯虚拟钩子。紧接派生类的创建者可以覆盖这些，而不用担心影响布局引擎的属性。'
+    )
+
+    pdf.add_code_eg("BaseDocTemplate.afterInit(self)")
+    pdf.add_paragraph('这个方法在基类初始化后被调用；派生类可以覆盖该方法来添加默认的$PageTemplates$。')
+
+    pdf.add_code_eg("BaseDocTemplate.afterPage(self)")
+    pdf.add_paragraph(
+        '这是在页面处理后，紧接着当前页面模板的$afterDrawPage$方法被调用。'
+        '一个派生类可以使用这个方法来做一些依赖于页面信息的事情，比如字典页面上的首字和尾字。'
+    )
+
+    pdf.add_code_eg("BaseDocTemplate.beforeDocument(self)")
+    pdf.add_paragraph(
+        '在对文档进行任何处理之前，但在处理机制准备好之后，'
+        '就会调用这个函数，因此它可以用来对实例的$pdfgen.canvas$等进行处理。'
+        '因此，它可以用来对实例的$pdfgen.canvas$等进行操作。'
+    )
+
+    pdf.add_code_eg("BaseDocTemplate.beforePage(self)")
+    pdf.add_paragraph(
+        '这是在页面处理开始时，在当前页面模板的$beforeDrawPage$方法之前调用的。它可以用来重置页面特定的信息持有者。'
+    )
+
+    pdf.add_code_eg("BaseDocTemplate.filterFlowables(self,flowables)")
+    pdf.add_paragraph(
+        '在主 $handle_flowable$ 方法开始时，'
+        '调用这个函数来过滤$flowables$。'
+        '在返回时，如果$flowables[0]$被设置为^None^，'
+        '则会被丢弃，主方法立即返回。'
+    )
+
+    pdf.add_code_eg("BaseDocTemplate.afterFlowable(self, flowable)")
+    pdf.add_paragraph('在$flowable$被渲染后调用。有兴趣的类可以使用这个钩子来收集特定页面或框架上存在的信息。')
+
+    pdf.add_heading("$BaseDocTemplate$ 事件处理", level=4)
+    pdf.add_paragraph(
+        '这些方法构成了布局引擎的主要部分。'
+        '程序员不应该直接调用或覆盖这些方法，除非他们试图修改布局引擎。'
+        '当然，有经验的程序员如果想在某个特定的事件，即$XXX$处进行干预，'
+        '而这个事件并不对应于其中的一个虚拟方法，那么总是可以覆盖并调用$drived$类版本中的基方法。'
+        '我们为每个处理方法提供了一个基类同义词，名称相同，前缀为下划线$"_"$，这样就很容易了。'
+    )
+
+    pdf.add_code_eg(
+        """
+        def handle_pageBegin(self):
+            doStuff()
+            BaseDocTemplate.handle_pageBegin(self)
+            doMoreStuff()
+    
+        #using the synonym
+        def handle_pageEnd(self):
+            doStuff()
+            self._handle_pageEnd()
+            doMoreStuff()
+    """
+    )
+    pdf.add_paragraph('在这里我们列出这些方法只是为了说明正在处理的事件。有兴趣的程序员可以看一下源码。')
+
+    pdf.add_code_eg(
+        """
+        handle_currentFrame(self,fx)
+        handle_documentBegin(self)
+        handle_flowable(self,flowables)
+        handle_frameBegin(self,*args)
+        handle_frameEnd(self)
+        handle_nextFrame(self,fx)
+        handle_nextPageTemplate(self,pt)
+        handle_pageBegin(self)
+        handle_pageBreak(self)
+        handle_pageEnd(self)
+    """
+    )
+    pdf.add_paragraph(
+        '使用文档模板可以非常简单，$SimpleDoctemplate$'
+        '是由$BaseDocTemplate$派生出来的一个类，'
+        '它提供了自己的$PageTemplate$和$Frame$设置。'
+    )
+
+    pdf.add_code_eg(
+        """
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.pagesizes import letter
+    from reportlab.platypus import Paragraph, SimpleDocTemplate
+    styles = getSampleStyleSheet()
+    styleN = styles['Normal']
+    styleH = styles['Heading1']
+    story = []
+    
+    #add some flowables
+    story.append(Paragraph("This is a Heading",styleH))
+    story.append(Paragraph("This is a paragraph in <i>Normal</i> style.",
+        styleN))
+    doc = SimpleDocTemplate('mydoc.pdf',pagesize = letter)
+    doc.build(story)
+    """
+    )
+
+    pdf.add_heading("$PageTemplates$", level=3)
+    pdf.add_paragraph(
+        '$PageTemplate$类是一个语义相当简单的容器类。'
+        '每个实例都包含一个$Frames$的列表，'
+        '并且有一些方法应该在每个页面的开始和结束时被调用。'
+    )
+
+    pdf.add_code_eg(
+        "PageTemplate(id=None,frames=[],onPage=_doNothing,onPageEnd=_doNothing)"
+    )
+    pdf.add_paragraph(
+        '用于初始化一个实例，$frames$参数应该是一个$Frames$的列表，'
+        '而可选的$onPage$和$onPageEnd$参数是可调用的，'
+        '它们的签名应该是 $def XXX(canvas,document)$，'
+        '其中$canvas$和$document$是正在绘制的画布和文档。'
+        '这些例程的目的是用来绘制页面的非流动（即标准）部分。'
+        '这些属性函数与纯虚拟方法 $PageTemplate.beforPage$ 和 $PageTemplate.afterPage$'
+        '完全平行，这两个方法的签名是 $beforPage(self,canvas,document)$。'
+        '这些方法允许使用类派生来定义标准行为，而属性则允许改变实例。'
+        '在运行时，$id$ 参数用于执行 $PageTemplate$ 的切换，'
+        '所以 $id=\'FirstPage\'$ 或 $id=\'TwoColumns\'$ 是典型的。'
+    )
 
 
 def chapter6(pdf):

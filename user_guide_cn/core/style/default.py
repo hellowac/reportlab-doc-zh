@@ -95,7 +95,7 @@ def get_default_style_sheet(font_name=None, font_bold=None):
         name=constant.STYLE_BULLET,
         parent=normal_style,
         firstLineIndent=0,
-        leftIndent=54,
+        leftIndent=32,
         bulletIndent=18,
         spaceBefore=0,
         bulletFontName='Symbol',
