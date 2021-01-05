@@ -116,6 +116,7 @@ class PDF(object):
         self._SEQ_CHAPTER_FLAG = 'Chapter'
         self._SEQ_SECTION_FLAG = 'Section'
         self._SEQ_APPENDIX_FLAG = 'Appendix'
+        self._SEQ_TABLE_FLAG = 'Table'
         self._SEQ_FIGURE_FLAG = 'Figure'
 
         self.seq = getSequencer()
@@ -288,19 +289,26 @@ class PDF(object):
             self.add_cond_page_break()
             self.store.append(Paragraph(_text, _style))
 
-    def add_caption(
-        self, text, prefix=CAPTION_IMAGE_PREFIX, category=CAPTION_IMAGE
-    ):
-        _text = self.quick_fix(text)
+    def add_caption(self, text, category=CAPTION_IMAGE):
+        """ 添加一个caption(说明) """
         if category == CAPTION_TABLE:
-            self.store.append(
-                f'{prefix} <seq template="%(Chapter)s-%(Table+)s"/> - {_text}'
-            )
+            prefix = CAPTION_TABLE_PREFIX
+            seq_flag = self._SEQ_TABLE_FLAG
 
         elif category == CAPTION_IMAGE:
-            self.store.append(
-                f'{prefix} <seq template="%(Chapter)s-%(Table+)s"/> - {_text}'
-            )
+            prefix = CAPTION_IMAGE_PREFIX
+            seq_flag = self._SEQ_FIGURE_FLAG
+        else:
+            raise ValueError('未知CAPTION类型')
+
+        _text = (
+            f'{prefix} <seq template="%({self._SEQ_CHAPTER_FLAG})s-%('
+            f'{seq_flag}+)s"/> - {self.quick_fix(text)}'
+        )
+
+        self.store.append(
+            Paragraph(_text, self.stylesheet[constant.STYLE_CAPTION])
+        )
 
     def add_paragraph(self, text, style=None):
         """ 添加段落 """
@@ -394,6 +402,10 @@ class PDF(object):
         )
         self.store.append(GraphicsDrawing(drawing, self.quick_fix(caption)))
 
+    def add_flowable(self, flowable):
+        """ 添加一个flowable对象，（动态布局对象，不用封装样式），比如一个table """
+        self.store.append(flowable)
+
     def add_para_box(self, text, style, caption):
         self.store.append(
             ParaBox(
@@ -409,8 +421,9 @@ class PDF(object):
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s'
             f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {self.quick_fix(caption)}'
         )
-        self.store.append(ParaBox2(self.quick_fix(text), self.quick_fix(caption),
-                                   _style))
+        self.store.append(
+            ParaBox2(self.quick_fix(text), self.quick_fix(caption), _style)
+        )
 
     def add_pencil_note(self):
         """ 添加铅笔标识 """

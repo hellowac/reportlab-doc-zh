@@ -3,10 +3,13 @@ import logging
 from datetime import datetime
 
 import reportlab
+from reportlab.lib import colors
 from reportlab.lib.codecharts import SingleByteEncodingChart
 from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus.tables import Table, TableStyle
+
 from components import constant
 from core import examples
 from core.pdf import PDF
@@ -1172,27 +1175,37 @@ def chapter2(pdf):
 
 def chapter3(pdf):
     pdf.add_heading("字体和编码", level=1)
-    pdf.add_paragraph('本章包括字体、编码和亚洲语言功能。'
-                      '如果你只关心生成西欧语言的PDF，你可以只读下面的 "Unicode是默认的"部分，并在第一次阅读时跳过其余部分。'
-                      '我们希望随着时间的推移，这部分内容会有很大的增长。'
-                      '我们希望开源能让我们比其他工具更好地支持世界上更多的语言，'
-                      '我们欢迎在这方面的反馈和帮助。')
+    pdf.add_paragraph(
+        '本章包括字体、编码和亚洲语言功能。'
+        '如果你只关心生成西欧语言的PDF，你可以只读下面的 "Unicode是默认的"部分，并在第一次阅读时跳过其余部分。'
+        '我们希望随着时间的推移，这部分内容会有很大的增长。'
+        '我们希望开源能让我们比其他工具更好地支持世界上更多的语言，'
+        '我们欢迎在这方面的反馈和帮助。'
+    )
 
     pdf.add_heading('Unicode 和 UTF8 作为默认编码', level=2)
-    pdf.add_paragraph('从$reportlab 2.0$版本('
-                      '2006年5月)开始，您提供给我们API的所有文本输入都应该是UTF8或$Python Unicode$对象。'
-                      '这适用于^canvas.drawString^和相关$API$的参数、表格单元格内容、绘图对象参数和段落源文本。')
+    pdf.add_paragraph(
+        '从$reportlab 2.0$版本('
+        '2006年5月)开始，您提供给我们API的所有文本输入都应该是UTF8或$Python Unicode$对象。'
+        '这适用于^canvas.drawString^和相关$API$的参数、表格单元格内容、绘图对象参数和段落源文本。'
+    )
     pdf.add_paragraph('我们曾考虑过让输入编码可配置，甚至依赖于本地，但决定"显式比隐式好"。')
-    pdf.add_paragraph('这简化了我们以前做的许多关于希腊字母、符号等的事情。'
-                      '要显示任何字符，找出它的unicode码点，并确保你使用的字体能够显示它。')
-    pdf.add_paragraph('如果您正在改编$ReportLab 1.x$应用程序，'
-                      '或者从其他包含单字节数据的源头读取数据 (例如 latin-1 或 WinAnsi)，'
-                      '您需要进行$Unicode$转换。Python编解码器包现在包含了所有常用编码的转换器，包括亚洲的编码。')
-    pdf.add_paragraph('如果你的数据不是UTF8编码，那么一旦你输入一个非ASCII字符，'
-                      '你就会得到一个UnicodeDecodeError。 '
-                      '例如，下面这个代码段试图读取并打印一系列名字，包括一个带有法国口音的名字。'
-                      '^Marc -Andr/\u00e9 Lemburg^.  标准误差非常有用，它告诉你它不喜欢什么字符。')
-    pdf.add_code_eg(u"""
+    pdf.add_paragraph(
+        '这简化了我们以前做的许多关于希腊字母、符号等的事情。' '要显示任何字符，找出它的unicode码点，并确保你使用的字体能够显示它。'
+    )
+    pdf.add_paragraph(
+        '如果您正在改编$ReportLab 1.x$应用程序，'
+        '或者从其他包含单字节数据的源头读取数据 (例如 latin-1 或 WinAnsi)，'
+        '您需要进行$Unicode$转换。Python编解码器包现在包含了所有常用编码的转换器，包括亚洲的编码。'
+    )
+    pdf.add_paragraph(
+        '如果你的数据不是UTF8编码，那么一旦你输入一个非ASCII字符，'
+        '你就会得到一个UnicodeDecodeError。 '
+        '例如，下面这个代码段试图读取并打印一系列名字，包括一个带有法国口音的名字。'
+        '^Marc -Andr/\u00e9 Lemburg^.  标准误差非常有用，它告诉你它不喜欢什么字符。'
+    )
+    pdf.add_code_eg(
+        u"""
 >>> from reportlab.pdfgen.canvas import Canvas
 >>> c = Canvas('temp.pdf')
 >>> y = 700
@@ -1205,42 +1218,54 @@ UnicodeDecodeError: 'utf8' codec can't decode bytes in position 9-11: invalid
 data
 -->\u00e9 L<--emburg
 >>> 
-""")
+"""
+    )
     pdf.add_paragraph('最简单的解决方法就是将你的数据转换为unicode，并说明它来自哪个编码，就像这样。')
-    pdf.add_code_eg( """
+    pdf.add_code_eg(
+        """
 >>> for line in file('latin_input.txt','r'):
 ...     uniLine = unicode(line, 'latin-1')
 ...     c.drawString(100, y, uniLine.strip())
 >>>
 >>> c.save()
-""")
+"""
+    )
     pdf.add_heading("输出字体自动替换", level=2)
-    pdf.add_paragraph('在代码中还有很多地方，包括^rl_config.defaultEncoding^参数，'
-                      '以及传递给各种 $Font$ 构造函数的参数，这些参数都是指编码。'
-                      '在过去，当人们需要使用 $PDF$ 浏览设备支持的$Symbol$和$ZapfDingbats$字体的字形时，'
-                      '这些参数非常有用。'
-                      '默认情况下，标准字体（$Helvetica$、$Courier$、$Times Roman$）将提供$Latin-1$的字形。'
-                      '然而，如果我们的引擎检测到一个字体中没有的字符，它将尝试切换到$Symbol$或$ZapfDingbats$来显示这些字符。'
-                      '例如，如果你在对^drawString^的调用中包含了一对右面剪刀的$Unicode$字符，\\u2702(\u2702),'
-                      '你应该会看到它们(在^test_pdfgen_general.py/pdf^中有一个例子)。'
-                      '在你的代码中不需要切换字体。')
+    pdf.add_paragraph(
+        '在代码中还有很多地方，包括^rl_config.defaultEncoding^参数，'
+        '以及传递给各种 $Font$ 构造函数的参数，这些参数都是指编码。'
+        '在过去，当人们需要使用 $PDF$ 浏览设备支持的$Symbol$和$ZapfDingbats$字体的字形时，'
+        '这些参数非常有用。'
+        '默认情况下，标准字体（$Helvetica$、$Courier$、$Times Roman$）将提供$Latin-1$的字形。'
+        '然而，如果我们的引擎检测到一个字体中没有的字符，它将尝试切换到$Symbol$或$ZapfDingbats$来显示这些字符。'
+        '例如，如果你在对^drawString^的调用中包含了一对右面剪刀的$Unicode$字符，\\u2702(\u2702),'
+        '你应该会看到它们(在^test_pdfgen_general.py/pdf^中有一个例子)。'
+        '在你的代码中不需要切换字体。'
+    )
     pdf.add_heading("使用非标准的 $Type 1$ 字体", level=2)
-    pdf.add_paragraph('正如前一章所讨论的那样，每份 $Acrobat Reader$ 都内置了14种标准字体。'
-                      '因此，$ReportLab PDF$ 库只需要通过名称来引用这些字体。'
-                      '如果您想使用其他字体，它们必须对您的代码可用，并将被嵌入到$PDF$文档中。')
-    pdf.add_paragraph('您可以使用下面描述的机制在您的文档中包含任意字体。'
-                      '我们有一个名为^DarkGardenMK^的开源字体，'
-                      '我们可以将其用于测试和或文档目的(您也可以使用它)。'
-                      '它与ReportLab发行版捆绑在一起，在$reportlab/fonts$目录下。')
-    pdf.add_paragraph('目前，字体嵌入依赖于$Adobe AFM("Adobe Font Metrics")$'
-                      '和$PFB("Printer Font Binary")$格式的字体描述文件。'
-                      '前者是一个$ASCII$文件，包含字体中的字符（"字形"）信息，如高度、宽度、边界框信息和其他 "$metrics$"(指标)，'
-                      '而后者是一个二进制文件，描述字体的形状。'
-                      '在$reportlab/fonts$目录下，'
-                      '包含了$"DarkGardenMK.afm"$和$"DarkGardenMK.pfb"$两个文件，'
-                      '这两个文件被用来作为一个例子字体。')
-    pdf.add_paragraph('在下面的例子中，找到包含测试字体的文件夹，并用$pdfmetrics$模块注册它，以便将来使用，'
-                      '之后我们可以像其他标准字体一样使用它。')
+    pdf.add_paragraph(
+        '正如前一章所讨论的那样，每份 $Acrobat Reader$ 都内置了14种标准字体。'
+        '因此，$ReportLab PDF$ 库只需要通过名称来引用这些字体。'
+        '如果您想使用其他字体，它们必须对您的代码可用，并将被嵌入到$PDF$文档中。'
+    )
+    pdf.add_paragraph(
+        '您可以使用下面描述的机制在您的文档中包含任意字体。'
+        '我们有一个名为^DarkGardenMK^的开源字体，'
+        '我们可以将其用于测试和或文档目的(您也可以使用它)。'
+        '它与ReportLab发行版捆绑在一起，在$reportlab/fonts$目录下。'
+    )
+    pdf.add_paragraph(
+        '目前，字体嵌入依赖于$Adobe AFM("Adobe Font Metrics")$'
+        '和$PFB("Printer Font Binary")$格式的字体描述文件。'
+        '前者是一个$ASCII$文件，包含字体中的字符（"字形"）信息，如高度、宽度、边界框信息和其他 "$metrics$"(指标)，'
+        '而后者是一个二进制文件，描述字体的形状。'
+        '在$reportlab/fonts$目录下，'
+        '包含了$"DarkGardenMK.afm"$和$"DarkGardenMK.pfb"$两个文件，'
+        '这两个文件被用来作为一个例子字体。'
+    )
+    pdf.add_paragraph(
+        '在下面的例子中，找到包含测试字体的文件夹，并用$pdfmetrics$模块注册它，以便将来使用，' '之后我们可以像其他标准字体一样使用它。'
+    )
     pdf.add_code_eg(
         """
     import os
@@ -1265,10 +1290,12 @@ data
     )
     pdf.add_paragraph('请注意，参数 "$WinAnsiEncoding$"与输入无关，它是说字体文件内的哪一组字符将被激活并可用。')
     pdf.add_illustration(examples.customfont1, "使用非常不标准的字体")
-    pdf.add_paragraph('字体的名称来自$AFM$文件的$FontName$字段。'
-                      '在上面的例子中，我们事先知道了这个名字，但是很多时候字体描述文件的名字是非常神秘的，'
-                      '那么你可能会想从$AFM$文件中自动检索到这个名字。'
-                      '当缺乏更复杂的方法时，你可以使用一些像这样简单的代码。')
+    pdf.add_paragraph(
+        '字体的名称来自$AFM$文件的$FontName$字段。'
+        '在上面的例子中，我们事先知道了这个名字，但是很多时候字体描述文件的名字是非常神秘的，'
+        '那么你可能会想从$AFM$文件中自动检索到这个名字。'
+        '当缺乏更复杂的方法时，你可以使用一些像这样简单的代码。'
+    )
     pdf.add_code_eg(
         """
     class FontNameNotFoundError(Exception):
@@ -1292,23 +1319,29 @@ data
         return fontName
     """
     )
-    pdf.add_paragraph('在<i>DarkGardenMK</i>的例子中，我们明确指定了要加载的字体描述文件的位置。'
-                      '一般来说，你会更倾向于将你的字体存储在一些规范的位置，并让嵌入机制知道它们。'
-                      '使用同样的配置机制，我们已经在本节开头看到了，我们可以为Type-1字体指定一个默认的搜索路径。')
-    pdf.add_paragraph('不幸的是，目前还没有一个可靠的标准来规定这些位置（甚至在同一个平台上也没有），'
-                      '因此，你可能需要编辑$reportlab_settings.py$'
-                      '或者$~/.reportlab_settings$来修改$T1SearchPath$标识符的值，'
-                      '以包含额外的目录。'
-                      '我们自己的建议是在开发中使用^reportlab/fonts^文件夹；并且在任何受控服务器部署中，将任何需要的字体作为应用程序的打包部件。'
-                      '这样可以避免字体被其他软件或系统管理员安装和卸载。')
+    pdf.add_paragraph(
+        '在<i>DarkGardenMK</i>的例子中，我们明确指定了要加载的字体描述文件的位置。'
+        '一般来说，你会更倾向于将你的字体存储在一些规范的位置，并让嵌入机制知道它们。'
+        '使用同样的配置机制，我们已经在本节开头看到了，我们可以为Type-1字体指定一个默认的搜索路径。'
+    )
+    pdf.add_paragraph(
+        '不幸的是，目前还没有一个可靠的标准来规定这些位置（甚至在同一个平台上也没有），'
+        '因此，你可能需要编辑$reportlab_settings.py$'
+        '或者$~/.reportlab_settings$来修改$T1SearchPath$标识符的值，'
+        '以包含额外的目录。'
+        '我们自己的建议是在开发中使用^reportlab/fonts^文件夹；并且在任何受控服务器部署中，将任何需要的字体作为应用程序的打包部件。'
+        '这样可以避免字体被其他软件或系统管理员安装和卸载。'
+    )
     pdf.add_heading("关于缺失字形的警告", level=3)
-    pdf.add_paragraph('如果你指定了一个编码，一般会认为字体设计师已经提供了所有需要的字形。'
-                      '然而，事实并非总是如此。'
-                      '在我们的示例字体中，字母表中的字母都存在，但许多符号和重音都没有。'
-                      '默认的行为是，当传递给字体一个它无法绘制的字符时，字体会打印一个 "notdef "字符'
-                      '--通常是一个blob、点或空格。'
-                      '然而，你可以要求库警告你；'
-                      '下面的代码（在加载字体之前执行）将导致在你注册字体时，对任何不在字体中的字形产生警告。')
+    pdf.add_paragraph(
+        '如果你指定了一个编码，一般会认为字体设计师已经提供了所有需要的字形。'
+        '然而，事实并非总是如此。'
+        '在我们的示例字体中，字母表中的字母都存在，但许多符号和重音都没有。'
+        '默认的行为是，当传递给字体一个它无法绘制的字符时，字体会打印一个 "notdef "字符'
+        '--通常是一个blob、点或空格。'
+        '然而，你可以要求库警告你；'
+        '下面的代码（在加载字体之前执行）将导致在你注册字体时，对任何不在字体中的字形产生警告。'
+    )
     pdf.add_code_eg(
         """
     import reportlab.rl_config
@@ -1317,13 +1350,15 @@ data
     )
     pdf.add_heading("标准的单字节字体编码", level=2)
     pdf.add_paragraph('本节为您展示常用编码中可用的字形。')
-    pdf.add_paragraph('下面的代码表显示了$WinAnsiEncoding$中的字符，'
-                      '这是Windows和许多美国和西欧Unix系统的标准编码。'
-                      '这是在美国和西欧的Windows和许多Unix系统上的标准编码，也被称为$Code Page 1252$，'
-                      '实际上与$ISO-Latin-1$相同（包含一个或两个额外的字符）。'
-                      '这是$Reportlab PDF$库使用的默认编码。'
-                      '它由$reportlab/lib$中的一个标准例程$codecharts.py$生成，'
-                      '可用于显示字体的内容。 沿边的索引号是以十六进制表示的。')
+    pdf.add_paragraph(
+        '下面的代码表显示了$WinAnsiEncoding$中的字符，'
+        '这是Windows和许多美国和西欧Unix系统的标准编码。'
+        '这是在美国和西欧的Windows和许多Unix系统上的标准编码，也被称为$Code Page 1252$，'
+        '实际上与$ISO-Latin-1$相同（包含一个或两个额外的字符）。'
+        '这是$Reportlab PDF$库使用的默认编码。'
+        '它由$reportlab/lib$中的一个标准例程$codecharts.py$生成，'
+        '可用于显示字体的内容。 沿边的索引号是以十六进制表示的。'
+    )
     cht1 = SingleByteEncodingChart(
         encodingName='WinAnsiEncoding', charsPerRow=32, boxSize=12
     )
@@ -1333,10 +1368,12 @@ data
         cht1.width,
         cht1.height,
     )
-    pdf.add_paragraph('下面的代码表显示了$MacRomanEncoding$中的字符，'
-                      '听起来，这是美国和西欧Macintosh电脑上的标准编码。'
-                      '和通常的非unicode编码一样，前128个码点（在本例中，最上面4行）是ASCII标准，'
-                      '并与上面的WinAnsi代码表一致；但下面4行不同。')
+    pdf.add_paragraph(
+        '下面的代码表显示了$MacRomanEncoding$中的字符，'
+        '听起来，这是美国和西欧Macintosh电脑上的标准编码。'
+        '和通常的非unicode编码一样，前128个码点（在本例中，最上面4行）是ASCII标准，'
+        '并与上面的WinAnsi代码表一致；但下面4行不同。'
+    )
     cht2 = SingleByteEncodingChart(
         encodingName='MacRomanEncoding', charsPerRow=32, boxSize=12
     )
@@ -1346,10 +1383,12 @@ data
         cht2.width,
         cht2.height,
     )
-    pdf.add_paragraph('这两种编码适用于标准字体（Helvetica、Times-Roman和Courier及其变体），'
-                      '并将适用于大多数商业字体，包括Adobe的字体。'
-                      '然而，有些字体包含非文本字形，这个概念并不真正适用。'
-                      '例如，ZapfDingbats和Symbol可以被视为各自拥有自己的编码。')
+    pdf.add_paragraph(
+        '这两种编码适用于标准字体（Helvetica、Times-Roman和Courier及其变体），'
+        '并将适用于大多数商业字体，包括Adobe的字体。'
+        '然而，有些字体包含非文本字形，这个概念并不真正适用。'
+        '例如，ZapfDingbats和Symbol可以被视为各自拥有自己的编码。'
+    )
 
     cht3 = SingleByteEncodingChart(
         faceName='ZapfDingbats',
@@ -1364,7 +1403,10 @@ data
         cht3.height,
     )
     cht4 = SingleByteEncodingChart(
-        faceName='Symbol', encodingName='SymbolEncoding', charsPerRow=32, boxSize=12
+        faceName='Symbol',
+        encodingName='SymbolEncoding',
+        charsPerRow=32,
+        boxSize=12,
     )
     pdf.add_illustration(
         lambda canv: cht4.drawOn(canv, 0, 0),
@@ -1375,13 +1417,17 @@ data
     pdf.add_cond_page_break(5)
 
     pdf.add_heading("支持TrueType字体", level=2)
-    pdf.add_paragraph('Marius Gedminas ($mgedmin@delfi.lt$)'
-                      '在$Viktorija Zaksiene$($vika@pov.lt$)的帮助下，为嵌入式TrueType字体提供了支持。'
-                      'TrueType字体可以在Unicode/UTF8中使用，并且不限于256个字符。')
+    pdf.add_paragraph(
+        'Marius Gedminas ($mgedmin@delfi.lt$)'
+        '在$Viktorija Zaksiene$($vika@pov.lt$)的帮助下，为嵌入式TrueType字体提供了支持。'
+        'TrueType字体可以在Unicode/UTF8中使用，并且不限于256个字符。'
+    )
     pdf.add_cond_page_break(3)
-    pdf.add_paragraph('我们使用<b>$reportlab.pdfbase.ttfonts.TTFont$</b>来创建一个真正的字体对象，'
-                      '并使用<b>$reportlab.pdfbase.pdfmetrics.registerFont$</b>进行注册。'
-                      '在pdfgen直接在画布上绘图时我们可以这样做')
+    pdf.add_paragraph(
+        '我们使用<b>$reportlab.pdfbase.ttfonts.TTFont$</b>来创建一个真正的字体对象，'
+        '并使用<b>$reportlab.pdfbase.pdfmetrics.registerFont$</b>进行注册。'
+        '在pdfgen直接在画布上绘图时我们可以这样做'
+    )
     pdf.add_code_eg(
         """
     # we know some glyphs are missing, suppress warnings
@@ -1407,17 +1453,20 @@ data
         TTFont(name,filename)
     """
     )
-    pdf.add_paragraph('所以ReportLab的内部名称由第一个参数给出，'
-                      '第二个参数是一个字符串（或类似文件的对象），表示字体的TTF文件。'
-                      '在Marius最初的补丁中，文件名应该是完全正确的，'
-                      '但我们已经修改了，如果文件名是相对的，'
-                      '那么在当前目录下搜索相应的文件，'
-                      '然后在$reportlab.rl_config.TTFSearchpath$!')
+    pdf.add_paragraph(
+        '所以ReportLab的内部名称由第一个参数给出，'
+        '第二个参数是一个字符串（或类似文件的对象），表示字体的TTF文件。'
+        '在Marius最初的补丁中，文件名应该是完全正确的，'
+        '但我们已经修改了，如果文件名是相对的，'
+        '那么在当前目录下搜索相应的文件，'
+        '然后在$reportlab.rl_config.TTFSearchpath$!'
+    )
 
-
-    pdf.add_paragraph('在使用Platypus中的TT字体之前，'
-                      '我们应该在$&lt;b&gt;$和$&lt;i&gt;$'
-                      '属性下添加一个从家族名称到描述行为的单个字体名称的映射。')
+    pdf.add_paragraph(
+        '在使用Platypus中的TT字体之前，'
+        '我们应该在$&lt;b&gt;$和$&lt;i&gt;$'
+        '属性下添加一个从家族名称到描述行为的单个字体名称的映射。'
+    )
     pdf.add_code_eg(
         """
     from reportlab.pdfbase.pdfmetrics import registerFontFamily
@@ -1425,40 +1474,60 @@ data
     boldItalic='VeraBI')
     """
     )
-    pdf.add_paragraph('如果我们只有一个Vera常规字体，没有粗体或斜体，那么我们必须将所有字体映射到同一个内部字体名。'
-                      '^&lt;b&gt;^和^&lt;i&gt;^标签现在可以安全使用，但没有效果。'
-                      '如上所述注册和映射Vera字体后，我们可以使用段落文本，如')
+    pdf.add_paragraph(
+        '如果我们只有一个Vera常规字体，没有粗体或斜体，那么我们必须将所有字体映射到同一个内部字体名。'
+        '^&lt;b&gt;^和^&lt;i&gt;^标签现在可以安全使用，但没有效果。'
+        '如上所述注册和映射Vera字体后，我们可以使用段落文本，如'
+    )
     # 注册一下字体，后面会用到，这个字体是Reportlab包自带的
     pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
     pdfmetrics.registerFont(TTFont('VeraBd', 'VeraBd.ttf'))
     pdfmetrics.registerFont(TTFont('VeraIt', 'VeraIt.ttf'))
     pdfmetrics.registerFont(TTFont('VeraBI', 'VeraBI.ttf'))
     registerFontFamily(
-        'Vera', normal='Vera', bold='VeraBd', italic='VeraIt', boldItalic='VeraBI'
+        'Vera',
+        normal='Vera',
+        bold='VeraBd',
+        italic='VeraIt',
+        boldItalic='VeraBI',
     )
-    pdf.add_para_box2("""<font name="Times-Roman" size="14">This is in Times-Roman</font>
+    pdf.add_para_box2(
+        """<font name="Times-Roman" size="14">This is in Times-Roman</font>
 <font name="Vera" color="magenta" size="14">and this is in magenta 
 <b>Vera!</b></font>""",
-                      "Using TTF fonts in paragraphs")
+        "Using TTF fonts in paragraphs",
+    )
     pdf.add_heading("亚洲字体支持", level=2)
-    pdf.add_paragraph('Reportlab PDF库旨在为亚洲字体提供全面支持。'
-                      'PDF是第一个真正可移植的亚洲文本处理解决方案。'
-                      '有两种主要的方法。 Adobe的亚洲语言包，或者TrueType字体。')
+    pdf.add_paragraph(
+        'Reportlab PDF库旨在为亚洲字体提供全面支持。'
+        'PDF是第一个真正可移植的亚洲文本处理解决方案。'
+        '有两种主要的方法。 Adobe的亚洲语言包，或者TrueType字体。'
+    )
     pdf.add_heading("亚洲语言包", level=3)
     pdf.add_paragraph('这种方法提供了最好的性能，因为没有任何东西需要嵌入到PDF文件中；与标准字体一样，一切都在阅读器上。')
-    pdf.add_paragraph('Adobe公司为每种主要语言都提供了附加组件。'
-                      '在$Adobe Reader 6.0$和7.0中，当您尝试使用它们打开文档时，您会被提示下载并安装这些插件。'
-                      '在早期的版本中，你会在打开亚洲文档时看到一个错误信息，你必须知道该怎么做。')
+    pdf.add_paragraph(
+        'Adobe公司为每种主要语言都提供了附加组件。'
+        '在$Adobe Reader 6.0$和7.0中，当您尝试使用它们打开文档时，您会被提示下载并安装这些插件。'
+        '在早期的版本中，你会在打开亚洲文档时看到一个错误信息，你必须知道该怎么做。'
+    )
     pdf.add_paragraph('日文、繁体中文(台湾/香港)、简体中文(中国大陆)和韩文都支持，我们的软件知道以下字体。')
     pdf.add_bullet("$chs$ = Chinese Simplified (mainland): '$SourceHanSansSC$'")
-    pdf.add_bullet("$cht$ = Chinese Traditional (Taiwan): '$MSung-Light$', '$MHei-Medium$'")
-    pdf.add_bullet("$kor$ = Korean: '$HYSMyeongJoStd-Medium$','$HYGothic-Medium$'")
+    pdf.add_bullet(
+        "$cht$ = Chinese Traditional (Taiwan): '$MSung-Light$', '$MHei-Medium$'"
+    )
+    pdf.add_bullet(
+        "$kor$ = Korean: '$HYSMyeongJoStd-Medium$','$HYGothic-Medium$'"
+    )
     pdf.add_bullet("$jpn$ = Japanese: '$HeiseiMin-W3$', '$HeiseiKakuGo-W5$'")
-    pdf.add_paragraph('由于许多用户不会安装字体包，我们已经包含了一些日文字符的相当颗粒状的^bitmap^。 下面我们将讨论生成它们所需要的内容。')
+    pdf.add_paragraph(
+        '由于许多用户不会安装字体包，我们已经包含了一些日文字符的相当颗粒状的^bitmap^。 下面我们将讨论生成它们所需要的内容。'
+    )
 
     pdf.add_image(os.path.join(BASE_DIR, "images", 'jpnchars.jpg'))
-    pdf.add_paragraph('在2.0版本之前，当你注册一个$CIDFont$时，'
-                      '你必须指定许多本地编码之一。在2.0版本中，你应该使用一个新的^UnicodeCIDFont^类。')
+    pdf.add_paragraph(
+        '在2.0版本之前，当你注册一个$CIDFont$时，'
+        '你必须指定许多本地编码之一。在2.0版本中，你应该使用一个新的^UnicodeCIDFont^类。'
+    )
     pdf.add_code_eg(
         """
     from reportlab.pdfbase import pdfmetrics
@@ -1471,9 +1540,11 @@ data
     canvas.drawString(100, 675, msg)
     """
     )
-    pdf.add_paragraph('旧的编码风格与显式编码应该仍然有效，但现在只有当你需要构建垂直文本时才有意义。'
-                      '我们的目标是在未来为UnicodeCIDFont构造函数添加更多可读的水平和垂直文本选项。'
-                      '以下四个测试脚本会生成相应语言的样本。')
+    pdf.add_paragraph(
+        '旧的编码风格与显式编码应该仍然有效，但现在只有当你需要构建垂直文本时才有意义。'
+        '我们的目标是在未来为UnicodeCIDFont构造函数添加更多可读的水平和垂直文本选项。'
+        '以下四个测试脚本会生成相应语言的样本。'
+    )
 
     pdf.add_code_eg(
         """tests/test_multibyte_jpn.py
@@ -1498,29 +1569,37 @@ data
     ##Output from test_multibyte_jpn.py
     ##""")
 
-    pdf.add_paragraph('在以前版本的$ReportLab PDF$库中，'
-                      '我们不得不使用Adobe的CMap文件（如果安装了亚洲语言包，则位于$Acrobat Reader$附近）。'
-                      '现在我们只需要处理一种编码，字符宽度数据被嵌入到软件包中，生成时不需要CMap文件。'
-                      '在^rl_config.py^中的CMap搜索路径现在已经被废弃，'
-                      '如果你限制自己使用$UnicodeCIDFont$，则没有效果。')
+    pdf.add_paragraph(
+        '在以前版本的$ReportLab PDF$库中，'
+        '我们不得不使用Adobe的CMap文件（如果安装了亚洲语言包，则位于$Acrobat Reader$附近）。'
+        '现在我们只需要处理一种编码，字符宽度数据被嵌入到软件包中，生成时不需要CMap文件。'
+        '在^rl_config.py^中的CMap搜索路径现在已经被废弃，'
+        '如果你限制自己使用$UnicodeCIDFont$，则没有效果。'
+    )
     pdf.add_heading("TrueType字体和亚洲字符", level=3)
-    pdf.add_paragraph('这就是简单的方法。'
-                      '在使用亚洲$TrueType$字体时，完全不需要特殊的处理。'
-                      '例如，在控制面板中安装了日语作为选项的Windows用户，'
-                      '会有一个可以使用的字体 "$msmincho.ttf$"。'
-                      '然而，请注意，解析字体需要时间，而且相当大的子集可能需要嵌入你的PDF中。'
-                      '我们现在也可以解析以$.ttc$结尾的文件，它们是$.ttf$的轻微变化。')
+    pdf.add_paragraph(
+        '这就是简单的方法。'
+        '在使用亚洲$TrueType$字体时，完全不需要特殊的处理。'
+        '例如，在控制面板中安装了日语作为选项的Windows用户，'
+        '会有一个可以使用的字体 "$msmincho.ttf$"。'
+        '然而，请注意，解析字体需要时间，而且相当大的子集可能需要嵌入你的PDF中。'
+        '我们现在也可以解析以$.ttc$结尾的文件，它们是$.ttf$的轻微变化。'
+    )
     pdf.add_heading("To Do", level=3)
 
-    pdf.add_paragraph('我们预计将在一段时间内开发这个领域的包.accept2dyear这是一个主要优先事项的大纲。 我们欢迎大家的帮助')
+    pdf.add_paragraph(
+        '我们预计将在一段时间内开发这个领域的包.accept2dyear这是一个主要优先事项的大纲。 我们欢迎大家的帮助'
+    )
     pdf.add_bullet('确保我们在横写和竖写中的所有编码都有准确的字符指标。')
     pdf.add_bullet('为^UnicodeCIDFont^添加选项，在字体允许的情况下，允许垂直和比例变体。')
     pdf.add_bullet('改进段落中的包字代码，允许竖写。')
     pdf.add_cond_page_break(5)
     pdf.add_heading("RenderPM 测试", level=2)
-    pdf.add_paragraph('这可能也是提及$reportlab/graphics/renderPM.py$的测试函数的最好地方，'
-                      '它可以被认为是行使renderPM'
-                      '("$PixMap Renderer$"，相对于renderPDF、renderPS或renderSVG)的测试的规范地方。')
+    pdf.add_paragraph(
+        '这可能也是提及$reportlab/graphics/renderPM.py$的测试函数的最好地方，'
+        '它可以被认为是行使renderPM'
+        '("$PixMap Renderer$"，相对于renderPDF、renderPS或renderSVG)的测试的规范地方。'
+    )
     pdf.add_paragraph('如果你从命令行运行这个，你应该会看到很多像下面这样的输出。')
     pdf.add_code_eg(
         """C:\\code\\reportlab\\graphics>renderPM.py
@@ -1537,16 +1616,990 @@ data
     wrote pmout\\renderPM12.pct
     wrote pmout\\index.html"""
     )
-    pdf.add_paragraph('它运行了许多测试，'
-                      '从 "Hello World"测试开始，到各种测试，'
-                      '包括：线条；各种尺寸、字体、颜色和对齐方式的文本字符串；'
-                      '基本形状；转换和旋转组；缩放坐标；'
-                      '旋转字符串；嵌套组；锚定和非标准字体。')
-    pdf.add_paragraph('它创建了一个名为$pmout$的子目录，将图片文件写入其中，并写了一个$index.html$的页面，便于参考所有结果。')
+    pdf.add_paragraph(
+        '它运行了许多测试，'
+        '从 "Hello World"测试开始，到各种测试，'
+        '包括：线条；各种尺寸、字体、颜色和对齐方式的文本字符串；'
+        '基本形状；转换和旋转组；缩放坐标；'
+        '旋转字符串；嵌套组；锚定和非标准字体。'
+    )
+    pdf.add_paragraph(
+        '它创建了一个名为$pmout$的子目录，将图片文件写入其中，并写了一个$index.html$的页面，便于参考所有结果。'
+    )
     pdf.add_paragraph("与字体相关的测试，你可能会想看看#11（'非标准字体中的文本字符串'）和#12（'测试各种字体'）。")
 
+
 def chapter4(pdf):
-    pass
+    pdf.add_heading("PDF的特殊功能", level=1)
+    pdf.add_paragraph("PDF提供了许多功能，使电子文档的浏览更加高效和舒适，我们的类库就公开了其中的一些功能。")
+
+    pdf.add_heading("表单", level=2)
+    pdf.add_paragraph(
+        "表单功能使您可以在PDF文件开头附近创建一个图形和文本块，然后在后续页面中简单地引用它。 "
+        "如果要处理5000种重复的业务表单（例如一页发票或工资单），"
+        "则只需将背景存储一次，并在每页上简单地绘制变化的文本即可。 "
+        "正确使用表格可以极大地减少文件大小和生产时间，"
+        "并且显然甚至可以加快打印机上的处理速度。"
+    )
+    pdf.add_paragraph('表单不需要引用整个页面； 任何可能经常重复的内容都应以表格的形式放置。')
+    pdf.add_paragraph('下面的示例显示了使用的基本顺序。 真正的程序可能会预先定义表单，然后从另一个位置引用它们。')
+    pdf.add_code_eg(examples.testforms)
+    pdf.add_heading("链接和目的地(书签)", level=2)
+    pdf.add_paragraph(
+        "PDF支持内部超链接。 单击可以触发多种链接类型，目标类型和事件。"
+        "目前，我们仅支持从文档的一个部分跳转到另一部分并在跳转后控制窗口的缩放级别的基本功能。"
+        "^bookmarkPage^方法定义一个目标，该目标是跳转的终点。"
+    )
+    pdf.add_code_eg(
+        """
+        canvas.bookmarkPage(name, fit="Fit", left=None,
+            top=None, bottom=None, right=None, zoom=None
+        )
+    """
+    )
+    pdf.add_paragraph(
+        "默认情况下，$ bookmarkPage $方法将页面本身定义为目标。"
+        "跳转到由^bookmarkPage^定义的端点之后，PDF浏览器将显示整个页面，并将其缩放以适合屏幕大小："
+    )
+    pdf.add_code_eg("""canvas.bookmarkPage(name)""")
+    pdf.add_paragraph("通过提供一个$fit$参数，$bookmarkPage$方法可以用多种不同的方式显示页面。")
+
+    table = Table(
+        [
+            ['fit', '必传参数', '描述'],
+            [
+                'Fit',
+                None,
+                '自适应窗口 (默认)\nEntire page fits in window (the default)',
+            ],
+            [
+                'FitH',
+                'top',
+                '坐标在窗口上方, 自适应宽度\n'
+                'Top coord at top of window, width scaled to fit',
+            ],
+            [
+                'FitV',
+                'left',
+                '坐标在窗口左边, 自适应高度\n'
+                'Left coord at left of window, height scaled to fit',
+            ],
+            [
+                'FitR',
+                'left bottom right top',
+                '缩放窗口以适应指定的矩形\n' 'Scale window to fit the specified rectangle',
+            ],
+            [
+                'XYZ',
+                'left top zoom',
+                '细致的控制。如果您省略了一个参数，PDF浏览器会将其解释为 "保持原样"。\n'
+                'Fine grained control. If you omit a parameter\n'
+                'the PDF browser interprets it as "leave as is"',
+            ],
+        ]
+    )
+    table.setStyle(
+        TableStyle(
+            [
+                ('FONT', (0, 0), (-1, -6), 'SourceHanSans-Normal', 10, 12),
+                ('FONT', (0, 1), (-1, -1), 'SourceHanSans-ExtraLight', 10, 12),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ]
+        )
+    )
+    pdf.add_paragraph("")  # 增加一个空行
+    pdf.add_flowable(table)
+    pdf.add_caption('配合不同类型所需的属性', category=constant.CAPTION_TABLE)
+    pdf.add_pencil_note()
+    pdf.add_text_note("$fit$的设置是区分大小写的，所以$fit=\"FIT\"$是无效的。")
+    pdf.add_paragraph(
+        '有时你希望跳转的目标是一个页面的某个部分。$fit="FitR"$允许你确定一个特定的矩形，缩放区域以适合整个页面。'
+    )
+    pdf.add_paragraph('要将显示设置为页面的特定x和y坐标，并直接使用fit="XYZ"控制缩放。')
+    pdf.add_code_eg(
+        "canvas.bookmarkPage('my_bookmark',fit=\"XYZ\",left=0,top=200)"
+    )
+    pdf.add_paragraph(
+        '这个目标位于页面的最左边，屏幕顶部的位置是200。因为没有设置$zoom$，所以无论用户设置成什么样子，缩放都会保持在这个位置。'
+    )
+    pdf.add_code_eg(
+        "canvas.bookmarkPage('my_bookmark',fit=\"XYZ\",left=0,top=200,zoom=2)"
+    )
+    pdf.add_paragraph('这次的缩放设置为将页面扩大2倍其正常大小。')
+    pdf.add_pencil_note()
+    pdf.add_text_note(
+        '$XYZ$和$FitR$的拟合类型都需要用默认的用户空间来指定它们的位置参数($top, bottom, left, right$)。'
+        '它们会忽略画布图形状态下的任何几何变换。'
+    )
+    pdf.add_paragraph(
+        '之前有两个书签方法是支持的，但由于^bookmarkPage^的通用性，现在已经废弃了。'
+        '这两个方法是$bookmarkHorizontalAbsolute$和$bookmarkHorizontal$。'
+    )
+
+    pdf.add_heading("定义内部链接", level=3)
+    pdf.add_code_eg(
+        """
+    canvas.linkAbsolute(contents, destinationname, Rect=None, addtopage=1, 
+        name=None, thickness=0, color=None, dashArray=None, **kw)
+     """
+    )
+
+    pdf.add_paragraph(
+        '$linkAbsolute$方法定义了一个跳跃的起点。'
+        '当用户使用动态查看器(如Acrobat Reader)浏览生成的文档时，当鼠标在$Rect$指定的矩形内点击时，'
+        '查看器将跳转到与$destinationname$相关联的端点。'
+        '如同$bookmarkHorizontalAbsolute$一样，矩形$Rect$必须用默认的用户空间来指定。'
+        '参数$contents$指定了当用户左键点击该区域时在查看器中显示的文本块。'
+    )
+    pdf.add_paragraph('矩形$Rect$必须用元组^(x1,y1,x2,y2)^来指定，以确定在默认用户空间中矩形的左下角和右上角。')
+    pdf.add_paragraph("示例代码")
+    pdf.add_code_eg('canvas.bookmarkPage("Meaning_of_life")')
+    pdf.add_paragraph(
+        '定义了一个位置，作为当前页面的整个标识符$Meaning_of_life$。 '
+        '为了在绘制一个可能不同的页面时创建一个矩形链接到它，我们将使用以下代码。'
+    )
+    pdf.add_code_eg(
+        """
+ canvas.linkAbsolute("Find the Meaning of Life", "Meaning_of_life",
+                     (inch, inch, 6*inch, 2*inch))
+"""
+    )
+    pdf.add_paragraph(
+        "默认情况下，在交互式浏览时，链接周围会出现一个矩形。"
+        "使用关键字参数$Border='[0 0 0]'$来抑制查看链接时周围可见的矩形。"
+        "例如"
+    )
+    pdf.add_code_eg(
+        """
+     canvas.linkAbsolute("Meaning of Life", "Meaning_of_life",
+                         (inch, inch, 6*inch, 2*inch), Border='[0 0 0]')
+    """
+    )
+    pdf.add_paragraph(
+        '如果没有指定Border参数，$thickness$、$color$和$dashArray$参数可以交替使用来指定边框。'
+        '如果指定了Border参数，它必须是一个PDF数组的字符串表示，'
+        '或者是一个$PDFArray$(参见pdfdoc模块)。'
+        '$color$参数(应该是一个$Color$实例)相当于一个关键字参数$C$，'
+        '它应该解析为一个PDF颜色定义(通常是一个三条PDF数组)。'
+    )
+    pdf.add_paragraph(
+        '$canvas.linkRect$方法的意图与$linkAbsolute$方法类似，'
+        '但多了一个参数$relative=1$，所以打算服从本地用户空间转换。'
+    )
+
+    pdf.add_heading("大纲", level=2)
+    pdf.add_paragraph(
+        '$Acrobat Reader$有一个导航页，它可以容纳一个文档大纲；'
+        '当您打开本指南时，它通常应该是可见的。'
+        '我们提供一些简单的方法来添加大纲条目。'
+        '通常情况下，一个制作文档的程序（如本用户指南）在到达文档中的每个标题时，'
+        '会调用方法'
+        '$canvas.addOutlineEntry(^self, title, key, level=0, closed=None^)$。'
+    )
+    pdf.add_paragraph(
+        '^title^是将显示在左侧窗格的标题。'
+        '^key^必须是一个字符串，它在文档中是唯一的，并且和超链接一样，可以命名一个书签。'
+        '除非另有说明，否则^level^是0'
+        '--最上层，而且一次下行超过一层是错误的(例如，在0层标题后加上2层标题)。'
+        '最后，^closed^参数指定大纲窗格中的节点是默认关闭还是打开。'
+    )
+    pdf.add_paragraph(
+        '下面的片段来自于格式化本用户指南的文档模板。 '
+        '中央处理器依次查看每个段落，当出现新的章节时，'
+        '就会做出一个新的大纲条目，将章节标题文本作为标题文本。 '
+        '键是从章节号中获得的（这里没有显示），所以第2章的键为 "ch2"。 '
+        '大纲入口指向的书签是针对整页的，但它也可以很容易地成为一个单独的段落。'
+    )
+    pdf.add_code_eg(
+        """
+    #abridged code from our document template
+    if paragraph.style == 'Heading1':
+        self.chapter = paragraph.getPlainText()
+        key = 'ch%d' % self.chapterNo
+        self.canv.bookmarkPage(key)
+        self.canv.addOutlineEntry(paragraph.getPlainText(),
+                                                key, 0, 0)
+        """
+    )
+    pdf.add_heading("页面过渡效果", level=2)
+    pdf.add_code_eg(
+        """
+     canvas.setPageTransition(self, effectname=None, duration=1,
+                            direction=0,dimension='H',motion='I')
+                            """
+    )
+    pdf.add_paragraph(
+        '$setPageTransition$方法指定了一个页面如何被下一个页面替换。 '
+        '例如，通过将页面转换效果设置为 "溶解"，当当前页面在交互式浏览过程中被下一个页面所取代时，它将显示为融化。 '
+        '这些效果在美化幻灯片演示等地方很有用。关于如何使用此方法，请参阅参考手册。'
+    )
+    pdf.add_heading("内部文件注释", level=2)
+    pdf.add_code_eg(
+        """
+     canvas.setAuthor(name)
+     canvas.setTitle(title)
+     canvas.setSubject(subj)
+     """
+    )
+    pdf.add_paragraph(
+        '这些方法对文档没有自动可见的效果。'
+        '它们向文件添加内部注释。 '
+        '这些注释可以使用浏览器的 "文档信息 "菜单项来查看，'
+        '它们也可以作为一种简单的标准方式，向不需要解析整个文件的归档软件提供有关文件的基本信息。 '
+        '要找到注释，请使用标准文本编辑器'
+        '（如MS/Windows上的$notepad$或unix上的$vi$或$emacs$）'
+        '查看$*.pdf$输出文件，'
+        '并在文件内容中查找字符串$/Author$。'
+    )
+    pdf.add_code_eg(examples.testannotations)
+    pdf.add_paragraph('如果您想让主题、标题和作者在查看和打印时自动显示在文档中，您必须像其他文本一样将它们绘制到文档中。')
+    pdf.add_illustration(examples.annotations, "设置文档内部注释")
+    pdf.add_heading("加密", level=2)
+    pdf.add_heading("关于加密PDF文件", level=3)
+    pdf.add_paragraph('Adobe的PDF标准允许你在对一个PDF文件进行加密时做三件相关的事情。')
+    pdf.add_bullet('对其进行密码保护，所以用户必须提供有效的密码才能够读取它。')
+    pdf.add_bullet('对文件的内容进行加密，使其在解密前毫无用处，并对文件进行加密。')
+    pdf.add_bullet('控制用户在查看文档时是否可以打印、复制、粘贴或修改文档。')
+    pdf.add_paragraph('PDF安全处理程序允许为一个文档指定两个不同的密码。')
+    pdf.add_bullet('所有者 "密码"（也就是 "安全密码 "或 "主密码"）。')
+    pdf.add_bullet('用户 "密码"（也就是 "打开密码"）。')
+    pdf.add_paragraph('当用户提供其中一个密码时，PDF文件将被打开、解密并显示在屏幕上。')
+    pdf.add_paragraph(
+        '如果提供了所有者密码，那么文件的打开就有了完全的控制权' '--你可以对它做任何事情，包括改变安全设置和密码，或者用新密码重新加密。'
+    )
+    pdf.add_paragraph(
+        '如果用户密码是提供的密码，你就在一个更受限制的模式下打开它。' '这些限制是在文件加密时设置的，将允许或拒绝用户进行以下操作的权限。'
+    )
+    pdf.add_bullet('修改文件的内容')
+    pdf.add_bullet('从文档中复制文本和图形')
+    pdf.add_bullet('添加或修改文本注释和交互式表格字段。')
+    pdf.add_bullet('打印文件')
+    pdf.add_paragraph(
+        '请注意，所有受密码保护的PDF文件都是加密的，但并不是所有加密的PDF都受密码保护。'
+        '如果一个文件的用户密码是一个空字符串，当打开文件时将不会有密码提示。'
+        '如果只用所有者密码来保护文档，那么打开文件时也不会有密码提示。'
+        '如果在对PDF文件进行加密时，将所有者和用户密码设置为同一字符串，则该文件将始终以用户访问权限打开。'
+        '这就意味着，可以创建一个文件，比如说，任何人都不可能打印出来，即使是创建该文件的人。'
+    )
+    table = Table(
+        [
+            ['所有者密码\n已设置?', '用户密码\n已设置?', '结果'],
+            [
+                '是',
+                '-',
+                '打开文件时无需密码。适用于所有人。\n'
+                'No password required when opening file.\n'
+                'Restrictions apply to everyone.',
+            ],
+            [
+                '-',
+                '是',
+                '打开文件时需要用户密码。适用于所有人。\n'
+                'User password required when opening file. \n'
+                'Restrictions apply to everyone.',
+            ],
+            [
+                '是',
+                '是',
+                '打开文件时需要一个密码。\n只有在提供用户密码的情况下才有限制。\n'
+                'A password required when opening file. \n'
+                'Restrictions apply only if user password supplied.',
+            ],
+        ],
+        [90, 90, 260],
+    )
+    table.setStyle(
+        TableStyle(
+            [
+                ('FONT', (0, 0), (-1, -4), 'SourceHanSans-Normal', 10, 12),
+                ('FONT', (0, 1), (-1, -1), 'SourceHanSans-ExtraLight', 10, 12),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ]
+        )
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+    pdf.add_caption("PDF加密方式", category=constant.CAPTION_TABLE)
+    pdf.add_paragraph(
+        '当一个PDF文件被加密时，加密将应用于文件中的所有字符串和流。'
+        '这可以防止没有密码的人简单地从PDF文件中删除密码以获得访问权'
+        ' - 它使文件无用，除非你真的有密码。'
+    )
+    pdf.add_paragraph(
+        'PDF 的标准加密方法使用 MD5 消息摘要算法'
+        '（如 RFC 1321，MD5 消息摘要算法中所述）和一种称为 RC4 的加密算法。'
+        'RC4是一种对称流加密算法'
+        '--加密和解密都使用相同的算法，而且该算法不会改变数据的长度。'
+    )
+    pdf.add_heading("如何使用加密技术", level=3)
+    pdf.add_paragraph('文档可以通过向画布对象传递一个参数来加密。')
+    pdf.add_paragraph('如果参数是一个字符串对象，它被用作PDF的用户密码。')
+    pdf.add_paragraph(
+        '参数也可以是$reportlab.lib.pdfencrypt.StandardEncryption$类的实例，'
+        '它允许对加密设置进行更精细的控制。'
+    )
+    pdf.add_paragraph('$StandardEncryption$构造函数接受以下参数。')
+    pdf.add_code_eg(
+        """
+    def __init__(self, userPassword,
+        ownerPassword=None,
+        canPrint=1,
+        canModify=1,
+        canCopy=1,
+        canAnnotate=1,
+        strength=40):
+    """
+    )
+    pdf.add_paragraph('$userPassword$和$ownerPassword$参数在加密的PDF上设置了相关密码。')
+    pdf.add_paragraph(
+        '布尔标志$canPrint$,$canModify$,$canCopy$,$canAnnotate$决定了'
+        '当只有用户密码被提供时，用户是否可以在PDF上执行相应的操作。'
+    )
+    pdf.add_paragraph('如果用户在打开PDF时提供了所有者密码，则无论标志如何，所有的操作都可以执行。')
+
+    pdf.add_heading("示例", level=3)
+    pdf.add_paragraph("要创建一个名为hello.pdf的文档，用户密码为'rptlab'，不允许打印，可以用以下代码。")
+    pdf.add_code_eg(
+        """
+    from reportlab.pdfgen import canvas
+    from reportlab.lib import pdfencrypt
+    
+    enc=pdfencrypt.StandardEncryption("rptlab",canPrint=0)
+    
+    def hello(c):
+        c.drawString(100,100,"Hello World")
+    c = canvas.Canvas("hello.pdf",encrypt=enc)
+    hello(c)
+    c.showPage()
+    c.save()
+    
+    """
+    )
+    pdf.add_heading("交互式表单", level=2)
+    pdf.add_heading("交互式表格概述", level=3)
+    pdf.add_paragraph(
+        'PDF标准允许各种交互式元素，'
+        'ReportLab工具包目前只支持一小部分的可能性，应该被认为是一项正在进行中的工作。'
+        '目前我们允许使用^checkbox^、^radio^、^choice^和^listbox^部件进行选择；'
+        '文本值可以使用^textfield^部件进行输入。'
+        '所有的widget都是通过调用^canvas.acroform^属性上的方法创建的。'
+    )
+    pdf.add_heading("示例", level=3)
+    pdf.add_paragraph('这显示了在当前页面上创建交互式元素的基本机制。')
+    pdf.add_code_eg(
+        """
+    canvas.acroform.checkbox(
+            name='CB0',
+            tooltip='Field CB0',
+            checked=True,
+            x=72,y=72+4*36,
+            buttonStyle='diamond',
+            borderStyle='bevelled',
+            borderWidth=2,
+            borderColor=red,
+            fillColor=green,
+            textColor=blue,
+            forceBorder=True)
+    """
+    )
+    al_style = TableStyle(
+        [
+            ('SPAN', (0, 0), (-1, 0)),
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSans-Normal', 10, 12),
+            ('FONT', (0, 1), (-1, 1), 'SourceHanSans-Normal', 9, 9.6),
+            ('FONT', (0, 2), (0, -1), 'Courier', 8, 8.4),  # 参数列
+            ('FONT', (1, 2), (1, -1), 'SourceHanSans-ExtraLight', 8, 8.4),
+            ('FONT', (2, 2), (2, -1), 'SourceHanSans-ExtraLight', 8, 8.4),
+            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+            ('ALIGN', (1, 1), (1, 1), 'CENTER'),
+            ('VALIGN', (0, 2), (-1, -1), 'MIDDLE'),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+        ]
+    )
+    pdf.add_text_note("^acroform^画布属性是根据需求自动创建的，而且一个文档中只允许有一个表单。")
+    pdf.add_heading("复选框用法", level=3)
+    pdf.add_paragraph(
+        '^canvas.acroform.checkbox^方法在当前页面上创建了一个^checkbox^小部件。'
+        '复选框的值是$YES$或$OFF$。参数为:'
+    )
+    table = Table(
+        [
+            ['canvas.acroform.checkbox 参数列表', '', ''],
+            ['参数名', '描述', '默认值'],
+            ["name", "表单参数名\nthe parameter's name", "None"],
+            [
+                "x",
+                "在页面上的水平位置(绝对坐标)\n"
+                "the horizontal position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "y",
+                "在页面上的垂直位置(绝对坐标)\n"
+                "the vertical position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "size",
+                "轮廓尺寸：size x size\n" "The outline dimensions size x size",
+                "20",
+            ],
+            [
+                "checked",
+                "如果为真，则该复选框被初始选中\n" "if True the checkbox is initially checked",
+                "False",
+            ],
+            [
+                "buttonStyle",
+                "如果为真，则该复选框最初被选中，复选框样式（见下文）。\n"
+                "the checkbox style (see below)",
+                "'check'",
+            ],
+            [
+                "shape",
+                "小组件的轮廓（见下文）。\n" "The outline of the widget (see below)",
+                "'square'",
+            ],
+            [
+                "fillColor",
+                "填充颜色\n" "colour to be used to fill the widget",
+                "None",
+            ],
+            ["textColor", "符号的颜色\n" "the colour of the symbol or text", "None"],
+            ["borderWidth", "边框宽度\nas it says", "1"],
+            ["borderColor", "边框颜色\nthe widget's border colour", "None"],
+            ["borderStyle", "边框样式\nThe border style name", "'solid'"],
+            [
+                "tooltip",
+                "悬停在小组件上时要显示的文本。\n"
+                "The text to display when hovering over the widget",
+                "None",
+            ],
+            [
+                "annotationFlags",
+                "空白分隔的注解标志字符串\n" "blank separated string of annotation flags",
+                "'print'",
+            ],
+            [
+                "fieldFlags",
+                "空白分隔的字段标志（见下文）。\n" "Blank separated field flags (see below)",
+                "'required'",
+            ],
+            [
+                "forceBorder",
+                "为 True 的时候会强行画边框\n"
+                "when true a border force a border to be drawn",
+                "False",
+            ],
+            [
+                "relative",
+                "如果为 Tru，服从当前画布的变换\n"
+                "if true obey the current canvas transform",
+                "False",
+            ],
+            [
+                "dashLen ",
+                "如果 borderStyle=='dashed' ，要使用的折线。\n"
+                "the dashline to be used if the borderStyle=='dashed'",
+                "3",
+            ],
+        ],
+        [90, 260, 90],
+        style=al_style,
+        repeatRows=2,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+    pdf.add_heading("单选框使用方法", level=3)
+    pdf.add_paragraph(
+        '^canvas.acroform.radio^方法在当前页面上创建一个radio小组件。'
+        'radio的值是radio组选择的值，如果没有选择，则是$OFF$。参数是'
+    )
+    table = Table(
+        [
+            ['canvas.acroform.radio 参数列表', '', ''],
+            ['参数名', '描述', '默认值'],
+            [
+                "name",
+                "单选框组的名称(该参数)\nthe radio's group (ie parameter) name",
+                "None",
+            ],
+            ["value", "单选框组的名称\nthe radio's group name", "None"],
+            [
+                "x",
+                "在页面上的水平位置(绝对坐标)\n"
+                "the horizontal position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "y",
+                "在页面上的垂直位置(绝对坐标)\n"
+                "the vertical position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "size",
+                "轮廓尺寸，size x size\n" "The outline dimensions size x size",
+                "20",
+            ],
+            [
+                "selected",
+                "如果为 'true'，则该单选机在其组中被选中。\n"
+                "if True this radio is the selected "
+                "one in its group",
+                "False",
+            ],
+            [
+                "buttonStyle",
+                "按钮样式\nthe checkbox style (see below)",
+                "'check'",
+            ],
+            [
+                "shape",
+                "小组件的轮廓（见下文）。\n" "The outline of the widget (see below)",
+                "'square'",
+            ],
+            [
+                "fillColor",
+                "用来填充小组件的颜色\n" "colour to be used to fill the widget",
+                "None",
+            ],
+            ["textColor", "符号的颜色\n" "the colour of the symbol or text", "None"],
+            ["borderWidth", "边框宽度\n" "as it says", "1"],
+            ["borderColor", "边框颜色\nthe widget's border colour", "None"],
+            ["borderStyle", "边框样式\nThe border style name", "'solid'"],
+            [
+                "tooltip",
+                "悬停在小组件上时要显示的文本。\n"
+                "The text to display when hovering over the widget",
+                "None",
+            ],
+            [
+                "annotationFlags",
+                "空白分隔的注解标志字符串\n" "blank separated string of annotation flags",
+                "'print'",
+            ],
+            [
+                "fieldFlags",
+                "空白分隔的字段标志（见下文）。\n" "Blank separated field flags (see below)",
+                "'noToggleToOff required radio'",
+            ],
+            [
+                "forceBorder",
+                "当真的时候会强行画边框\n" "when true a border force a border to be drawn",
+                "False",
+            ],
+            [
+                "relative",
+                "如果为true，则遵循当前的画布转换\n"
+                "if true obey the current canvas transform",
+                "False",
+            ],
+            [
+                "dashLen ",
+                "如果borderStyle=='dashed'，要使用的折线。\n"
+                "the dashline to be used if the borderStyle=='dashed'",
+                "3",
+            ],
+        ],
+        [90, 240, 110],
+        style=al_style,
+        repeatRows=2,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+
+    pdf.add_heading("列表框用法", level=3)
+    pdf.add_paragraph(
+        '^canvas.acroform.listbox^方法在当前页面上创建了一个^listbox^小组件。'
+        'listbox包含一个选项列表，其中一个或多个选项（取决于$fieldFlags$）可以被选中。'
+    )
+    table = Table(
+        [
+            ['canvas.acroform.listbox 参数列表', '', ''],
+            ['参数', '描述', '默认值'],
+            ["name", "组名\nthe radio's group (ie parameter) name", "None"],
+            [
+                "options",
+                "可用选项的列表或元组\nList or tuple of avaiable options",
+                "[]",
+            ],
+            [
+                "value",
+                "单个或选定选项的字符串列表。\n"
+                "Singleton or list of strings of selected options",
+                "[]",
+            ],
+            [
+                "x",
+                "在页面上的水平位置(绝对坐标)\n"
+                "the horizontal position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "y",
+                "在页面上的垂直位置(绝对坐标)\n"
+                "the vertical position on the page (absolute coordinates)",
+                "0",
+            ],
+            ["width", "小组件宽度\nThe widget width", "120"],
+            ["height", "小组件高度\nThe widget height", "36"],
+            [
+                "fontName",
+                "要使用的第1种字体的名称。\nThe name of the type 1 font to be used",
+                "'Helvetica'",
+            ],
+            ["fontSize", "要使用的字体大小\nThe size of font to be used", "12"],
+            [
+                "fillColor",
+                "用来填充小组件的颜色\ncolour to be used to fill the widget",
+                "None",
+            ],
+            ["textColor", "符号或文本的颜色\nthe colour of the symbol or text", "None"],
+            ["borderWidth", "边框宽度\nas it says", "1"],
+            ["borderColor", "边框颜色\nthe widget's border colour", "None"],
+            ["borderStyle", "边框样式\nThe border style name", "'solid'"],
+            [
+                "tooltip",
+                "悬停在小组件上时要显示的文本。\n"
+                "The text to display when hovering over the widget",
+                "None",
+            ],
+            [
+                "annotationFlags",
+                "空白分隔的注解标志字符串\nblank separated string of annotation flags",
+                "'print'",
+            ],
+            [
+                "fieldFlags",
+                "空白分隔的字段标志（见下文）。\nBlank separated field flags (see below)",
+                "''",
+            ],
+            [
+                "forceBorder",
+                "当真的时候会强行画边框\nwhen true a border force a border to be drawn",
+                "False",
+            ],
+            [
+                "relative",
+                "如果为真，服从当前画布的变换\nif true obey the current canvas transform",
+                "False",
+            ],
+            [
+                "dashLen ",
+                "如果borderStyle=='dashed'，要使用的折线。\n"
+                "the dashline to be used if the borderStyle=='dashed'",
+                "3",
+            ],
+        ],
+        [90, 260, 90],
+        style=al_style,
+        repeatRows=2,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+
+    pdf.add_heading("下拉菜单的使用", level=3)
+    pdf.add_paragraph(
+        '^canvas.acroform.choice^方法在当前页面上创建了一个^dropdown^小部件。'
+        '下拉菜单包含一个选项列表，其中一个或多个选项（取决于fieldFlags）可以被选中。'
+        '如果您在^fieldFlags^中添加^edit^，那么结果可以被编辑。'
+    )
+    table = Table(
+        [
+            ['canvas.acroform.choice 参数列表', '', ''],
+            ['参数', '描述', '默认值'],
+            ["name", "组名\nthe radio's group (ie parameter) name", "None"],
+            ["options", "可用选项的列表或元组\nList or tuple of available options", "[]"],
+            [
+                "value",
+                "单个或选定选项的字符串列表。\n"
+                "Singleton or list of strings of selected options",
+                "[]",
+            ],
+            [
+                "x",
+                "在页面上的水平位置(绝对坐标)\n"
+                "the horizontal position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "y",
+                "在页面上的垂直位置(绝对坐标)\n"
+                "the vertical position on the page (absolute coordinates)",
+                "0",
+            ],
+            ["width", "小组件宽度\nThe widget width", "120"],
+            ["height", "小组件高度\nThe widget height", "36"],
+            [
+                "fontName",
+                "要使用的第1种字体的名称。\n" "The name of the type 1 font to be used",
+                "'Helvetica'",
+            ],
+            ["fontSize", "要使用的字体大小\nThe size of font to be used", "12"],
+            [
+                "fillColor",
+                "用来填充小组件的颜色\ncolour to be used to fill the widget",
+                "None",
+            ],
+            ["textColor", "符号的颜色\nthe colour of the symbol or text", "None"],
+            ["borderWidth", "边框宽度\nas it says", "1"],
+            ["borderColor", "边框颜色\nthe widget's border colour", "None"],
+            ["borderStyle", "边框样式\nThe border style name", "'solid'"],
+            [
+                "tooltip",
+                "悬停在小组件上时要显示的文本。\n"
+                "The text to display when hovering over the widget",
+                "None",
+            ],
+            [
+                "annotationFlags",
+                "空白分隔的注解标志字符串\nblank separated string of annotation flags",
+                "'print'",
+            ],
+            [
+                "fieldFlags",
+                "空白分隔的字段标志（见下文）。\nBlank separated field flags (see below)",
+                "'combo'",
+            ],
+            [
+                "forceBorder",
+                "当真的时候会强行画边框\nwhen true a border force a border to be drawn",
+                "False",
+            ],
+            [
+                "relative",
+                "如果为真，服从当前画布的变换\nif true obey the current canvas transform",
+                "False",
+            ],
+            [
+                "dashLen ",
+                "如果borderStyle=='dashed'，要使用的破折号。\n"
+                "the dashline to be used if the borderStyle=='dashed'",
+                "3",
+            ],
+            [
+                "maxlen ",
+                "无或小组件值的最大长度\nNone or maximum length of the widget value",
+                "None",
+            ],
+        ],
+        [90, 260, 90],
+        style=al_style,
+        repeatRows=2,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+
+    pdf.add_heading("文本字段用法", level=3)
+    pdf.add_paragraph(
+        '^canvas.acroform.textfield^方法在当前页面上创建了一个^textfield^条目部件。'
+        '文本字段可以被编辑，以改变小组件的值。'
+    )
+    table = Table(
+        [
+            ['canvas.acroform.textfield 参数列表', '', ''],
+            ['参数', '描述', '默认值'],
+            ["name", "组名\nthe radio's group (ie parameter) name", "None"],
+            ["value", "文本字段的值\nValue of the text field", "''"],
+            [
+                "maxlen ",
+                "无或小组件值的最大长度\nNone or maximum length of the widget value",
+                "100",
+            ],
+            [
+                "x",
+                "在页面上的水平位置(绝对坐标)\n"
+                "the horizontal position on the page (absolute coordinates)",
+                "0",
+            ],
+            [
+                "y",
+                "在页面上的垂直位置(绝对坐标)\n"
+                "the vertical position on the page (absolute coordinates)",
+                "0",
+            ],
+            ["width", "小组件宽度\nThe widget width", "120"],
+            ["height", "小组件高度\nThe widget height", "36"],
+            [
+                "fontName",
+                "要使用的第1种字体的名称。\nThe name of the type 1 font to be used",
+                "'Helvetica'",
+            ],
+            ["fontSize", "要使用的字体大小\nThe size of font to be used", "12"],
+            [
+                "fillColor",
+                "用来填充小组件的颜色\ncolour to be used to fill the widget",
+                "None",
+            ],
+            ["textColor", "符号或文本的颜色\nthe colour of the symbol or text", "None"],
+            ["borderWidth", "边框宽度\nas it says", "1"],
+            ["borderColor", "边框颜色\nthe widget's border colour", "None"],
+            ["borderStyle", "边框样式\nThe border style name", "'solid'"],
+            [
+                "tooltip",
+                "悬停在小组件上时要显示的文本。"
+                "\nThe text to display when hovering over the widget",
+                "None",
+            ],
+            [
+                "annotationFlags",
+                "空白分隔的注解标志字符串" "\nblank separated string of annotation flags",
+                "'print'",
+            ],
+            [
+                "fieldFlags",
+                "空白分隔的字段标志（见下文）。\n" "Blank separated field flags (see below)",
+                "''",
+            ],
+            [
+                "forceBorder",
+                "当真的时候会强行画边框\n" "when true a border force a border to be drawn",
+                "False",
+            ],
+            [
+                "relative",
+                "如果为真，服从当前画布的变换\n" "if true obey the current canvas transform",
+                "False",
+            ],
+            [
+                "dashLen ",
+                "如果borderStyle=='dashed'，要使用破折号。\n"
+                "the dashline to be used if the borderStyle=='dashed'",
+                "3",
+            ],
+        ],
+        [90, 260, 90],
+        style=al_style,
+        repeatRows=2,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+    pdf.add_heading("按钮样式", level=3)
+
+    pdf.add_paragraph(
+        '按钮样式参数表示当按钮被选中时，应该在按钮中出现什么样式的符号。'
+        '有几种选择: $check$、$cross$、$circle$、$star$、$diamond$。'
+    )
+    pdf.add_paragraph(
+        '请注意，文档渲染器可能会使这些符号中的某些符号在其预期应用中出现错误。 '
+        'Acrobat阅读器更喜欢在规范规定应该显示的内容上使用自己的渲染（特别是在使用表格高亮功能的时候'
+    )
+    pdf.add_heading("小工具形状", level=3)
+    pdf.add_paragraph('形状参数描述了复选框或单选部件的轮廓应该如何显示，你可以使用:$circle$、$square$。')
+    pdf.add_paragraph('渲染器可能会自行决定小组件的外观，所以Acrobat Reader更喜欢圆形轮廓的收音机。')
+
+    pdf.add_heading("边框样式", level=3)
+    pdf.add_paragraph(
+        '^borderStyle^参数会改变页面上小组件的3D外观，'
+        '你可以使用: $solid$、$dashed$、$inset$、$bevelled$、$underlined$。'
+    )
+    pdf.add_heading("^fieldFlags^ 参数", level=3)
+    pdf.add_paragraph(
+        'fieldFlags参数可以是一个整数或一个包含空白的独立标记的字符串，其值如下表所示。更多信息请参考PDF规范。'
+    )
+    table = Table(
+        [
+            ['字段标志 Tokens 和 values', '', ''],
+            ['Token', '描述', '值'],
+            ["readOnly", "小部件只读\nThe widget is read only", "1<<0"],
+            ["required", "小部件是必需的\nthe widget is required", "1<<1"],
+            ["noExport", "不要导出小组件的值\ndon't export the widget value", "1<<2"],
+            [
+                "noToggleToOff",
+                "单选框组必选选择一个\nradios one only must be on",
+                "1<<14",
+            ],
+            ["radio", "单选法\nadded by the radio method", "1<<15"],
+            [
+                "pushButton",
+                "当按钮为公共按钮时\nif the button is a push button",
+                "1<<16",
+            ],
+            [
+                "radiosInUnison",
+                "单选框拥有一样的值时一起切换\nradios with the same value toggle together",
+                "1<<25",
+            ],
+            ["multiline", "用于多行文本小组件\nfor multiline text widget", "1<<12"],
+            ["password", "密码文本域\npassword textfield", "1<<13"],
+            ["fileSelect", "文件选择小组件\nfile selection widget", "1<<20"],  # 1.4
+            ["doNotSpellCheck", "不拼写检查\nas it says", "1<<22"],  # 1.4
+            [
+                "doNotScroll",
+                "文本框不滚动\ntext fields do not scroll",
+                "1<<23",
+            ],  # 1.4
+            [
+                "comb",
+                "根据最大长度值制作 comb 样式的文字\nmake a comb style text based on the maxlen value",
+                "1<<24",
+            ],  # 1.5
+            ["richText", "如果使用富文本\nif rich text is used", "1<<25"],  # 1.5
+            ["combo", "针对下拉框\nfor choice fields", "1<<17"],
+            ["edit", "如果选择是可编辑的\nif the choice is editable", "1<<18"],
+            ["sort", "是否要对数值进行排序\nif the values should be sorted", "1<<19"],
+            [
+                "multiSelect",
+                "如果选择允许多选\nif the choice allows multi-select",
+                "1<<21",
+            ],  # 1.4
+            [
+                "commitOnSelChange",
+                "reportlab 没有使用\nnot used by reportlab",
+                "1<<26",
+            ],  # 1.5
+        ],
+        [90, 260, 90],
+        style=al_style,
+        repeatRows=2,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
+
+    pdf.add_heading("^annotationFlags^ 参数", level=3)
+    pdf.add_paragraph('PDF小组件是注释，并具有注释属性，这些属性显示在下面的表格中。')
+    Table(
+        [
+            ['注释标志 Tokens 和 values', '', ''],
+            ['Token', '描述', '值'],
+            ["invisible", "小组件不显示\nThe widget is not shown", "1<<0"],
+            ["hidden", "小组件隐藏\nThe widget is hidden", "1<<1"],
+            ["print", "小组件打印\nThe widget will print", "1<<2"],
+            [
+                "nozoom",
+                "注释不会随渲染页面的大小而缩放。\nThe annotation will notscale with the rendered page",
+                "1<<3",
+            ],
+            [
+                "norotate",
+                "小组件不会随着页面旋转。\nThe widget won't rotate with the page",
+                "1<<4",
+            ],
+            ["noview", "不要渲染小组件\nDon't render the widget", "1<<5"],
+            ["readonly", "小组件只读，不交互\nWidget cannot be interacted with", "1<<6"],
+            ["locked", "小组件无法更改\nThe widget cannot be changed", "1<<7"],  # 1.4
+            [
+                "togglenoview",
+                "在某些事件发生后，可以展示该小部件。\nTeh widget may be viewed after some events",
+                "1<<8",
+            ],  # 1.9
+            [
+                "lockedcontents",
+                "小部件的内容是固定的\nThe contents of the widget are fixed",
+                "1<<9",
+            ],  # 1.7
+        ],
+        [90, 260, 90],
+        style=al_style,
+    )
+    pdf.add_paragraph("")
+    pdf.add_flowable(table)
 
 
 def chapter5(pdf):
