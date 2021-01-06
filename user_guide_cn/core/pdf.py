@@ -424,7 +424,8 @@ class PDF(object):
             f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {self.quick_fix(caption)}'
         )
         self.store.append(
-            ParaBox2(self.quick_fix(text), self.quick_fix(caption), _style)
+            ParaBox2(self.quick_fix(text), _caption, _style,
+                     font_name=self.font_regular)
         )
 
     def add_pencil_note(self):

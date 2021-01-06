@@ -10,6 +10,11 @@ from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus.tables import Table, TableStyle
+from reportlab.platypus.paraparser import (
+    _addAttributeNames,
+    _paraAttrMap,
+    _bulletAttrMap,
+)
 
 from components import constant
 from core import examples
@@ -3315,11 +3320,223 @@ def chapter6(pdf):
         '所使用的样式。'
     )
     pdf.add_paragraph("")
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
+
+    def getAttrs(A):
+        _addAttributeNames(A)
+        S = {}
+        for k, v in A.items():
+            a = v[0]
+            if a not in S:
+                S[a] = [k]
+            else:
+                S[a].append(k)
+
+        K = list(sorted(S.keys()))
+        K.sort()
+        D = [('属性', '同义词')]
+        for k in K:
+            D.append((k, ", ".join(list(sorted(S[k])))))
+        cols = 2 * [None]
+        rows = len(D) * [None]
+        return D, cols, rows
+
+    table = Table(*getAttrs(_paraAttrMap))
+    table.setStyle(
+        TableStyle(
+            [
+                ('FONT', (0, 0), (-1, 1), 'SourceHanSans-ExtraLight', 10, 12),
+                ('FONT', (0, 1), (-1, -1), 'Courier', 8, 8),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ]
+        )
+    )
+    pdf.add_flowable(table)
+    pdf.add_caption('样式属性的同义词', category=constant.CAPTION_TABLE)
+    pdf.add_paragraph('我们为我们的 Python 属性名提供了一些有用的同义词，'
+                      '包括小写版本，以及 HTML 标准中存在的等价属性。 '
+                      '这些增加的内容使构建 XML 打印应用程序变得更加容易，'
+                      '因为许多段内标记可能不需要翻译。'
+                      '下表显示了最外层段落标签中允许的属性和同义词。')
+    pdf.add_cond_page_break(1)
+
+    pdf.add_heading("段内标记", level=2)
+    pdf.add_paragraph('&lt;！[CDATA[ '
+                      '在每个段落中，我们使用一组基本的XML标签来提供标记。 '
+                      '其中最基本的是粗体 (&lt;b&gt;...&lt;/b&gt;)、'
+                      '斜体 (&lt;i&gt;...&lt;/i&gt;) 和'
+                      '下划线 (&lt;u&gt;...&lt;/u&gt;)。'
+                      '其他允許的标签有强调 (&lt;strong&gt;..&lt;/strong&gt;)，'
+                      '和删除线(&lt;strike&gt;...&lt;/strike&gt;)。'
+                      '&lt;link&gt;和&lt;a&gt;标签可用于引用当前文档中的URI、文档或书签。'
+                      '&lt;a&gt; 标签的 $a$ 变体可用于标记文档中的一个位置。'
+                      '也允许使用 $break$ (&lt;br/&gt;)标签。]]&gt;。')
+    pdf.add_para_box2("$兹指控$你于1970年5月28日故意、非法和恶意地预谋出版一本所谓的英匈短语书，"
+                      "意图破坏和平。 <u>你如何辩护</u>？", '简单的黑体和斜体标签')
+    pdf.add_para_box2('这是一个锚标签的<a href="#MYANCHOR" color="blue">链接</a>，'
+                      '即<a name="MYANCHOR"/><font color="green">这里</font>。'
+                      '这是另一个指向同一锚标签的'
+                      '<link href="#MYANCHOR" color="blue" fontName="SourceHanSans-ExtraLight">'
+                      '链接</link>。', '锚和链接')
+
+    pdf.add_paragraph('$link$标签可以用作参考，但不能用作锚。'
+                      '$a$和$link$超链接标签有附加属性'
+                      '^fontName^、^fontSize^、^color^'
+                      '和 ^backColor^属性。'
+                      '超链接引用可以有$http:$<i>（外部网页）</i>、'
+                      '$pdf:$'
+                      '<i>（不同的pdf文档）</i>或'
+                      '<b>document:</b>'
+                      '<i>（相同的pdf文档）</i>等方案；'
+                      '缺少的方案将被视为<b>document</b>，'
+                      '就像引用以#开头时的情况一样（在这种情况下，锚应该省略它）。'
+                      '任何其他方案都会被视为某种URI。')
+    pdf.add_para_box2('<strong>兹指控你</strong>于1970年5月28日故意、非法和'
+                      '<strike>恶意地预谋</strike><br/>出版一本所谓的英匈短语书，'
+                      '你怎么辩解？', "强调, 删除线, 和换行标签")
+
+    pdf.add_heading("$&lt;font&gt;$ 标签", level=3)
+    pdf.add_paragraph("$&lt;font&gt;$标签可以用来改变段落中任何子串的字体名称、大小和文本颜色。"
+                      "法定属性有$size$、$face$、$name$（与$face$相同）、$color$和$fg$（与$color$相同）。"
+                      "$name$是字体家族的名称，没有任何'bold'或'italic'的后缀。"
+                      "颜色可以是HTML的颜色名称，也可以是以各种方式编码的十六进制字符串；"
+                      "请参见^reportlab.lib. colors^了解允许的格式。")
+    pdf.add_para_box2('你在此<font face="SourceHanSans-ExtraLight"'
+                      'color="red">被控</font>于1970年5月28日故意、非法和'
+                      '<font size=16>怀着预谋的恶意</font>出版一本所谓的英匈短语书，意图破坏和平。'
+                      ' 你如何辩护？', "$font$ 标签")
+
+    pdf.add_heading("上标和下标", level=3)
+    pdf.add_paragraph('上标和下标是由&lt;![CDATA[&lt;super&gt;/&lt;sup&gt;和&lt;sub&gt;标签支持的，'
+                      '它们的工作原理和你所期望的完全一样。'
+                      '另外这三个标签还有属性 rise 和 size，可以选择设置上标/下标文本的上升/下降和字体大小。'
+                      '此外，大多数希腊字母可以通过使用&lt;greek&gt;&lt;/greek&gt;标签，'
+                      '或者使用mathML实体名来访问。]]&gt。')
+
+    pdf.add_para_box2('等式（&alpha;）。<greek>e</greek> <super rise=9 size=6><greek>ip</greek></super>=-1。', '希腊字母和上标')
+
+    pdf.add_heading('内联图片', level=3)
+
+    pdf.add_paragraph('我们可以用&lt;img/&gt;标签在段落中嵌入图片，'
+                      '该标签有$src$、$width$、$height$等属性，其含义很明显。'
+                      '$valign$属性可以设置为类似css的值，'
+                      '从 "baseline"、"sub"、"super"、"top"、"text-top"、"middle"、"bottom"、"text-bottom"；'
+                      '该值也可以是一个数字百分比或绝对值。')
+
+    pdf.add_para_box2('<para autoLeading="off" fontSize=12>This &lt;img/&gt; '
+                      '<img src="images/testimg.gif" valign="top"/> is aligned <b>top</b>.'
+                      '<br/><br/>This &lt;img/&gt; '
+                      '<img src="images/testimg.gif" valign="bottom"/> is aligned <b>bottom</b>.'
+                      '<br/><br/> This &lt;img/&gt; '
+                      '<img src="images/testimg.gif" valign="middle"/> is aligned <b>middle</b>.'
+                      '<br/><br/>This &lt;img/&gt; '
+                      '<img src="images/testimg.gif" valign="-4"/> is aligned <b>-4</b>.'
+                      '<br/><br/>This &lt;img/&gt; '
+                      '<img src="images/testimg.gif" valign="+4"/> is aligned <b>+4</b>.'
+                      '<br/><br/>This &lt;img/&gt; '
+                      '<img src="images/testimg.gif" width="10"/> has width<b>10</b>.'
+                      '<br/><br/></para>', '内联图片')
+    pdf.add_paragraph("$src$属性可以指向一个远程位置，"
+                      "例如$src=\"https://www.reportlab.com/images/logo.gif\"$。"
+                      "默认情况下，我们将$rl_config.trustedShemes$ "
+                      "设置为$['https','http','file','data','ftp']$"
+                      "和$rl_config.trustedHosts=None$，后者意味着没有限制。"
+                      "你可以使用覆盖文件来修改这些变量，"
+                      "例如$reportlab_settings.py$或$~/.reportlab_settings$。"
+                      "或者在环境变量$RL_trustedSchemes$ &amp; "
+                      "$RL_trustedHosts$中以逗号分隔。"
+                      "请注意，$trustedHosts$值可能包含<b>glob</b>野车，"
+                      "因此<i>*.reportlab.com</i>将匹配明显的域。"
+                      "<br/><span color=\"red\"><b>*NB*</b></span>"
+                      "使用^trustedHosts^和/或^trustedSchemes^"
+                      "可能无法控制行为，以及当$URI$模式被查看器应用程序检测到时的操作。")
+
+    pdf.add_heading("$&lt;u&gt;$ 和 $&lt;strike&gt;$ 标签", level=3)
+
+    pdf.add_paragraph('这些标签可用于执行明确的下划线或删除线。'
+                      '这些标签的属性有$width$、$offset$、$color$、$gap$ 和 $kind$。'
+                      '$kind$属性控制将绘制多少行(默认$kind=1$)，当$kind>1$时，'
+                      '$gap$属性控制行与行之间的间隔。')
+
+    pdf.add_heading("$&lt;nobr&gt;$ 标签", level=3)
+    pdf.add_paragraph('如果使用连字符，$&lt;nobr&gt;$标签会抑制它，'
+                      '所以$&lt;nobr&gt;一个非常长的单词不会被打断&lt;/nobr&gt;$不会被打断。')
+
+    pdf.add_heading('文字段落和列表的编号', level=3)
+    pdf.add_paragraph('$&lt;seq&gt;$标签为编号列表、章节标题等提供了全面的支持，'
+                      '它作为^reportlab.lib.sequencer^中$Sequencer$类的接口。 '
+                      '它是^reportlab.lib.sequencer^中$Sequencer$类的接口。'
+                      '这些都是用来对整个文档中的标题和数字进行编号的。'
+                      '您可以创建任意多的独立的 "计数器"，并通过$id$属性进行访问；'
+                      '每次访问时，这些计数器都将以1为单位递增。 '
+                      '$seqreset$标签可以重置计数器。'
+                      '如果你想让它从1以外的数字开始恢复，'
+                      '使用语法&lt;seqreset id="mycounter" base="42"&gt;。'
+                      '让我们开始吧。')
+    pdf.add_para_box2('<seq id="spam"/>, '
+                      '<seq id="spam"/>, '
+                      '<seq id="spam"/>. 重置'
+                      '<seqreset id="spam"/>.  '
+                      '<seq id="spam"/>, '
+                      '<seq id="spam"/>,'
+                      '<seq id="spam"/>.', '基本序列')
+    pdf.add_paragraph('你可以通过使用&lt;seqdefault id="Counter"&gt; 标签'
+                      '指定一个计数器ID作为<i>default</i>来节省指定ID的时间；'
+                      '然后每当没有指定计数器ID时就会使用它。 '
+                      '这样可以节省一些输入，特别是在做多级列表的时候；'
+                      '您只需在进入或退出一个级别时更改计数器ID。')
+
+    pdf.add_para_box2('<seqdefault id="spam"/>Continued... <seq/>,'
+                      '<seq/>, <seq/>, <seq/>, <seq/>, <seq/>, <seq/>.', '默认序列')
+    pdf.add_paragraph('最后，我们可以使用Python字符串格式化的变体'
+                      '和&lt;seq&gt;标签中的$template$属性来访问多级序列。 '
+                      '这是用来做所有数字中的标题，以及二级标题。 '
+                      '子串 $%(counter)s$ 提取了一个计数器的当前值，但不递增；'
+                      '在 $%(counter)s$ 中添加一个加号，使计数器递增。'
+                      '数字标题使用了类似下面的模式。')
+
+    pdf.add_para_box2('图 <seq template="%(Chapter)s-%(FigureNo+)s"/> - 多级模板', "多级模板")
+    pdf.add_paragraph('我们做了点小手脚--真正的文档用的是 "Figure"，'
+                      '但上面的文字用的是 "FigureNo" '
+                      '--否则我们会把编号弄乱的')
+
+    pdf.add_heading("项目符号和段落编号", level=2)
+    pdf.add_paragraph('除了三个缩进属性之外，'
+                      '还需要一些其他参数来正确处理带项目符号和编号的列表。 '
+                      '我们在这里讨论这个问题，因为你现在已经看到了如何处理编号。 '
+                      '一个段落可以有一个可选的^bulletText^参数传递给它的构造函数；'
+                      '或者，项目符号文本可以放在它头部的$<![CDATA[<bullet>...</bullet>]]>$标签中。 '
+                      '这段文字将被绘制在段落的第一行，其X原点由样式的$bulletIndent$属性决定，字体由$bulletFontName$属性给出。  '
+                      '"项目符号"可以是一个单一的字符，如（嘟！）一个项目符号，或者是一个文本片段，'
+                      '如一些编号序列中的数字，甚至是定义列表中使用的简短标题。  '
+                      '字体可能提供各种项目编号字符，但我们建议首先尝试Unicode项目编号($&bull;$)，'
+                      '可以写成$&amp;bull;$，和 $#x2022;$ 或(utf8中) $\\xe2\\x80\\xa2$):')
+
+    table = Table(*getAttrs(_bulletAttrMap))
+    table.setStyle(
+        [
+            ('FONT', (0, 0), (-1, 1), 'SourceHanSans-ExtraLight', 10, 12),
+            ('FONT', (0, 1), (-1, -1), 'Courier', 8, 8),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+        ]
+    )
+    pdf.add_flowable(table)
+
+    pdf.add_caption('&lt;bullet&gt; 属性和同义词', category=constant.CAPTION_TABLE)
+    pdf.add_paragraph('在一个给定的段落中，&lt;bullet&gt;标签只允许使用一次，】它的使用会覆盖在^Paragraph'
+                      '^创建中指定的隐含的项目符号样式和 ^bulletText^。 (项目符号文本)')
+    pdf.add_para_box('<bullet>&bull;</bullet>这是一个要点。'
+                     'Spam spam spam spam spam spam spam spam spam spam spam spam'
+                     'spam spam spam spam spam spam spam spam spam spam',
+                     pdf.stylesheet[constant.STYLE_BULLET], '项目点的基本使用')
+
+    pdf.add_paragraph('除了使用序列标签外，数字也使用了完全相同的技术。 '
+                      '也可以在项目符号中放入一个多字符的字符串；'
+                      '用深缩进和粗体子弹字体，'
+                      '你可以制作一个紧凑的定义列表。')
 
 
 def chapter7(pdf):
