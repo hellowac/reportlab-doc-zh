@@ -4,6 +4,7 @@ from datetime import datetime
 
 import reportlab
 from reportlab.lib import colors
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.codecharts import SingleByteEncodingChart
 from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase import pdfmetrics
@@ -3020,7 +3021,305 @@ def chapter5(pdf):
 
 
 def chapter6(pdf):
-    pass
+    pdf.add_heading("Paragraphs - 文本段落", level=1)
+    pdf.add_paragraph(
+        '$reportlab.platypus.Paragraph$类是$Platypus Flowables$中最有用的一个；'
+        '它可以格式化相当任意的文本，并提供了使用$XML样式标记$的内联字体样式和颜色变化。'
+        '格式化后的文本的整体形状可以是公正的，左右粗细的，或者居中的。'
+        '$XML标记$甚至可以用来插入希腊字符或做下标。'
+    )
+    pdf.add_paragraph('下面的文字创建了一个$Paragraph$类的实例。')
+    pdf.add_code_eg("""Paragraph(text, style, bulletText=None)""")
+    pdf.add_paragraph(
+        '参数$text$包含了段落的文本；'
+        '在文本的结尾和换行后，多余的空白会被删除。'
+        '这允许在<b>Python</b>脚本中轻松使用缩进的三引号文本。'
+        '$bulletText$参数提供了段落的默认子弹文本。'
+        '段落文本和子弹的字体和其他属性可以使用样式参数来设置。'
+    )
+    pdf.add_paragraph('参数 $style$ 应该是一个 $ParagraphStyle$ 类的实例，通常使用')
+    pdf.add_code_eg("from reportlab.lib.styles import ParagraphStyle")
+
+    pdf.add_paragraph(
+        '这个容器类以结构化的方式提供了多个默认段落属性的设置。'
+        '这些样式被安排在一个名为$stylesheet$的字典样式对象中，'
+        '它允许以$stylesheet[\'BodyText\']$的形式访问这些样式。'
+        '我们提供了一个示例样式表。'
+    )
+    pdf.add_code_eg(
+        """
+    from reportlab.lib.styles import getSampleStyleSheet
+    stylesheet=getSampleStyleSheet()
+    normalStyle = stylesheet['Normal']
+    """
+    )
+    pdf.add_paragraph(
+        '可以为$Paragraph$设置的选项可以从$ParagraphStyle$默认值中看出。'
+        '前面带下划线(\'_\')的值来自于 '
+        '$reportlab.rl_config$ 模块中的默认值，'
+        '这些值来自于$reportlab.rl_settings$模块。'
+    )
+    pdf.add_heading("$ParagraphStyle$", level=2)
+    pdf.add_code_eg(
+        """
+    class ParagraphStyle(PropertySet):
+        defaults = {
+            'fontName':_baseFontName,
+            'fontSize':10,
+            'leading':12,
+            'leftIndent':0,
+            'rightIndent':0,
+            'firstLineIndent':0,
+            'alignment':TA_LEFT,
+            'spaceBefore':0,
+            'spaceAfter':0,
+            'bulletFontName':_baseFontName,
+            'bulletFontSize':10,
+            'bulletIndent':0,
+            'textColor': black,
+            'backColor':None,
+            'wordWrap':None,
+            'borderWidth': 0,
+            'borderPadding': 0,
+            'borderColor': None,
+            'borderRadius': None,
+            'allowWidows': 1,
+            'allowOrphans': 0,
+            'textTransform':None,
+            'endDots':None,
+            'splitLongWords':1,
+            'underlineWidth': _baseUnderlineWidth,
+            'bulletAnchor': 'start',
+            'justifyLastLine': 0,
+            'justifyBreaks': 0,
+            'spaceShrinkage': _spaceShrinkage,
+            'strikeWidth': _baseStrikeWidth,    #stroke width
+            'underlineOffset': _baseUnderlineOffset,    #fraction of fontsize to 
+            offset underlines
+            'underlineGap': _baseUnderlineGap,      #gap for double/triple underline
+            'strikeOffset': _baseStrikeOffset,  #fraction of fontsize to offset 
+            strikethrough
+            'strikeGap': _baseStrikeGap,        #gap for double/triple strike
+            'linkUnderline': _platypus_link_underline,
+            #'underlineColor':  None,
+            #'strikeColor': None,
+            'hyphenationLang': _hyphenationLang,
+            'uriWasteReduce': _uriWasteReduce,
+            'embeddedHyphenation': _embeddedHyphenation,
+            }
+    """
+    )
+    pdf.add_paragraph("使用文字段落样式: $ParagraphStyle$")
+    paragraph_sample = (
+        '你在此被指控在1970年5月28日， 你故意，非法，并与恶意的预想， '
+        '出版一个所谓的英语 - 匈牙利短语书，意图造成破坏和平。 '
+        '你如何辩护？'
+    )
+    pdf.add_paragraph(
+        '$Paragraph$和$ParagraphStyle$类一起处理大多数常见的格式化需求。'
+        '下面的示例以不同的样式绘制段落，并添加了一个边界框，'
+        '这样你就可以看到确切的空间被占用了。'
+    )
+    pdf.add_para_box(
+        paragraph_sample,
+        pdf.stylesheet[constant.STYLE_NORMAL],
+        '默认 $ParagraphStyle$',
+    )
+    pdf.add_paragraph(
+        '$spaceBefore$和$spaceAfter$这两个属性如它们所说的那样，'
+        '除了在一个框架的顶部或底部。'
+        '在一个框架的顶部，$spaceBefore$被忽略，而在底部，$spaceAfter$被忽略。'
+        '这意味着你可以指定一个\'Heading2\'样式在页面中间出现时，'
+        '它之前有两英寸的空间，但不会在页面顶部得到数英亩的空白。 '
+        '这两个属性应该被认为是对Frame的 "请求"，'
+        '而不是段落本身所占空间的一部分。'
+    )
+    pdf.add_paragraph(
+        '$fontSize$和$fontName$标签是显而易见的，'
+        '但重要的是设置$leading$。 '
+        '这是相邻文本行之间的间距；'
+        '一个好的经验法则是让这个间距比点的大小大 20%。 '
+        '要获得双倍行距的文本，请使用较高的$leading$。'
+        '如果您将$autoLeading$(默认为$"off"$)'
+        '设置为$"min"$(使用观察到的前导，即使比指定的小)'
+        '或$"max"$(使用观察到的和指定的较大值)'
+        '，那么就会尝试逐行确定前导。'
+        '如果行中包含不同的字体大小等，'
+        '这可能是有用的。'
+    )
+    pdf.add_paragraph('下图为前后空间和增加的引导。')
+    _style = ParagraphStyle(
+        'Spaced',
+        spaceBefore=6,
+        spaceAfter=6,
+        leading=16,
+        fontName=pdf.font_regular,
+    )
+    pdf.add_para_box(
+        paragraph_sample,
+        _style,
+        '前后空间和增加 leading',
+    )
+    pdf.add_paragraph(
+        '属性 $borderPadding$ 调整段落与背景边框之间的 $padding$ 。'
+        '它可以是一个单一的值，也可以是一个包含2到4个值的元组。'
+        '这些值的应用方式与层叠样式表（CSS）相同。'
+        '如果给定一个值，该值将应用于所有四条边框。'
+        '如果给了一个以上的值，则从顶部开始按顺时针顺序应用到边上。'
+        '如果给了两个或三个值，则缺失的值将从相反的边开始应用。'
+        '请注意，在下面的例子中，黄色方框是由段落本身绘制的。'
+    )
+    _style = ParagraphStyle(
+        'padded',
+        borderPadding=(7, 2, 20),
+        borderColor='#000000',
+        borderWidth=1,
+        backColor='#FFFF00',
+        fontName=pdf.font_regular,
+    )
+    pdf.add_para_box(
+        paragraph_sample,
+        _style,
+        '可变 $padding$',
+    )
+    pdf.add_paragraph(
+        '$leftIndent$ 和 $rightIndent$ 属性的作用正是你所期望的；'
+        '$firstLineIndent$ 被添加到第一行的 $leftIndent$ 中。'
+        '如果你想要一个笔直的左边缘，记得将$firstLineIndent$等于0。'
+    )
+
+    _style = ParagraphStyle(
+        'indented',
+        firstLineIndent=+24,
+        leftIndent=24,
+        rightIndent=24,
+        fontName=pdf.font_regular,
+    )
+    pdf.add_para_box(
+        paragraph_sample,
+        _style,
+        '左右缩进三分一，首行缩进三分二',
+    )
+    pdf.add_paragraph(
+        '将$firstLineIndent$设置为负数，'
+        '$leftIndent$则高得多，'
+        '并使用不同的字体（我们稍后会告诉你怎么做！）'
+        '可以给你一个定义列表：'
+    )
+
+    _style = ParagraphStyle(
+        'dl',
+        leftIndent=36,
+        fontName=pdf.font_regular,
+    )
+    pdf.add_para_box(
+        f"$皮克尔斯法官$: {paragraph_sample}",
+        _style,
+        '左右缩进三分一，首行缩进三分二',
+    )
+    pdf.add_paragraph(
+        '在模块<i>reportlab.lib.enums</i>中，'
+        '$alignment$有四个可能的值，定义为常量。 '
+        '这些值是 $TA_LEFT$, $TA_CENTER$ 或 $TA_CENTRE$, $TA_RIGHT$ 和 $TA_JUSTIFY$ ，'
+        '值分别为0, 1, 2和4。 这些都和你所期望的一样。'
+    )
+    pdf.add_paragraph(
+        '将$wordWrap$设置为$\'CJK\'$来获得亚洲语言的换行。'
+        '对于普通的西方文本，'
+        '你可以通过$allowWidows$和$allowOrphans$'
+        '来改变断行算法处理^widows^和^orphans^的方式。'
+        '这两个值通常都应该设置为$0$，'
+        '但由于历史原因，我们允许^widows^。'
+        '文本的默认颜色可以用$textColor$设置，'
+        '段落的背景颜色可以用$backColor$设置。'
+        '段落的边框属性可以使用$borderWidth$, '
+        '$borderPadding$, $borderColor$和$borderRadius$来改变。'
+    )
+    pdf.add_paragraph(
+        '$textTransform$属性可以是'
+        '^None^，'
+        '$uppercase$或'
+        '$lowercase$'
+        '得到明显的结果，'
+        '$capitalize$'
+        '得到初始字母大写。'
+    )
+    pdf.add_paragraph(
+        '属性$endDots$可以是'
+        '^None^，'
+        '一个字符串，或者一个对象，'
+        '其属性为 $text$ 和可选的 $fontName、fontSize、textColor、backColor$'
+        '和 $dy(y offset)$ ，用于指定左/右对齐段落最后一行的尾部内容。'
+    )
+    pdf.add_paragraph('$splitLongWords$属性可以设置为假值，以避免拆分非常长的单词。')
+    pdf.add_paragraph(
+        "属性$bulletAnchor$可以是"
+        "^'start'^,"
+        "^'middle'^,"
+        "^'end'^或"
+        "^'numeric'^"
+        "来控制子弹的锚定位置。"
+    )
+    pdf.add_paragraph('$justifyBreaks$ 属性' '控制了是否应该用 $&lt;br/&gt;$ 标签故意断行。')
+    pdf.add_paragraph('属性$spaceShrinkage$是一个小数，指定段落行的空间可以缩小多少以使其合适；通常是0.05左右。')
+    pdf.add_paragraph(
+        '当使用 $&lt;u&gt;$ 或链接标签时，$underlineWidth$、$underlineOffset$'
+        '、$underlineGap$ 和 $underlineColor$属性控制了下划线行为。'
+        '这些标签可以有这些属性的覆盖值。'
+        '$width$ 和 $offset$ 的属性值是一个$fraction * Letter$，'
+        '其中letter可以是 $P$、$L$、$f$ 或 $F$ 中的一个，代表字体大小比例。'
+        '$P$ 使用标签处的字体大小，'
+        '$F$ 是标签中的最大字体大小，'
+        '$f$ 是标签内的初始字体大小。'
+        '$L$ 表示全局（$ParagraphStyle$）字体大小。'
+        '$strikeWidth$, $strikeOffset$, '
+        '$strikeGap$ 和 $strikeColor$属性对删除线有同样的作用。'
+    )
+    pdf.add_paragraph('属性 $linkUnderline$ 控制链接标签是否自动下划线。')
+    pdf.add_paragraph(
+        '如果安装了$pyphen$ python模块，'
+        '则属性 $hyphenationLang$ 控制'
+        '哪种语言将被用于在没有明确嵌入连字符的情况下连字符。'
+    )
+    pdf.add_paragraph('如果设置了 $embeddedHyphenation$，那么就会尝试拆分带有嵌入式连字符的单词。')
+    pdf.add_paragraph(
+        '属性 $uriWasteReduce$ '
+        '控制我们如何尝试分割长的 $uri$。'
+        '它是我们认为太过浪费的行的分数，'
+        '在模块 $reportlab.rl_settings$ 中的默认值是<i>0.5</i>。'
+        '这意味着如果我们将浪费至少一半的行数，我们将尝试拆分一个看起来像uri的单词。'
+    )
+    pdf.add_paragraph(
+        '目前，连字符 和 $uri$ 分割是默认关闭的。'
+        '您需要通过使用 $~/.rl_settings$ 文件'
+        '或在 python 路径中添加 $reportlab_settings.py$ 模块'
+        '来修改默认设置。合适的值是'
+    )
+    pdf.add_code_eg(
+        """
+    hyphenationLanguage='en_GB'
+    embeddedHyphenation=1
+    uriWasteReduce=0.3
+    """
+    )
+
+    pdf.add_heading("文本段落XML标记标签", level=2)
+    pdf.add_paragraph('XML标记可以用来修改或指定整体段落样式，也可以指定段落内的标记。')
+
+    pdf.add_heading('最外层 &lt; para &gt; 标签', level=3)
+    pdf.add_paragraph(
+        '段落文本可以选择由 '
+        '&lt;para attributes....&gt; &lt;/para&gt; 标签包围。'
+        '开头的 &lt;para&gt; 标签的任何属性'
+        '都会影响 $Paragraph$ $text$ 和/或 $bulletText$'
+        '所使用的样式。'
+    )
+    pdf.add_paragraph("")
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
 
 
 def chapter7(pdf):

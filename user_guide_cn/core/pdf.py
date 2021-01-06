@@ -411,7 +411,9 @@ class PDF(object):
             ParaBox(
                 self.quick_fix(text),
                 style,
-                f'图 <seq template="%(Chapter)s-%(Figure+)s"/>: {self.quick_fix(caption)}',
+                f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s'
+                f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {self.quick_fix(caption)}',
+                font_name=self.font_regular,
             )
         )
 
