@@ -17,6 +17,7 @@ from reportlab.platypus.paraparser import (
 )
 from reportlab.platypus.flowables import Spacer, Image
 from reportlab.lib.units import inch
+from reportlab.graphics import testshapes
 
 from components import constant
 from core import examples
@@ -4611,24 +4612,1158 @@ I.hAlign = 'CENTER'
 
 
 def chapter10(pdf):
+    pdf.add_heading("绘制", level=1)
+    pdf.add_heading("简介", level=2)
+    pdf.add_paragraph(
+        "$ReportLab Graphics$是$ReportLab$库的一个子包。"
+        "它最初是作为一个独立的程序集，但现在是$ReportLab$工具包的一个完整的集成部分，"
+        "它允许您使用其强大的图表和图形功能来改进您的PDF表格和报表。"
+    )
 
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    pass
+    pdf.add_heading("一般概念", level=2)
+    pdf.add_paragraph('在本节中，我们将介绍图形库的一些比较基本的原理，这些原理会在后面的各个地方出现。')
+
+    pdf.add_heading("图纸和渲染器", level=3)
+    pdf.add_paragraph(
+        '^Drawing^是一个独立于平台的形状集合的描述。'
+        '它不直接与$PDF, Postscript$或任何其他输出格式相关联。'
+        '幸运的是，大多数矢量图形系统都遵循$Postscript$模型，'
+        '因此可以毫不含糊地描述形状。'
+    )
+    pdf.add_paragraph(
+        '一张图中包含了许多原始的^Shape^ (形状)。'
+        '普通形状是那些广为人知的矩形、圆形、线条等。'
+        '一个特殊的（逻辑）形状是 (组)，'
+        '它可以容纳其他形状并对它们进行变换。'
+        ' $Group$ 代表了 $Shape$ 的组合，并允许将 $Group$ '
+        '合当作一个单一的 $Shape$ 来处理。'
+        '几乎所有的东西都可以从少量的基本 $Shape$ (形状)建立起来。'
+    )
+    pdf.add_paragraph(
+        '该包提供了几个^Renderers^ (渲染器)，它们知道如何将图纸绘制成不同的格式。'
+        '其中包括 $PDF (renderPDF)$、$Postscript (renderPS)$ 和位图输出 $(renderPM)$。'
+        '位图渲染器使用 $Raph Levien$ 的 ^libart^ 栅格化器'
+        '和 $Fredrik Lundh$ 的 ^Python Imaging Library^ (PIL)。'
+        '$SVG$ 渲染器使用了 $Python$ 的标准库 $XML$ 模块，'
+        '所以你不需要安装 $XML-SIG$ 的附加包 $PyXML$。'
+        '如果你安装了正确的扩展，你可以为网络生成位图形式的图画，'
+        '也可以为 $PDF$ 文档生成矢量形式的图画，并得到 "相同的输出"。'
+    )
+    pdf.add_paragraph(
+        '$PDF$ 渲染器具有特殊的 "特权" '
+        '-- 一个 $Drawing$ 对象也是一个<i>Flowable</i>，'
+        '因此，可以直接放在任何 $Platypus$ 文档的故事中，或者直接用一行代码在^Canvas^上绘制。'
+        '此外，$PDF$ 渲染器还有一个实用功能，可以快速制作一页$PDF$文档。'
+    )
+    pdf.add_paragraph(
+        '$SVG$ 渲染器很特别，因为它仍然是相当的实验性的。'
+        '它所生成的 $SVG$ 代码并没有经过任何优化，'
+        '只是将 $ReportLab Graphics (RLG)$ 中可用的功能映射到 $SVG$ 中。'
+        '这意味着不支持 $SVG$ 动画、交互性、脚本或更复杂的剪切、遮罩或渐变形状。'
+        '因此，请小心，并请报告您发现的任何错误。'
+    )
+
+    pdf.add_heading("坐标系统", level=3)
+    pdf.add_paragraph(
+        '在我们的$X-Y$坐标系中，$Y$ 方向从底部<i>向上</i>。'
+        '这与 $PDF$、$Postscript$ 和数学符号一致。'
+        '对人们来说，这似乎也更自然，尤其是在处理图表时。'
+        '请注意，在其他图形模型中（如$SVG$），$Y$ 坐标点<i>向下</i>。'
+        '对于 $SVG$ 渲染器来说，这实际上是没有问题的，'
+        '因为它将根据需要对您的图纸进行翻转，'
+        '因此您的 $SVG$ 输出看起来和预期的一样。'
+    )
+    pdf.add_paragraph(
+        '$X$坐标一如既往地从左到右。'
+        '到目前为止，似乎没有任何模型主张反方向'
+        ' -- 至少目前还没有（似乎有一些有趣的例外，阿拉伯人在看时间序列图时...）。'
+    )
+
+    pdf.add_heading("开始", level=3)
+    pdf.add_paragraph(
+        '让我们创建一个简单的图形，包含字符串 "Hello World "和一些特殊的字符，'
+        '显示在一个彩色的矩形之上。'
+        '创建完成后，我们将把图画保存到一个独立的PDF文件中。'
+    )
+    pdf.add_code_eg(
+        """
+        from reportlab.lib import colors
+        from reportlab.graphics.shapes import *
+    
+        d = Drawing(400, 200)
+        d.add(Rect(50, 50, 300, 100, fillColor=colors.yellow))
+        d.add(String(150,100, 'Hello World', fontSize=18, fillColor=colors.red))
+        d.add(String(180,86, 'Special characters \\
+                     \\xc2\\xa2\\xc2\\xa9\\xc2\\xae\\xc2\\xa3\\xce\\xb1\\xce\\xb2',
+                     fillColor=colors.red))
+    
+        from reportlab.graphics import renderPDF
+        renderPDF.drawToFile(d, 'example1.pdf', 'My First Drawing')
+    """
+    )
+    pdf.add_paragraph('这将产生一个包含以下图形的PDF文件。')
+    pdf.add_draw(testshapes.getDrawing01(), "'Hello World'")
+    pdf.add_paragraph(
+        '每个渲染器都可以做任何适合其格式的事情，并且可以有任何需要的API。'
+        '如果它指的是一种文件格式，它通常有一个 $drawToFile$ 函数，'
+        '这就是你需要知道的关于渲染器的所有信息。'
+        '让我们以 $Encapsulated Postscript$ 格式保存同一张图。'
+    )
+    pdf.add_code_eg(
+        """
+        from reportlab.graphics import renderPS
+        renderPS.drawToFile(d, 'example1.eps')
+    """
+    )
+    pdf.add_paragraph(
+        '这将生成一个具有相同图形的EPS文件，'
+        '可以导入到Quark Express等出版工具中。'
+        '如果我们想生成同样的图形作为网站的位图文件，'
+        '比如说，我们需要做的就是写这样的代码。'
+    )
+    pdf.add_code_eg(
+        """
+        from reportlab.graphics import renderPM
+        renderPM.drawToFile(d, 'example1.png', 'PNG')
+    """
+    )
+    pdf.add_paragraph(
+        '许多其他的位图格式，如GIF、JPG、TIFF、BMP和PPN都是真正可用的，'
+        '这使得你不太可能需要添加外部的后处理步骤来转换为你需要的最终格式。'
+    )
+    pdf.add_paragraph(
+        '要生成一个包含相同图形的SVG文件，并将其导入到 $Illustrator$ 等图形编辑工具中，' '我们需要做的就是编写这样的代码。'
+    )
+    pdf.add_code_eg(
+        """
+        from reportlab.graphics import renderSVG
+        renderSVG.drawToFile(d, 'example1.svg')
+    """
+    )
+
+    pdf.add_heading("属性验证", level=3)
+    pdf.add_paragraph(
+        'Python是非常动态的，让我们在运行时执行的语句很容易成为意外行为的来源。'
+        '一个微妙的 "错误 "是当分配到一个框架不知道的属性时，因为使用的属性的名字包含了一个错别字。'
+        'Python 让你可以逃过一劫(比如说，给一个对象添加一个新的属性)，'
+        '但图形框架在不采取特殊对策的情况下，是不会检测到这个"错别字"的。'
+    )
+    pdf.add_paragraph(
+        '有两种验证技术可以避免这种情况。'
+        '默认情况下，每个对象在运行时都会检查每一次赋值，这样你就只能赋值给 "合法"的属性。'
+        '这就是默认情况。由'
+        '于这样做会带来很小的性能损失，所以在你需要的时候可以关闭这种行为。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> r = Rect(10,10,200,100, fillColor=colors.red)
+    >>>
+    >>> r.fullColor = colors.green # note the typo
+    >>> r.x = 'not a number'       # illegal argument type
+    >>> del r.width                # that should confuse it
+    """
+    )
+    pdf.add_paragraph(
+        '这些语句在静态类型的语言中会被编译器捕获，'
+        '但是 Python 让你摆脱了它。'
+        '第一个错误可能会让你盯着图片想弄清楚为什么颜色是错的。'
+        '第二个错误可能只有在以后，当一些后端试图绘制矩形时才会变得清晰。'
+        '第三种错误，虽然可能性较小，但会导致一个不知道如何绘制的无效对象。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> r = shapes.Rect(10,10,200,80)
+    >>> r.fullColor = colors.green
+    Traceback (most recent call last):
+      File "<interactive input>", line 1, in ?
+      File "C:\\code\\users\\andy\\graphics\\shapes.py", line 254, in __setattr__
+        validateSetattr(self,attr,value)    #from reportlab.lib.attrmap
+      File "C:\\code\\users\\andy\\lib\\attrmap.py", line 74, in validateSetattr
+        raise AttributeError, "Illegal attribute '%s' in class %s" % (name, 
+        obj.__class__.__name__)
+    AttributeError: Illegal attribute 'fullColor' in class Rect
+    >>>
+    """
+    )
+    pdf.add_paragraph(
+        '这将带来性能上的惩罚，所以当你需要这种行为时，可以将其关闭。'
+        '要做到这一点，您应该在第一次导入 ^reportlab.graphics.shapes^ 之前使用以下代码行。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> import reportlab.rl_config
+    >>> reportlab.rl_config.shapeChecking = 0
+    >>> from reportlab.graphics import shapes
+    >>>
+    """
+    )
+
+    pdf.add_paragraph(
+        '一旦你关闭了 ^reportlab.rl_config.shapeChecking^，'
+        '类实际上是在没有验证钩子的情况下构建的；'
+        '那么，代码应该会变得更快。'
+        '目前，对成批图表的惩罚似乎是25%，所以几乎不值得禁用。'
+        '然而，如果我们将来把渲染器转移到C语言上（这是很有可能的），'
+        '剩下的75%就会缩减到几乎没有，而且从验证中节省的成本也会很可观。'
+    )
+    pdf.add_paragraph(
+        '每个对象，包括绘图本身，都有一个$verify()$方法。'
+        '这个方法要么成功，要么引发一个异常。'
+        '如果你关闭了自动验证，那么你应该在开发代码时，'
+        '在测试中明确地调用 $verify()$，'
+        '或者在一个批处理中调用一次。'
+    )
+
+    pdf.add_heading("属性编辑", level=3)
+    pdf.add_paragraph(
+        '我们将在下面介绍的 $reportlab/graphics$ 的一个基石是，'
+        '你可以自动记录 $widget$ 。'
+        '这意味着你可以掌握它们所有的可编辑属性，包括它们的子组件。'
+    )
+    pdf.add_paragraph(
+        '另一个目标是能够为图纸创建GUI和配置文件。'
+        '可以建立一个通用的GUI来显示图纸的所有可编辑的属性，'
+        '并让你修改这些属性并查看结果。'
+        '$Visual Basic$ 或 $Delphi$ 开发环境是这类东西的好例子。'
+        '在批处理图表应用程序中，一个文件可以列出图表中所有组件的所有属性，'
+        '并与数据库查询合并，以制作一批图表。'
+        '另一个目标是能够为图纸创建GUI和配置文件。'
+        '可以建立一个通用的GUI来显示图纸的所有可编辑的属性，'
+        '并让你修改这些属性并查看结果。'
+        '$Visual Basic$ 或 $Delphi$ 开发环境是这类东西的好例子。'
+        '在批处理图表应用程序中，一个文件可以列出图表中所有组件的所有属性，'
+        '并与数据库查询合并，以制作一批图表。'
+    )
+    pdf.add_paragraph(
+        '为了支持这些应用，我们有两个接口，'
+        '$getProperties$ 和 $setProperties$，'
+        '以及一个方便的方法$dumpProperties$。'
+        '第一个方法返回一个对象的可编辑属性的字典；'
+        '第二个方法则集体设置这些属性。'
+        '如果一个对象有公开的 "子对象"，那么我们也可以递归地设置和获取它们的属性。'
+        '当我们稍后看^Widgets^时，这将更有意义，但我们需要将支持放到框架的基础上。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> r = shapes.Rect(0,0,200,100)
+    >>> import pprint
+    >>> pprint.pprint(r.getProperties())
+    {'fillColor': Color(0.00,0.00,0.00),
+     'height': 100,
+     'rx': 0,
+     'ry': 0,
+     'strokeColor': Color(0.00,0.00,0.00),
+     'strokeDashArray': None,
+     'strokeLineCap': 0,
+     'strokeLineJoin': 0,
+     'strokeMiterLimit': 0,
+     'strokeWidth': 1,
+     'width': 200,
+     'x': 0,
+     'y': 0}
+    >>> r.setProperties({'x':20, 'y':30, 'strokeColor': colors.red})
+    >>> r.dumpProperties()
+    fillColor = Color(0.00,0.00,0.00)
+    height = 100
+    rx = 0
+    ry = 0
+    strokeColor = Color(1.00,0.00,0.00)
+    strokeDashArray = None
+    strokeLineCap = 0
+    strokeLineJoin = 0
+    strokeMiterLimit = 0
+    strokeWidth = 1
+    width = 200
+    x = 20
+    y = 30
+    >>>  """
+    )
+    pdf.add_pencil_note()
+    pdf.add_text_note(
+        '$pprint$ 是标准的Python库模块，它允许您在多行上 "漂亮地打印" 输出，而不是只有一行很长的内容。'
+    )
+    pdf.add_paragraph(
+        '这三种方法在这里似乎并没有什么作用，' '但正如我们将看到的那样，' '它们使我们的 $widgets$ 框架在处理非原始对象时更加强大。'
+    )
+    pdf.add_heading("Children 命名", level=3)
+    pdf.add_paragraph(
+        '您可以将对象添加到$Drawing$和$Group$对象中。'
+        '这些对象通常会进入一个内容列表中。'
+        '然而，你也可以在添加对象时给它们一个名字。'
+        '这允许您在构造一个绘图后引用并可能改变它的任何元素。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> d = shapes.Drawing(400, 200)
+    >>> s = shapes.String(10, 10, 'Hello World')
+    >>> d.add(s, 'caption')
+    >>> s.caption.text
+    'Hello World'
+    >>>
+    """
+    )
+    pdf.add_paragraph(
+        '请注意，您可以在绘图中的多个上下文中使用相同的形状实例；'
+        '如果您选择在许多位置（如散点图【scatter plot】）使用相同的$Circle$对象，'
+        '并使用不同的名称来访问它，它仍然是一个共享对象，'
+        '并且更改将是全局的。'
+    )
+    pdf.add_paragraph('这为创建和修改交互式图纸提供了一种范式。')
+
+    pdf.add_heading("图表", level=2)
+    pdf.add_paragraph(
+        '其中大部分的动机是为了创建一个灵活的图表包。' '本节将介绍我们的图表模型背后的想法，' '设计目标是什么，以及图表包的哪些组件已经存在。'
+    )
+    pdf.add_heading("设计目标", level=3)
+    pdf.add_paragraph('以下是一些设计目标。')
+    pdf.add_paragraph('让简单的顶层使用变得真正简单')
+    pdf.add_paragraph(
+        '<para lindent="+36">应该可以用最少的代码行来创建一个简单的图表，'
+        '并通过合理的自动设置让它 "做正确的事情"。'
+        '上面的饼图片段就是这样做的。'
+        '如果一个真正的图表有许多子组件，'
+        '您仍然不需要与它们交互，除非您想自定义它们的功能。</para>'
+    )
+    pdf.add_paragraph('允许精确定位')
+    pdf.add_paragraph(
+        '<para lindent="+36">在出版和平面设计中，一个绝对的要求是控制每个元素的位置和风格。'
+        '我们会尽量让属性以固定的尺寸和绘图比例来指定事物，'
+        '而不是有自动调整大小的功能。'
+        '因此，当你把y标签的字体大小变大时，"内图矩形" 不会神奇地改变，'
+        '即使这意味着你的标签可以溢出图表矩形的左边缘。'
+        '你的工作是预览图表，并选择能用的大小和空间。</para>'
+    )
+    pdf.add_paragraph(
+        '<para lindent="+36">有些事情确实需要自动完成。'
+        '例如，如果你想在一个200点的空间里放进N个条形图，而事先又不知道N，'
+        '我们就把条形图的分隔指定为条形图宽度的百分比，而不是一个点的大小，让图表来计算。'
+        '这样做还是具有确定性和可控性的。</para>'
+    )
+    pdf.add_paragraph("单独或分组控制子元素")
+    pdf.add_paragraph(
+        '<para lindent="+36">我们使用智能集合类，让你自定义一组东西，或者只是其中的一个。'
+        '例如你可以在我们的实验饼图中这样做。</para>'
+    )
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing, Circle
+from reportlab.graphics.charts.piecharts import Pie
+from reportlab.graphics.charts.textlabels import Label
+from reportlab.lib import colors
+
+d = Drawing(400,200)
+pc = Pie()
+pc.x = 150
+pc.y = 50
+pc.data = [10,20,30,40,50,60]
+pc.labels = ['a','b','c','d','e','f']
+pc.slices.strokeWidth=0.5
+pc.slices[3].popout = 20
+pc.slices[3].strokeWidth = 2
+pc.slices[3].strokeDashArray = [2,2]
+pc.slices[3].labelRadius = 1.75
+pc.slices[3].fontColor = colors.red
+d.add(pc, '')
+    """,
+        name='d',
+    )
+    pdf.add_paragraph(
+        '<para lindent="+36"> $pc.slices[3]$ 实际上是懒惰地创建了一个小对象，'
+        '它保存了有关片子的信息；'
+        '如果有第四个片子的话，这个对象将在绘制时被用来格式化。</para>'
+    )
+    pdf.add_paragraph("只揭露你应该改变的事情")
+    pdf.add_paragraph(
+        '<para lindent="+36">从统计学的角度来看，让你直接调整上面例子中的一个饼片的角度是错误的，因为这是由数据决定的。'
+        '所以并不是所有的东西都会通过公共属性暴露出来。'
+        '可能会有 "后门 "让你在真正需要的时候违反这一点，'
+        '或者提供高级功能的方法，但一般来说，属性会是正交的。</para>'
+    )
+    pdf.add_paragraph("组成和成分")
+    pdf.add_paragraph(
+        '<para lindent="+36">图表是由可重复使用的儿童部件构建的。'
+        '图例是一个易于掌握的例子。'
+        '如果你需要一个特殊类型的图例（例如圆形色板），'
+        '你应该将标准的图例部件子类化。然后你可以做一些像...</para>'
+    )
+    pdf.add_code_eg(
+        """
+    c = MyChartWithLegend()
+    c.legend = MyNewLegendClass()    # just change it
+    c.legend.swatchRadius = 5    # set a property only relevant to the new one
+    c.data = [10,20,30]   #   and then configure as usual...
+    """
+    )
+    pdf.add_paragraph(
+        '<para lindent="+36">...或者创建/修改你自己的图表或绘图类，默认创建其中一个。'
+        '这对于时间序列图来说也是非常重要的，因为在时间序列图中，X轴可以有很多样式。</para>'
+    )
+    pdf.add_paragraph(
+        '<para lindent="+36">'
+        '顶层图表类会创建一些这样的组件，然后调用方法或设置私有属性来告诉它们的高度和位置'
+        '--所有这些东西都应该为你做，而你无法定制。'
+        '我们正在努力模拟这些组件应该是什么，'
+        '并将在达成共识后在这里发布它们的API。</para>'
+    )
+    pdf.add_paragraph("倍数")
+    pdf.add_paragraph(
+        '<para lindent="+36">组件方法的一个必然结果是，'
+        '你可以用多个图表或自定义数据图形来创建图表。'
+        '我们最喜欢的例子是我们图库中由用户贡献的天气报告；'
+        '我们希望能够轻松创建这样的图，将构件与它们的图例挂钩，'
+        '并以一致的方式提供这些数据。</para>'
+    )
+    pdf.add_paragraph(
+        '<para lindent="+36">(如果你想看图片，可以在我们的网站上找到。'
+        '<font color="blue">'
+        '<a href="https://www.reportlab.com/media/imadj/'
+        'data/RLIMG_e5e5cb85cc0a555f5433528ac38c5884.PDF">'
+        '这儿</a></font>)</para>'
+    )
+
+    pdf.add_heading("概述", level=3)
+    pdf.add_paragraph(
+        '图表或图是一个放置在图纸上的对象，' '它本身不是一个图纸。因此，你可以控制它的位置，在同一张图上放几个，或者添加注释。'
+    )
+    pdf.add_paragraph(
+        '图表有两个轴，轴可以是 $Value$ 轴或 $Category$ 轴。'
+        '轴又有一个 Labels 属性，可以让你配置所有的文本标签或单独配置每个标签。'
+        '不同图表的大多数配置细节都与轴属性或轴标签有关。'
+    )
+    pdf.add_paragraph(
+        '对象通过上一节中讨论的接口暴露出属性；'
+        '这些都是可选的，是为了让最终用户配置外观。'
+        '为了使图表工作而必须设置的东西，'
+        '以及图表和它的组件之间的基本通信，都是通过方法来处理的。'
+    )
+    pdf.add_paragraph('你可以对任何图表组件进行子类化，' '并使用你的替代品来代替原来的组件，只要你实现了基本的方法和属性。')
+
+    pdf.add_heading("$Labels$ 属性", level=3)
+    pdf.add_paragraph(
+        '标签是附加在某些图表元素上的一串文本。'
+        '它们用于坐标轴、标题或坐标轴旁，或附加到单个数据点上。'
+        '标签可以包含换行符，但只能用一种字体。'
+    )
+    pdf.add_paragraph(
+        '标签的文本和 "origin" 通常由其父对象设置。'
+        '它们是通过方法而不是属性来访问的。'
+        '因此，X轴决定了每个刻度线标签的 "reference point" （参考点）'
+        '和每个标签的数字或日期文本。'
+        '然而，最终用户可以直接设置标签（或标签集合）的属性，'
+        '以影响其相对于该原点的位置及其所有格式化。'
+    )
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing, Circle
+from reportlab.graphics.charts.textlabels import Label
+from reportlab.lib import colors
+
+d = Drawing(200, 100)
+
+# mark the origin of the label
+d.add(Circle(100,90, 5, fillColor=colors.green))
+
+lab = Label()
+lab.setOrigin(100,90)
+lab.boxAnchor = 'ne'
+lab.angle = 45
+lab.dx = 0
+lab.dy = -20
+lab.boxStrokeColor = colors.green
+lab.setText('Some\\nMulti-Line\\nLabel')
+
+d.add(lab)
+    """,
+        name='d',
+    )
+    pdf.add_paragraph('在上图中，标签是相对于绿色小球定义的。文本框的东北角应在原点向下10点，并围绕该角旋转45度。')
+    pdf.add_paragraph('目前，标签具有以下特性，我们认为这些特性对我们迄今所看到的所有图表都是足够的。')
+
+    attr_style = TableStyle(
+        [
+            ('FONT', (0, 0), (-1, 0), 'SourceHanSans-Normal', 10, 12),
+            ('FONT', (0, 1), (0, -1), 'Courier', 8, 8),
+            ('FONT', (1, 1), (1, -1), 'SourceHanSans-ExtraLight', 10, 12),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+        ]
+    )
+
+    attributes = [
+        ["属性", "描述"],
+        ["dx", "标签的 X 位移。\nThe label's x displacement."],
+        ["dy", "标签的 Y 位移。\nThe label's y displacement."],
+        [
+            "angle",
+            "标签的旋转角度（逆时针）。\n"
+            "The angle of rotation (counterclockwise) applied to the label.",
+        ],
+        [
+            "boxAnchor",
+            "标签的框锚，'n'、'e'、'w'、's'、'ne'、'nw'、'se'、'sw'中的一种。\n"
+            "The label's box anchor, one of 'n', 'e', 'w', 's', 'ne', 'nw', 'se', 'sw'.",
+        ],
+        [
+            "textAnchor",
+            "标签文字的固定位置，'start'、'middle'、'end'中的一个。\n"
+            "The place where to anchor the label's text, one of 'start', 'middle', 'end'.",
+        ],
+        [
+            "boxFillColor",
+            '标签框中使用的填充颜色。\n' 'The fill color used in the label\'s box.',
+        ],
+        [
+            "boxStrokeColor",
+            "标签框中使用的笔触颜色。\n" "The stroke color used in the label's box.",
+        ],
+        ["boxStrokeWidth", '标签框的线宽。\nThe line width of the label\'s box.'],
+        ["fontName", '标签的字体名称。\nThe label\'s font name.'],
+        ["fontSize", '标签的字体大小。\nThe label\'s font size.'],
+        [
+            "leading",
+            '标签文字行的前导值。(leading)\n'
+            'The leading value of the label\'s text lines.',
+        ],
+        ["x", '参考点的X坐标。\nThe X-coordinate of the reference point.'],
+        ["y", '参考点的Y坐标。\nThe Y-coordinate of the reference point.'],
+        ["width", '标签的宽度。\nThe label\'s width.'],
+        ["height", '标签的高度。\nThe label\'s height.'],
+    ]
+    table = Table(attributes, style=attr_style, colWidths=(100, 330))
+    pdf.add_space()
+    pdf.add_flowable(table)
+    pdf.add_caption("Label 属性", category=constant.CAPTION_TABLE)
+    pdf.add_paragraph(
+        '要查看更多的具有不同属性组合的 $Label$ 对象的例子，'
+        '请查看文件夹 $tests$ 中的ReportLab测试套件，'
+        '运行脚本 $test_charts_textlabels.py$ 并查看它所生成的PDF文档。'
+    )
+
+    pdf.add_heading("Axes", level=2)
+    pdf.add_paragraph(
+        '我们确定了两种基本的轴 '
+        '--^Value^和^Category^。'
+        '这两种轴都有水平和垂直的味道。'
+        '两者都可以被子类化来制作非常特殊类型的轴。'
+        '例如，如果您有复杂的规则，在时间序列应用程序中显示哪些日期，或者想要不规则的缩放，'
+        '您可以覆盖该轴并创建一个新的轴。'
+    )
+    pdf.add_paragraph('轴负责确定从数据到图像坐标的映射；' '根据图表的要求变换点；' '绘制自己及其刻度线、网格线和轴标签。')
+    pdf.add_paragraph('这张图显示了两个轴，每一种都有一个，' '它们是在没有参考任何图表的情况下直接创建的。')
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing, Circle
+from reportlab.graphics.charts.textlabels import Label
+from reportlab.graphics.charts.axes import XCategoryAxis, YValueAxis, XValueAxis
+from reportlab.lib import colors
+
+drawing = Drawing(400, 200)
+
+data = [(10, 20, 30, 40), (15, 22, 37, 42)]
+
+xAxis = XCategoryAxis()
+xAxis.setPosition(75, 75, 300)
+xAxis.configure(data)
+# xAxis.categoryNames = ['Beer', 'Wine', 'Meat', 'Cannelloni']
+xAxis.categoryNames = ['啤酒', '葡萄酒', '牛肉', '碎肉卷']
+xAxis.labels.boxAnchor = 'n'
+xAxis.labels[3].dy = -15
+xAxis.labels[3].angle = 30
+# xAxis.labels[3].fontName = 'Times-Bold'
+xAxis.labels.fontName = 'SourceHanSans-ExtraLight'
+
+yAxis = YValueAxis()
+yAxis.setPosition(50, 50, 125)
+yAxis.configure(data)
+
+drawing.add(xAxis)
+drawing.add(yAxis)
+    """,
+        name='drawing',
+    )
+    pdf.add_caption('两个孤立的轴', category=constant.CAPTION_IMAGE)
+    pdf.add_paragraph(
+        '请记住，通常情况下，你不必直接创建轴；'
+        '当使用标准图表时，它自带现成的轴。'
+        '这些方法是图表用来配置它和处理几何体的。'
+        '不过，下面我们将详细介绍它们。'
+        '正交双轴到我们描述的那些轴，除了指的是刻度线外，其他的属性基本相同。'
+    )
+
+    pdf.add_heading("$XCategoryAxis$", level=3)
+    pdf.add_paragraph(
+        '类别轴并没有真正的刻度，它只是把自己分成大小相等的 $buckets$。'
+        '它比值轴更简单。图表（或程序员）用方法 $setPosition(x, y, length)$ 设置它的位置。'
+        '下一个阶段是向它显示数据，以便它能够自行配置。'
+        '对于类别轴来说，这很容易'
+        '--它只是计算其中一个数据系列中的数据点数量。'
+        '$reversed$ 属性（如果是1）表示类别应该反过来。'
+        '绘制时，该轴可以通过其$scale()$方法为图表提供一些帮助，'
+        '该方法告诉图表一个给定类别在页面上的开始和结束位置。'
+        '我们还没有看到任何让人们覆盖类别的宽度或位置的需求。'
+    )
+    pdf.add_paragraph("一个 $XCategoryAxis$ 类有以下可编辑的属性。")
+    pdf.add_space()
+
+    attributes = [
+        ["属性", "描述"],
+        [
+            "visible",
+            '轴是否应该被绘制？有时你不想显示一个或两个轴，\n'
+            '但它们仍然需要存在，因为它们管理着点的缩放。\n'
+            'Should the axis be drawn at all? \n'
+            'Sometimes you don\'t want to display one or both axes, \n'
+            'but they still need to be there as they manage the scaling of '
+            'points.',
+        ],
+        ["strokeColor", "轴的颜色\nColor of the axis"],
+        [
+            "strokeDashArray",
+            '是否要用破折号画轴，如果要画，画什么样的轴。默认值为"None"。\n'
+            'Whether to draw axis with a dash and, if so, what kind.'
+            'Defaults to None',
+        ],
+        ["strokeWidth", "轴的宽度，以点为单位（points）\n" "Width of axis in points"],
+        [
+            "tickUp",
+            '刻度线应突出到轴上方多远？\n'
+            '（请注意，使其等于图表高度会给您一条网格线）\n'
+            'How far above the axis should the tick marks protrude? \n'
+            '(Note that making this equal to chart height gives you a gridline)',
+        ],
+        [
+            "tickDown",
+            '刻度线应突出到轴下方多远？\n'
+            'How far below the axis should the tick mark protrude?',
+        ],
+        [
+            "categoryNames",
+            '$None$ 或字符串列表。 该长度应与每个数据系列的长度相同。\n'
+            'Either None, or a list of strings.\n'
+            'This should have the same length as each data series.',
+        ],
+        [
+            "labels",
+            '刻度线标签的集合。 \n'
+            '默认情况下，每个文本标签的“north” (北方)（例如:顶部中心）\n'
+            '位于轴上每个类别的中心下方5点处。\n'
+            '您可以重新定义整个标签组或任何一个标签的任何属性。 \n'
+            '如果 categoryNames=None，则不会绘制标签。\n'
+            'A collection of labels for the tick marks.\n'
+            'By default the \'north\' of each text label (i.e top centre) \n'
+            'is positioned 5 points down from the centre of each category on '
+            'the axis. \n'
+            'You may redefine any property of the whole label group or of \n'
+            'any one label. If categoryNames=None, no labels are drawn.',
+        ],
+        [
+            "title",
+            '尚未实现。 这需要像一个标签，但也可以让您直接设置文本。 \n'
+            '它在轴下方将具有默认位置。\n'
+            'Not Implemented Yet. This needs to be like a label, \n'
+            'but also lets you set the text directly. \n'
+            'It would have a default location below the axis.',
+        ],
+    ]
+    table = Table(attributes, style=attr_style, colWidths=(100, 330))
+    pdf.add_space()
+    pdf.add_flowable(table)
+    pdf.add_caption("XCategoryAxis 属性", category=constant.CAPTION_TABLE)
+
+    pdf.add_heading("YValueAxis", level=3)
+    pdf.add_paragraph(
+        '图中的左轴是 $YValueAxis$。 '
+        '值轴与类别轴的不同之处在于，沿其长度的每个点都对应于图表空间中的 $y$ 值。 '
+        '轴的工作是配置自身，并将 $Y$ 值从图表空间转换为按需点，以辅助父图表进行绘制。'
+    )
+    pdf.add_paragraph(
+        '$setPosition(x, y, length)$和$configure(data)$的作用与类别轴完全相同。 '
+        '如果尚未完全指定最大，最小和刻度间隔，则 $configure()$ 会导致轴选择合适的值。'
+        '配置完成后，值轴可以使用 $scale()$ 方法将 y 个数据值转换为绘图空间。 从而：'
+    )
+    pdf.add_code_eg(
+        """
+    >>> yAxis = YValueAxis()
+    >>> yAxis.setPosition(50, 50, 125)
+    >>> data = [(10, 20, 30, 40),(15, 22, 37, 42)]
+    >>> yAxis.configure(data)
+    >>> yAxis.scale(10)  # should be bottom of chart
+    50.0
+    >>> yAxis.scale(40)  # should be near the top
+    167.1875
+    >>>
+    """
+    )
+    pdf.add_paragraph(
+        "默认情况下，"
+        "最高的数据点与轴的顶部对齐，最低的数据点与轴的底部对齐，"
+        "轴为其刻度线点选择 $'nice round numbers'$ (漂亮的整数)。"
+        "您可以用下面的属性覆盖这些设置。"
+    )
+    attribute = [
+        ["属性", "描述"],
+        [
+            "visible",
+            '轴是否应该被绘制？有时你不想显示一个或两个轴，\n'
+            '但它们仍然需要存在，因为它们管理着点的缩放。\n'
+            'Should the axis be drawn at all? \n'
+            'Sometimes you don\'t want to display one or both axes, \n'
+            'but they still need to be there as manage the scaling of points.',
+        ],
+        ["strokeColor", "轴的颜色\nColor of the axis"],
+        [
+            "strokeDashArray",
+            '是否要用破折号画轴，如果要画，画什么样的轴。默认值为"None"。\n'
+            'Whether to draw axis with a dash and, if so, what kind.\n'
+            'Defaults to None',
+        ],
+        ["strokeWidth", "轴的宽度，以点为单位（points）\nWidth of axis in points"],
+        [
+            "tickLeft",
+            '刻度线应突出到轴的左侧多远？\n'
+            '（请注意，使其等于图表宽度会给您一条网格线）\n'
+            'How far to the left of the axis should the tick marks protrude?\n'
+            '(Note that making this equal to chart height gives you a gridline)',
+        ],
+        [
+            "tickRight",
+            '刻度线应突出到轴的右侧多远？\n'
+            'How far to the right of the axis should the tick mark protrude?',
+        ],
+        [
+            "valueMin",
+            '轴底部应对应的 y 值。 默认值为 None，在这种情况下，\n'
+            '轴会将其设置为最低的实际数据点（例如，上例中为10）。 \n'
+            '通常将其设置为零以避免误导眼睛。\n'
+            'The y value to which the bottom of the axis should correspond.\n'
+            'Default value is None in which case the axis sets it to the '
+            'lowest\n'
+            'actual data point (e.g. 10 in the example above).\n'
+            ' It is common to set this to zero to avoid misleading the eye.',
+        ],
+        [
+            "valueMax",
+            '轴顶部应对应的 y 值。 默认值为 None，在这种情况下，\n'
+            '轴会将其设置为最高实际数据点（例如，上例中为42）。\n'
+            '通常将其设置为“整数”，这样数据条就不会到达顶部。\n'
+            'The y value to which the top of the axis should correspond.\n'
+            'Default value is None in which case the axis sets it to the '
+            'highest\n'
+            'actual data point (e.g. 42 in the example above).\n'
+            'It is common to set this to a \'round number \n'
+            'so data bars do not quite reach the top.',
+        ],
+        [
+            "valueStep",
+            'y在刻度间隔之间变化。 默认情况下，此值为“None”，\n'
+            '图表尝试选择比下面的最小刻度间距更宽的“很好的整数”。\n'
+            'The y change between tick intervals. By default this is None, \n'
+            'and the chart tries to pick \'nice round numbers\' which are\n'
+            'just wider than the minimumTickSpacing below.',
+        ],
+        [
+            "valueSteps",
+            '放置刻度的数字列表。\n' 'A list of numbers at which to place ticks.',
+        ],
+        [
+            "minimumTickSpacing",
+            '当$valueStep$设置为$None$时使用，否则忽略。 \n'
+            '设计人员指定刻度线之间的距离不应小于X点（大概是基于标签字体大小和角度的考虑）。 \n'
+            '图表尝试使用1,2,5,10,20,50,100 ...（如有必要，请减小到1以下）类型的值，\n'
+            '直到找到大于所需间隔的间隔，并将其用于 $step$。\n'
+            'This is used when valueStep is set to None, and ignored '
+            'otherwise. \n'
+            'The designer specified that tick marks should be \n'
+            'no closer than X points apart \n'
+            '(based, presumably, on considerations of the label font size and angle). \n'
+            'The chart tries values of the type 1,2,5,10,20,50,100... \n'
+            '(going down below 1 if necessary) until it finds an interval \n'
+            'which is greater than the desired spacing, and uses this for the step.',
+        ],
+        [
+            "labelTextFormat",
+            '这确定了标签中的内容。 与接受固定字符串的类别轴不同，\n'
+            '$ValueAxis$ 上的标签应为数字。 \n'
+            '您可以提供“$％0.2f$”之类的“格式字符串”（显示两位小数），\n'
+            '也可以提供一个接受数字并返回字符串的任意函数。 \n'
+            '后者的一种用法是将时间戳转换为可读的年月日格式。\n'
+            'This determines what goes in the labels. \n'
+            'Unlike a category axis which accepts fixed strings, \n'
+            'the labels on a ValueAxis are supposed to be numbers. \n'
+            'You may provide either a \'format string\' like \'%0.2f\'\n'
+            '(show two decimal places), or an arbitrary function \n'
+            'which accepts a number and returns a string.\n'
+            'One use for the latter is to convert a timestamp \n'
+            'to a readable year-month-day format.',
+        ],
+        [
+            "title",
+            '尚未实现。 这需要像一个标签，但也可以让您直接设置文本。\n'
+            '它在轴下方将具有默认位置。\n'
+            'Not Implemented Yet. This needs to be like a label,\n'
+            'but also lets you set the text directly. \n'
+            'It would have a default location below the axis.',
+        ],
+    ]
+    table = Table(attribute, style=attr_style, colWidths=(100, 330))
+    pdf.add_space()
+    pdf.add_flowable(table)
+    pdf.add_caption("YValueAxis 属性", category=constant.CAPTION_TABLE)
+    pdf.add_paragraph(
+        '$valueSteps$属性让您明确指定刻度线的位置，因此您不必遵循常规的时间间隔。'
+        '因此，你可以通过几个辅助函数来绘制月末和月末日期，而且不需要特殊的时间序列图表类。'
+        '下面的代码显示了如何创建一个简单的 $XValueAxis$ 与特殊的刻度间隔。'
+        '请确保在调用配置方法之前设置 $valueSteps$ 属性!'
+    )
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.axes import XValueAxis
+
+drawing = Drawing(400, 100)
+
+data = [(10, 20, 30, 40)]
+
+xAxis = XValueAxis()
+xAxis.setPosition(75, 50, 300)
+xAxis.valueSteps = [10, 15, 20, 30, 35, 40]
+xAxis.configure(data)
+xAxis.labels.boxAnchor = 'n'
+
+drawing.add(xAxis)
+""",
+        name='drawing',
+    )
+    pdf.add_caption("带非等距刻度线的轴", category=constant.CAPTION_IMAGE)
+    pdf.add_paragraph(
+        '除了这些属性之外，所有的轴类都有三个属性，描述如何将其中的两个轴相互连接。'
+        '再次强调，只有当你定义你自己的图表或者想使用这些坐标轴修改现有图表的外观时，这才是有趣的。'
+        '这些属性在这里只是非常简单的列出，'
+        '但你可以在$reportlab/graphics/axes.py$模块中找到大量的示例函数，'
+        '你可以检查......'
+    )
+    pdf.add_paragraph(
+        "通过在第一个轴上调用方法$joinToAxis(otherAxis, mode, pos)$"
+        "将一个轴连接到另一个轴，"
+        "$mode$和$pos$分别是$joinAxisMode$和$joinAxisPos$描述的属性。"
+        "$'points'$表示使用绝对值，$'value'$表示使用沿轴的相对值"
+        "（均由$joinAxisPos$属性表示）。"
+    )
+    pdf.add_space()
+    attributes = [
+        ["属性", "描述"],
+        ["joinAxis", "如果为真，则连接两个轴。\nJoin both axes if true."],
+        [
+            "joinAxisMode",
+            "用于连接轴的模式 \n"
+            "('bottom', 'top', 'left', 'right', 'value', 'points', None).\n"
+            "Mode used for connecting axis \n"
+            "('bottom', 'top', 'left', 'right', 'value', 'points', None).",
+        ],
+        [
+            "joinAxisPos",
+            '与其他轴连接的位置。\nPosition at which to join with other axis.',
+        ],
+    ]
+    table = Table(attributes, style=attr_style, colWidths=(100, 330))
+    pdf.add_flowable(table)
+    pdf.add_caption("Axes joining 属性", category=constant.CAPTION_TABLE)
+
+    pdf.add_heading("柱状图", level=2)
+    pdf.add_paragraph(
+        "这描述了我们目前的$VerticalBarChart$类，它使用了上面的轴和标签。"
+        "我们认为这是正确方向的一步，但还远未到最后的阶段。"
+        "请注意，与我们交谈过的人对这是'垂直'还是'水平'条形图的看法不一。"
+        "我们选择这个名字是因为'垂直'出现在'条形图'旁边，"
+        "所以我们认为它的意思是条形图而不是类别轴是垂直的。"
+    )
+    pdf.add_paragraph('与往常一样，我们将从一个示例开始：')
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.lib import colors
+
+drawing = Drawing(400, 200)
+
+data = [(13, 5, 20, 22, 37, 45, 19, 4), 
+        (14, 6, 21, 23, 38, 46, 20, 5)]
+
+bc = VerticalBarChart()
+bc.x = 50
+bc.y = 50
+bc.height = 125
+bc.width = 300
+bc.data = data
+bc.strokeColor = colors.black
+
+bc.valueAxis.valueMin = 0
+bc.valueAxis.valueMax = 50
+bc.valueAxis.valueStep = 10
+
+bc.categoryAxis.labels.boxAnchor = 'ne'
+bc.categoryAxis.labels.dx = 8
+bc.categoryAxis.labels.dy = -2
+bc.categoryAxis.labels.angle = 30
+bc.categoryAxis.categoryNames = [
+    'Jan-99',
+    'Feb-99',
+    'Mar-99',
+    'Apr-99',
+    'May-99',
+    'Jun-99',
+    'Jul-99',
+    'Aug-99',
+]
+
+drawing.add(bc)
+    """,
+        name='drawing',
+    )
+    pdf.add_caption("具有两个数据系列的简单柱状图", category=constant.CAPTION_IMAGE)
+    pdf.add_paragraph(
+        '这段代码的大部分内容是关于设置坐标轴和标签的，我们已经介绍过了，' '下面是$VerticalBarChart$类的顶层属性。'
+    )
+    pdf.add_space()
+
+    attributes = [
+        ["属性", "描述"],
+        [
+            "data",
+            '这应该是“数字列表列表”或“数字元组列表”。 \n'
+            '如果只有一个系列，则将其写为 data=[(10,20,30,42),]\n'
+            'This should be a "list of lists of numbers" or "list of tuples '
+            'of numbers".\n'
+            'If you have just one series, write it as data = [(10,20,30,42),]',
+        ],
+        [
+            "x, y, width, height",
+            '这些定义了内部的 "绘图矩形"。\n'
+            '我们在上面用黄色边框突出显示了这个矩形。\n'
+            '请注意，您的工作是将图表放置在图纸上，为所有的轴标签和刻度线留出空间。\n'
+            '我们指定这个 "内矩形" 是因为它可以很容易地以一致的方式布置多个图表。\n'
+            'These define the inner \'plot rectangle\'. \n'
+            'We highlighted this with a yellow border above. \n'
+            'Note that it is your job to place the chart on the drawing \n'
+            'in a way which leaves room for all the axis labels and \n'
+            'tickmarks. We specify this \'inner rectangle\' \n'
+            'because it makes it very easy to lay out multiple charts \n'
+            'in a consistent manner.',
+        ],
+        [
+            "strokeColor",
+            '默认为 None。 这将在绘图矩形周围绘制边框，\n'
+            '这可能对调试很有用。 轴将覆盖此位置。\n'
+            'Defaults to None. This will draw a border around the plot '
+            'rectangle,\n'
+            'which may be useful in debugging. Axes will overwrite this.',
+        ],
+        [
+            "fillColor",
+            '默认为 None。 这将用纯色填充绘图矩形。 \n'
+            '（请注意，我们可以像其他任何实心形状一样实现 $dashArray$ 等）\n'
+            'Defaults to None. This will fill the plot rectangle with \n'
+            'a solid color. (Note that we could implement dashArray etc.\n'
+            'as for any other solid shape)',
+        ],
+        [
+            "useAbsolute",
+            '默认为0. 如果为1，则下面的三个属性是绝对值，以点为单位 \n'
+            '（这意味着你可以制作一个图表，其中的条形图从绘图矩形中伸出来）；\n'
+            '如果为0，则是相对量，表示相关元素的比例宽度。\n'
+            'Defaults to 0. If 1, the three properties below are \n'
+            'absolute values in points (which means you can make a chart \n'
+            'where the bars stick out from the plot rectangle); if 0, \n'
+            'they are relative quantities and indicate the proportional \n'
+            'widths of the elements involved.',
+        ],
+        ["barWidth", "柱状宽度. 默认为 10. \nAs it says. Defaults to 10."],
+        [
+            "groupSpacing",
+            '默认值为5。这是每组条形图之间的间距，\n'
+            '如果只有一个系列，请使用$groupSpacing$而不是barSpacing来分割它们。\n'
+            '$groupSpacing$的一半用于图表的第一个条形图之前，另一半用于结尾。\n'
+            'Defaults to 5. This is the space between each group of ars.\n'
+            'If you have only one series, use groupSpacing and not barSpacing\n'
+            'to split them up. Half of the groupSpacing is used before \n'
+            'the first bar in the chart, and another half at the end.',
+        ],
+        [
+            "barSpacing",
+            '默认值为0。这是每个组中的条之间的间距。 \n'
+            '如果在上面的示例中绿色和红色条形之间要有一点间隙，则可以将其设置为非零。\n'
+            'Defaults to 0. This is the spacing between bars in each \n'
+            'group. If you wanted a little gap between green and red bars in\n'
+            'the example above, you would make this non-zero.',
+        ],
+        [
+            "barLabelFormat",
+            '默认为 None。 与$YValueAxis$一样，\n'
+            '如果提供函数或格式字符串，则会在每个显示数值的条旁边绘制标签。 \n'
+            '对于正值，它们会自动定位在条的上方，\n'
+            '对于负值，它们会自动位于下方。\n'
+            'Defaults to None. As with the YValueAxis, if you supply\n'
+            'a function or format string then labels will be drawn next to '
+            'each bar\n'
+            'showing the numeric value. They are positioned automatically\n'
+            'above the bar for positive values and below for negative ones.',
+        ],
+        [
+            "barLabels",
+            '用于格式化所有条形标签的标签集合。\n'
+            '由于这是一个二维数组，您可以使用此语法明确格式化第二个系列的第三个标签：\n'
+            'chart.barLabels[(1,2)].fontSize = 12。\n'
+            'A collection of labels used to format all bar labels.\n'
+            ' Since this is a two-dimensional array, \n'
+            'you may explicitly format the third label of \n'
+            'the second series using this syntax:\n'
+            'chart.barLabels[(1,2)].fontSize = 12',
+        ],
+        [
+            "valueAxis",
+            '值轴，其格式可如前所述。\n'
+            'The value axis, which may be formatted as described previously.',
+        ],
+        [
+            "categoryAxis",
+            '类别轴，其格式可如前所述。\n'
+            'The category axis, which may be formatted as described '
+            'previously.',
+        ],
+        [
+            "title",
+            '还没有实现。这需要像一个标签一样，\n'
+            '但也可以让你直接设置文本。它将有一个默认的位置在轴的下方。\n'
+            'Not Implemented Yet. This needs to be like a label, \n'
+            'but also lets you set the text directly. \n'
+            'It would have a default location below the axis.',
+        ],
+    ]
+    table = Table(attributes, style=attr_style, colWidths=(100, 330))
+    pdf.add_flowable(table)
+    pdf.add_caption("VerticalBarChart 属性", category=constant.CAPTION_TABLE)
+    pdf.add_paragraph(
+        '从该表中我们可以得出结论，在上面的代码中加入以下几行，'
+        '应该会使条形图组之间的间距增加一倍($groupSpacing$属性的默认值为5点)，'
+        '我们还应该看到同一组的条形组之间有一些微小的空间($barSpacing$)。'
+    )
+    pdf.add_code_eg(
+        """
+        bc.groupSpacing = 10
+        bc.barSpacing = 2.5
+    """
+    )
+    pdf.add_paragraph(
+        '而且，实际上，这就是在将这些行添加到上面的代码之后所能看到的。 '
+        '注意各个条的宽度也如何变化。 '
+        '这是因为随着总图表宽度保持不变，必须从某处“占用”条形之间的空格。'
+    )
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.lib import colors
+
+drawing = Drawing(400, 200)
+
+data = [(13, 5, 20, 22, 37, 45, 19, 4), 
+        (14, 6, 21, 23, 38, 46, 20, 5)]
+
+bc = VerticalBarChart()
+bc.x = 50
+bc.y = 50
+bc.height = 125
+bc.width = 300
+bc.data = data
+bc.strokeColor = colors.black
+
+bc.groupSpacing = 10
+bc.barSpacing = 2.5
+
+bc.valueAxis.valueMin = 0
+bc.valueAxis.valueMax = 50
+bc.valueAxis.valueStep = 10
+
+bc.categoryAxis.labels.boxAnchor = 'ne'
+bc.categoryAxis.labels.dx = 8
+bc.categoryAxis.labels.dy = -2
+bc.categoryAxis.labels.angle = 30
+bc.categoryAxis.categoryNames = [
+    'Jan-99',
+    'Feb-99',
+    'Mar-99',
+    'Apr-99',
+    'May-99',
+    'Jun-99',
+    'Jul-99',
+    'Aug-99',
+]
+
+drawing.add(bc)    
+""",
+        name='drawing',
+    )
+    pdf.add_caption('像以前一样，但间距已更改', category=constant.CAPTION_IMAGE)
+    pdf.add_paragraph('条形图标签将自动显示为条形下限以下的负值，其他条形上限值以上的正值。')
+    pdf.add_paragraph(
+        "垂直条形图也支持堆叠条形图。"
+        "您可以通过在 $categoryAxis$ 上设置 $style$ 属性"
+        "为 $'stacked'$ 来为您的图表启用这种布局。"
+    )
+    pdf.add_code_eg("bc.categoryAxis.style = 'stacked'")
+    pdf.add_paragraph('下面是以之前的图表值为例，以叠加的方式排列。')
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.lib import colors
+
+drawing = Drawing(400, 200)
+
+data = [(13, 5, 20, 22, 37, 45, 19, 4), 
+        (14, 6, 21, 23, 38, 46, 20, 5)]
+
+bc = VerticalBarChart()
+bc.x = 50
+bc.y = 50
+bc.height = 125
+bc.width = 300
+bc.data = data
+bc.strokeColor = colors.black
+
+bc.groupSpacing = 10
+bc.barSpacing = 2.5
+
+bc.valueAxis.valueMin = 0
+bc.valueAxis.valueMax = 100
+bc.valueAxis.valueStep = 20
+
+bc.categoryAxis.labels.boxAnchor = 'ne'
+bc.categoryAxis.labels.dx = 8
+bc.categoryAxis.labels.dy = -2
+bc.categoryAxis.labels.angle = 30
+bc.categoryAxis.categoryNames = [
+    'Jan-99',
+    'Feb-99',
+    'Mar-99',
+    'Apr-99',
+    'May-99',
+    'Jun-99',
+    'Jul-99',
+    'Aug-99',
+]
+bc.categoryAxis.style = 'stacked'  
+
+drawing.add(bc)  
+""",
+        name='drawing',
+    )
+    pdf.add_caption("柱状叠加图", category=constant.CAPTION_IMAGE)
+    pdf.add_heading("折线图", level=2)
 
 
 def chapter11(pdf):
