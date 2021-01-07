@@ -402,7 +402,8 @@ class PDF(object):
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s - '
             f'%({self._SEQ_FIGURE_FLAG}+)s"/> : {self.quick_fix(caption)}'
         )
-        self.store.append(GraphicsDrawing(drawing, self.quick_fix(caption)))
+        self.store.append(GraphicsDrawing(drawing, _caption,
+                                          font_name=self.font_regular))
 
     def add_flowable(self, flowable):
         """ 添加一个flowable对象，（动态布局对象，不用封装样式），比如一个table """

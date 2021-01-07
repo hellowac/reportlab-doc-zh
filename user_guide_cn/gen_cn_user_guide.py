@@ -18,6 +18,7 @@ from reportlab.platypus.paraparser import (
 from reportlab.platypus.flowables import Spacer, Image
 from reportlab.lib.units import inch
 from reportlab.graphics import testshapes
+from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
 from components import constant
 from core import examples
@@ -5764,6 +5765,505 @@ drawing.add(bc)
     )
     pdf.add_caption("柱状叠加图", category=constant.CAPTION_IMAGE)
     pdf.add_heading("折线图", level=2)
+    pdf.add_paragraph('我们认为 "折线图"($Line Charts$)  与 "柱状图"($Bar Charts$) 本质上是一样的，只是用线代替了条。'
+                      '两者共享同一对类别/数值轴对。这与 "线图"不同，'
+                      '在"线图"($Line Plots$) 中，两个轴都是<i>值</i>轴。')
+    pdf.add_paragraph('以下代码及其输出将作为一个简单的例子。'
+                      '后面会有更多的解释。'
+                      '目前，您也可以研究运行 $reportlab/lib/graphdocpy.py$ 工具的输出，'
+                      '并在生成的PDF文档中搜索柱状图($Line Charts$)的例子。')
+
+    pdf.add_embedded_code("""
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.linecharts import HorizontalLineChart
+from reportlab.lib import colors
+
+drawing = Drawing(400, 200)
+
+data = [(13, 5, 20, 22, 37, 45, 19, 4), (5, 20, 46, 38, 23, 21, 6, 14)]
+
+lc = HorizontalLineChart()
+lc.x = 50
+lc.y = 50
+lc.height = 125
+lc.width = 300
+lc.data = data
+lc.joinedLines = 1
+catNames = 'Jan Feb Mar Apr May Jun Jul Aug'.split(' ')
+lc.categoryAxis.categoryNames = catNames
+lc.categoryAxis.labels.boxAnchor = 'n'
+lc.valueAxis.valueMin = 0
+lc.valueAxis.valueMax = 60
+lc.valueAxis.valueStep = 15
+lc.lines[0].strokeWidth = 2
+lc.lines[1].strokeWidth = 1.5
+drawing.add(lc)
+    """, name="drawing")
+    pdf.add_caption('HorizontalLineChart - 折线图',
+                    category=constant.CAPTION_IMAGE)
+    pdf.add_space()
+
+    attribute = [
+        ["属性", "描述"],
+        ["data", "要绘制的数据，（列表）整数清单。\n"
+                 "Data to be plotted, list of (lists of) numbers."],
+        [
+            "x, y, width, height",
+            '折线图的边界框。 请注意，x和y不指定中心，而是左下角\n'
+            'Bounding box of the line chart.\n'
+            'Note that x and y do NOT specify the centre but the bottom left corner',
+        ],
+        [
+            "valueAxis",
+            '值轴，其格式可如前所述。\n'
+            'The value axis, which may be formatted as described previously.',
+        ],
+        [
+            "categoryAxis",
+            '类别轴，其格式可如前所述。\n'
+            'The category axis, which may be formatted as described previously.',
+        ],
+        [
+            "strokeColor",
+            '默认值为 "None"。这将在绘图矩形周围画一个边框，\n' 
+            '这在调试时可能很有用。轴将覆盖它。\n'
+            'Defaults to None. This will draw a border around the plot '
+            'rectangle,\n'
+            'which may be useful in debugging. Axes will overwrite this.',
+        ],
+        [
+            "fillColor",
+            "默认为 None。 这将用纯色填充绘图矩形。\n"
+            "Defaults to None. This will fill the plot rectangle with a solid color.",
+        ],
+        ["lines.strokeColor", '线的颜色\nColor of the line.'],
+        ["lines.strokeWidth", '线的宽度\nWidth of the line.'],
+        [
+            "lineLabels",
+            '用于格式化所有行标签的标签集合。由于这是一个二维数组，\n'
+            '您可以使用以下语法明确格式化第二行的第三个标签：\n'
+            'chart.lineLabels[(1,2)].fontSize = 12。\n'
+            'A collection of labels used to format all line labels.\n'
+            'Since this is a two-dimensional array, you may explicitly format the third \n'
+            'label of the second line using this syntax:\n'
+            'chart.lineLabels[(1,2)].fontSize = 12',
+        ],
+        [
+            "lineLabelFormat",
+            '默认值为 "None"。与YValueAxis一样，如果你提供一个函数或格式字符串，\n'
+            '那么标签将被绘制在每一行的旁边，显示数值。\n'
+            '您也可以将其设置为\'values\'，以显示在lineLabelArray中明确定义的值。\n'
+            'Defaults to None. As with the YValueAxis, if you supply \n'
+            'a function or format string then labels will be drawn next\n'
+            'to each line showing the numeric value. You can also set it\n'
+            'to \'values\' to display the values explicity defined in lineLabelArray.',
+        ],
+        [
+            "lineLabelArray",
+            "行标签值的显式数组，如果存在，必须与数据的大小相匹配。\n"
+            "只有当上面的属性$lineLabelFormat$被设置为'values'时，\n"
+            "这些标签值才会被显示。\n"
+            "Explicit array of line label values, must match size of data if "
+            "present.\n"
+            "These labels values will be displayed only if the property\n"
+            "lineLabelFormat above is set to 'values'.",
+        ],
+    ]
+    table = Table(attribute, style=attr_style, colWidths=(100, 330))
+    pdf.add_flowable(table)
+    pdf.add_caption("HorizontalLineChart 属性", category=constant.CAPTION_TABLE)
+
+    pdf.add_heading("点线图", level=2)
+    pdf.add_paragraph('下面我们展示了一个更复杂的线型图的例子，' '也使用了一些实验功能，比如在每个数据点放置线型标记。')
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.lineplots import LinePlot
+from reportlab.graphics.widgets.markers import makeMarker
+from reportlab.lib import colors
+
+drawing = Drawing(400, 200)
+
+data = [
+    ((1,1), (2,2), (2.5,1), (3,3), (4,5)),
+    ((1,2), (2,3), (2.5,2), (3.5,5), (4,6))
+]
+
+lp = LinePlot()
+lp.x = 50
+lp.y = 50
+lp.height = 125
+lp.width = 300
+lp.data = data
+lp.joinedLines = 1
+lp.lines[0].symbol = makeMarker('FilledCircle')
+lp.lines[1].symbol = makeMarker('Circle')
+lp.lineLabelFormat = '%2.0f'
+lp.strokeColor = colors.black
+lp.xValueAxis.valueMin = 0
+lp.xValueAxis.valueMax = 5
+lp.xValueAxis.valueSteps = [1, 2, 2.5, 3, 4, 5]
+lp.xValueAxis.labelTextFormat = '%2.1f'
+lp.yValueAxis.valueMin = 0
+lp.yValueAxis.valueMax = 7
+lp.yValueAxis.valueSteps = [1, 2, 3, 5, 6]
+
+drawing.add(lp)
+    """, name="drawing"
+    )
+    pdf.add_caption("LinePlot 示例图", category=constant.CAPTION_IMAGE)
+    pdf.add_space()
+
+    attribute = [
+        ["属性", "描述"],
+        ["data", "要绘制的数据，（列表）整数清单。\n"
+                 "Data to be plotted, list of (lists of) numbers."],
+        [
+            "x, y, width, height",
+            '折线图的边界框。 请注意，x和y不指定中心，而是左下角\n'
+            'Bounding box of the line chart.\n'
+            'Note that x and y do NOT specify the centre but the bottom left corner',
+        ],
+        [
+            "xValueAxis",
+            '垂直值轴，其格式可以如上所述。\n'
+            'The vertical value axis, which may be formatted as described previously.',
+        ],
+        [
+            "yValueAxis",
+            '水平值轴，其格式可以如上所述。\n'
+            'The horizontal value axis, which may be formatted as described previously.',
+        ],
+        [
+            "strokeColor",
+            '默认为None。 这将在绘图矩形周围绘制边框，\n' 
+            '这可能对调试很有用。 轴将覆盖此位置。\n'
+            'Defaults to None. This will draw a border around the plot '
+            'rectangle,\n'
+            'which may be useful in debugging. Axes will overwrite this.',
+        ],
+        [
+            "strokeWidth",
+            '默认为None。 绘图矩形周围边框的宽度。\n'
+            'Defaults to None. Width of the border around the plot rectangle.',
+        ],
+        [
+            "fillColor",
+            '默认为None。 这将用纯色填充绘图矩形。\n'
+            'Defaults to None. This will fill the plot rectangle with a solid color.',
+        ],
+        ["lines.strokeColor", '线的颜色。\n'
+                              'Color of the line.'],
+        ["lines.strokeWidth", '线的宽度\n'
+                              'Width of the line.'],
+        [
+            "lines.symbol",
+            '每个点使用的标记。您可以使用函数$makeMarker()$创建一个新的标记。\n'
+            '例如，要使用一个圆，函数调用是makeMarker(\'Circle\')\n'
+            'Marker used for each point.\n'
+            'You can create a new marker using the function makeMarker().\n'
+            'For example to use a circle, the function call would be '
+            'makeMarker(\'Circle\')',
+        ],
+        [
+            "lineLabels",
+            '用于格式化所有行标签的标签集合。\n'
+            '由于这是一个二维数组，您可以使用以下语法明确格式化第二行的第三个标签：\n'
+            'chart.lineLabels[(1,2)].fontSize = 12。\n'
+            'A collection of labels used to format all line labels. \n'
+            'Since this is a two-dimensional array, you may explicitly format the \n'
+            'third label of the second line using this syntax: \n'
+            'chart.lineLabels[(1,2)].fontSize = 12',
+        ],
+        [
+            "lineLabelFormat",
+            '默认值为 None。与$YValueAxis$一样，如果你提供一个函数或格式字符串，'
+            '那么标签将被绘制在每一行的旁边，显示数值。您也可以将其设置为\'values\'，'
+            '以显示在$lineLabelArray$中明确定义的值。\n'
+            'Defaults to None. As with the YValueAxis, if you supply\n'
+            'a function or format string then labels will be drawn next\n'
+            'to each line showing the numeric value. You can also set it\n'
+            'to \'values\' to display the values explicity defined in lineLabelArray.',
+        ],
+        [
+            "lineLabelArray",
+            '行标签值的显式数组，如果存在，必须与数据的大小相匹配。'
+            '只有当上面的属性lineLabelFormat被设置为\'values\'时，'
+            '这些标签值才会被显示。\n'
+            'Explicit array of line label values, must match size of data if '
+            'present.\n'
+            'These labels values will be displayed only if the property\n'
+            'lineLabelFormat above is set to \'values\'.',
+        ],
+    ]
+    table = Table(attribute, style=attr_style, colWidths=(100, 330))
+    pdf.add_flowable(table)
+    pdf.add_caption("LinePlot 属性")
+
+    pdf.add_heading("饼图", level=2)
+    pdf.add_paragraph('像往常一样，我们将从一个例子开始:')
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.piecharts import Pie
+from reportlab.lib import colors
+
+d = Drawing(200, 100)
+
+pc = Pie()
+pc.x = 65
+pc.y = 15
+pc.width = 70
+pc.height = 70
+pc.data = [10,20,30,40,50,60]
+pc.labels = ['a','b','c','d','e','f']
+
+pc.slices.strokeWidth=0.5
+pc.slices[3].popout = 10
+pc.slices[3].strokeWidth = 2
+pc.slices[3].strokeDashArray = [2,2]
+pc.slices[3].labelRadius = 1.75
+pc.slices[3].fontColor = colors.red
+d.add(pc)
+        """, name='d'
+    )
+    pdf.add_caption("凸出的饼图", category=constant.CAPTION_IMAGE)
+    pdf.add_paragraph('属性在下面介绍。 $pie$ 具有 “$slices$” 集合，我们在同一表中记录 $wedge$ 属性。')
+    pdf.add_space()
+
+    attribute = [
+        ["属性", "描述"],
+        ["data", "整数合集"],
+        [
+            "x, y, width, height",
+            '饼图的边界框。 请注意，x和y不必指定中心，\n'
+            '而是指定左下角，并且宽度和高度不必相等。 \n'
+            '饼图可能是椭圆形的，并且会正确绘制切片。\n'
+            'A list or tuple of numbers\n'
+            'Note that x and y do NOT specify the centre but the bottom left\n'
+            'corner, and that width and height do not have to be equal;\n'
+            'pies may be elliptical and slices will be drawn correctly.',
+        ],
+        [
+            "labels",
+            'None, 或者字符串合集. 如果您不希望饼图边缘周围有标签，\n'
+            '请将其设为“None”。 \n'
+            '由于不可能知道切片的大小，因此我们通常不建议在饼中或饼周围放置标签。 \n'
+            '最好将它们放在图例中。\n'
+            'None, or a list of strings.\n'
+            'Make it None if you don\'t want labels around the edge of the '
+            'pie.\n'
+            'Since it is impossible to know the size of slices, we generally\n'
+            'discourage placing labels in or around pies; it is much better \n'
+            'to put them in a legend alongside.',
+        ],
+        [
+            "startAngle",
+            '第一个饼片的起始角度是什么？默认为"90"，即 12 点钟方向。\n'
+            'Where is the start angle of the first pie slice?\n'
+            'The default is \'90\' which is twelve o\'clock.',
+        ],
+        [
+            "direction",
+            '切片的前进方向是什么？默认为 "clockwise"。(顺时针)\n'
+            'Which direction do slices progress in?\n'
+            'The default is \'clockwise\'.',
+        ],
+        [
+            "sideLabels",
+            '这将创建一个标签在两边各一列的图表。\n'
+            'This creates a chart with the labels in two columns, one on either side.',
+        ],
+        [
+            "sideLabelsOffset",
+            '这是饼图宽度的一部分，该宽度定义了饼图和标签列之间的水平距离。\n'
+            'This is a fraction of the width of the pie that defines the '
+            'horizontal\n'
+            'distance between the pie and the columns of labels.',
+        ],
+        [
+            "simpleLabels",
+            '默认为 1. 设置为0以启用自定义标签以及在集合切片中使用 label_ 前缀的属性。\n'
+            'Default is 1. Set to 0 to enable the use of customizable labels '
+            '\nand of properties prefixed by label_ in the collection slices.',
+        ],
+        [
+            "slices",
+            "切片的集合。这使您可以自定义每个扇形或单个扇形。 见下文\n"
+            "Collection of slices. This lets you customise each wedge, or individual ones. See below",
+        ],
+        ["slices.strokeWidth", "扇形边框宽度\nBorder width for wedge"],
+        ["slices.strokeColor", "扇形边框颜色\nBorder color"],
+        ["slices.strokeDashArray", "实线或虚线配置：['solid', 'dashed']\nSolid or dashed line configuration"],
+        [
+            "slices.popout",
+            '切片应从馅饼的中心伸出多远？ 默认值为零。\n'
+            'How far out should the slice(s) stick from the centre of the '
+            'pie? \nDefault is zero.',
+        ],
+        ["slices.fontName", "标签字体名称\nName of the label font"],
+        ["slices.fontSize", "标签字体大小\nSize of the label font"],
+        ["slices.fontColor", "标签文字的颜色\nColor of the label text"],
+        [
+            "slices.labelRadius",
+            '这控制文本标签的锚点。 它是半径的一小部分；\n'
+            '0.7将文本放置在饼中，1.2将文本放置在饼外。 \n'
+            '（请注意，如果我们添加标签，将保留此标签以指定其锚点）\n'
+            'This controls the anchor point for a text label.\n'
+            'It is a fraction of the radius; 0.7 will place the text inside '
+            'the pie, \n'
+            '1.2 will place it slightly outside. (note that if we add labels,'
+            '\n'
+            'we will keep this to specify their anchor point)',
+        ],
+    ]
+    table = Table(attribute, style=attr_style, colWidths=(130, 300))
+    pdf.add_flowable(table)
+    pdf.add_heading("自定义 Label", level=3)
+
+    pdf.add_paragraph('通过改变集合$slices$中以$label_$为前缀的属性，'
+                      '可以单独定制每个幻灯片标签。'
+                      '例如 $pc.slices[2].label_angle = 10$ 改变第三个标签的角度。')
+    pdf.add_paragraph('在使用这些自定义属性之前，您需要使用以下命令禁用简单标签：$pc.simplesLabels=0$')
+    pdf.add_space()
+
+    cn_data = [
+        ["属性", "描述"],
+        ["label_dx", 'X轴标签偏移\nX Offset of the label'],
+        ["label_dy", 'Y轴标签偏移\nY Offset of the label'],
+        [
+            "label_angle",
+            '标签的角度，默认（0）为水平，90为垂直，180为上下颠倒\n'
+            'Angle of the label, default (0) is horizontal, 90 is vertical,180 is upside down',
+        ],
+        ["label_boxAnchor", '标签的固定点\nAnchoring point of the label'],
+        ["label_boxStrokeColor", '标签框的边框颜色\nBorder color for the label box'],
+        ["label_boxStrokeWidth", '标签框的边框宽度\nBorder width for the label box'],
+        ["label_boxFillColor", '标签盒的填充颜色\nFilling color of the label box'],
+        ["label_strokeColor", '标签文字的边框颜色\nBorder color for the label text'],
+        ["label_strokeWidth", '标签文字的边框宽度\nBorder width for the label text'],
+        ["label_text", '标签文字\nText of the label'],
+        ["label_width", '标签宽度\nWidth of the label'],
+        ["label_maxWidth", '标签可以增加到的最大宽度\nMaximum width the label can grow to'],
+        ["label_height", '标签高度\nHeight of the label'],
+        ["label_textAnchor", '标签可以增加到的最大高度\nMaximum height the label can grow to'],
+        ["label_visible", '如果要绘制标签，则为True\nTrue if the label is to be drawn'],
+        ["label_topPadding", '盒子的上边距(Padding at top of box)'],
+        ["label_leftPadding", '盒子的左边距(Padding at left of box)'],
+        ["label_rightPadding", '盒子的右边距(Padding at right of box)'],
+        ["label_bottomPadding", '盒子的下边距(Padding at bottom of box)'],
+        ["label_simple_pointer", '为简单指针设置为1(Set to 1 for simple pointers)'],
+        ["label_pointer_strokeColor", '指示线颜色\nColor of indicator line'],
+        ["label_pointer_strokeWidth", '指示线宽度\nWidth of indicator line'],
+    ]
+    table = Table(cn_data, style=attr_style, colWidths=(130, 300))
+    pdf.add_flowable(table)
+    pdf.add_caption("Pie.slices 自定义 label", category=constant.CAPTION_TABLE)
+
+    pdf.add_heading("Side Labels 侧面标签", level=3)
+
+    pdf.add_paragraph('如果 $sideLabels$ 属性被设置为 $true$，那么切片分为两列，两边各一列。 '
+                      '饼和饼的起始角度将被自动设置。'
+                      '右侧栏的锚点设置为 "start"，并设置了左手列的锚点设置为 "end"。'
+                      '饼的边缘与左手列中任何一个的边缘的距离。'
+                      '列由 $sideLabelsOffset$ 属性决定，该属性为饼的宽度的一小部分。'
+                      '如果改变 $xradius$，饼会与标签重叠，这样一来...。'
+                      '我们建议将 $xradius$ 改为 $None$。下面是一个例子。')
+    pdf.add_draw(sample5(), '一个 $sideLabels=1$ 的饼图示例')
+    pdf.add_paragraph('如果将 $sideLabels$ 设置为 $True$，则某些属性将变得多余，例如 $pointerLabelMode$。 '
+                      '同样，$sideLabelsOffset$ 仅在将 $sideLabels$ 设置为 $true$ 时更改饼图。')
+
+    pdf.add_heading("一些问题", level=4)
+    pdf.add_paragraph('如果切片过多，指针可能会交叉。')
+    pdf.add_draw(sample7(), '指针交叉的例子')
+    pdf.add_paragraph('另外，如果标签对应的片子不相邻，尽管有 $checkLabelOverlap$，标签也可以重叠。')
+
+    pdf.add_draw(sample8(), '标签重叠的示例')
+
+    pdf.add_heading("Legends", level=2)
+    pdf.add_paragraph('可以找到各种初步的图例类，但需要进行清理以与图表模型的其他部分保持一致。'
+                      '图例是指定图表颜色和线条风格的自然场所；'
+                      '我们建议每个图表都创建一个不可见的$legend$属性。'
+                      '然后，将执行以下操作以指定颜色：')
+
+    pdf.add_code_eg("myChart.legend.defaultColors = [red, green, blue]")
+    pdf.add_paragraph("还可以定义一组共享相同图例的图表：")
+    pdf.add_code_eg(
+        """
+    myLegend = Legend()
+    myLegend.defaultColor = [red, green.....] #yuck!
+    myLegend.columns = 2
+    # etc.
+    chart1.legend = myLegend
+    chart2.legend = myLegend
+    chart3.legend = myLegend
+    """
+    )
+    pdf.add_space()
+
+    pdf.add_todo('这样行吗？ 直接指定图表颜色是否可以接受？')
+
+    pdf.add_heading("存在的问题", level=3)
+    pdf.add_paragraph('有几个问题已经解决了，但现在开始真正公开这些问题还为时过早。' 
+                      '不过，这里有一个正在进行的事情清单。')
+    pdf.add_bullet('颜色规范: -- 现在图表有一个没文档化的属性 $defaultColors$, '
+                   '该属性提供要循环显示的颜色列表，以便每个数据系列都有自己的颜色。'
+                   '现在，如果你要引入图例，则需要确保它具有相同的颜色列表。'
+                   '最有可能的是，它将被一种方案取代，该方案指定一种图例，该图例包含每个数据系列具有不同值的属性。 '
+                   '然后，该图例也可以由多个图表共享，但本身不必可见。')
+    pdf.add_bullet('额外的图表类型--当目前的设计变得更加稳定时，' 
+                   '我们希望增加条形图的变体，以处理百分位条形图以及这里看到的并排变体。')
+
+    pdf.add_heading("展望 ($Outlook$)", level=3)
+    pdf.add_paragraph('处理全部图表类型需要一些时间。我们预计将首先完成柱状图和饼图，然后试行更多的普通图。')
+
+    pdf.add_heading("X-Y Plots", level=3)
+    pdf.add_paragraph('大多数其他图都涉及两个值轴，并以某种形式直接绘制x-y数据。 '
+                      '该系列可以绘制为线条，标记符号，两者兼而有之,'
+                      '或自定义图形（例如，开-高-低-闭图形）'
+                      '所有这些都具有缩放和轴/标题格式的概念。 '
+                      '在某一点上，一个例程将在数据序列上循环，并在给定的x-y位置上对数据点 "做一些事情"。'
+                      '给定一个基本的折线图，只需覆盖一个方法--比如说，$drawSeries()$，'
+                      '就可以很容易地推导出一个自定义的图表类型。')
+
+    pdf.add_heading("自定义标记和自定义形状", level=3)
+    pdf.add_paragraph('众所周知的绘图软件包，如 $excel$、$Mathematica$和$Excel$，'
+                      '都提供了一系列的标记类型来添加到图表中。'
+                      '我们可以做得更好'
+                      '--你可以编写任何一种你想要的图表部件，只需告诉图表使用它作为例子。')
+
+    pdf.add_heading("组合图", level=4)
+    pdf.add_paragraph('结合多种绘图类型真的很容易。'
+                      '你只需在同一个矩形中绘制几个图表（条形图、线形图或其他什么图），'
+                      '根据需要取消显示轴。'
+                      '因此，一个图表可以将一条线与左轴上15年内的苏格兰伤寒病例相关联，'
+                      '右轴上有一组显示通货膨胀率的条形图。'
+                      '如果有谁能提醒我们这个例子的出处，'
+                      '我们会注明出处，并很高兴地展示这个著名的图表作为例子。')
+
+    pdf.add_heading("互动式编辑", level=3)
+    pdf.add_paragraph('图形包的一个原则是使图形组件的所有 "有趣的" '
+                      '属性都可以通过设置相应的公共属性的适当值来访问和改变。'
+                      '这使得我们很想建立一个像GUI编辑器一样的工具，'
+                      '来帮助你交互式地完成这些工作。')
+    pdf.add_paragraph('ReportLab使用Tkinter工具箱构建了这样的工具，'
+                      '该工具箱可加载描述图纸的纯Python代码并记录您的属性编辑操作。 '
+                      '然后，此“更改历史记录”用于为该图表的子类创建代码，'
+                      '例如，可以像其他任何图表一样立即保存和使用该代码，'
+                      '或将其用作另一个交互式编辑会话的新起点。')
+    pdf.add_paragraph('不过这还在进行中，发布的条件还需要进一步细化。')
+
+    pdf.add_heading("其他", level=3)
+    pdf.add_paragraph('这并不是对所有图表类的详尽介绍。这些类还在不断地改进中。'
+                      '要查看当前发行版中的确切内容，请使用 $graphdocpy.py$工具。'
+                      '默认情况下，它将在 $reportlab/graphics$ 上运行，并生成一份完整的报告。'
+                      '(如果你想在其他模块或软件包上运行它，'
+                      '$graphdocpy.py -h$ 会打印出一条帮助信息，告诉你如何运行。)')
+    pdf.add_paragraph('这是“文档小部件” ($Documenting Widgets$) 部分中提到的工具')
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
 
 
 def chapter11(pdf):
