@@ -361,7 +361,9 @@ class PDF(object):
     def add_embedded_code(self, code, name='t'):
         """ 执行嵌入的代码 """
         self.add_code_eg(code)
+        self.add_paragraph("")
         self.add_paragraph("结果:")
+        self.add_paragraph("")
         var = {}  # globals locals
         exec(code, var, var)
         self.store.append(var[name])
@@ -424,18 +426,24 @@ class PDF(object):
             f'-%({self._SEQ_FIGURE_FLAG}+)s"/>: {self.quick_fix(caption)}'
         )
         self.store.append(
-            ParaBox2(self.quick_fix(text), _caption, _style,
-                     font_name=self.font_regular)
+            ParaBox2(
+                self.quick_fix(text),
+                _caption,
+                _style,
+                font_name=self.font_regular,
+            )
         )
 
     def add_pencil_note(self):
         """ 添加铅笔标识 """
         self.store.append(NoteAnnotation())
 
-    def add_text_note(self, text, style=None):
+    def add_text_note(
+        self, text, style=None, prefix='<font color=red>注意：</font>'
+    ):
         """ 添加文本注意 """
         _style = style or self.stylesheet[constant.STYLE_BODY_TEXT]
-        _text = f"<font color=red>注意：</font>{self.quick_fix(text)}"
+        _text = f"{prefix}{self.quick_fix(text)}"
         self.store.append(Paragraph(_text, _style))
 
     def add_hand_note(
