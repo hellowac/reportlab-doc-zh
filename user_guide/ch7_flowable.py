@@ -31,7 +31,7 @@ from utils import (
     cn_styleSheet,
     npeg,
     cn_npeg,
-    EmbeddedCode
+    EmbeddedCode,
 )
 
 # heading1("""Programming $Flowables$""")
@@ -81,10 +81,12 @@ If format is specified it should use %(__expr__)s for string interpolation
 of the expression expr (if any). It may also use %(name)s interpolations
 for other variables in the namespace. E.g.:"""
 )
-cn_disc('创建一个以 $expr$ 的值为文本的段落。'
-        '如果指定了格式，它应该使用 %($__expr__$)s 对表达式 $expr$ (如果有的话) 进行字符串插值。'
-        '它也可以使用%($name$)s对命名空间中的其他变量进行插值。'
-        '例如')
+cn_disc(
+    '创建一个以 $expr$ 的值为文本的段落。'
+    '如果指定了格式，它应该使用 %($__expr__$)s 对表达式 $expr$ (如果有的话) 进行字符串插值。'
+    '它也可以使用%($name$)s对命名空间中的其他变量进行插值。'
+    '例如'
+)
 
 
 eg(
@@ -166,9 +168,11 @@ No $XML$ style tags are taken account of in the text.
 If dedent is non zero $dedent$ common leading spaces will be removed from the front of each line.
 """
 )
-cn_disc('创建一个预格式化的段落，不进行任何包装、分行或其他操作。'
-        '在文本中不考虑$XML$样式标签。'
-        '如果dedent是非零，$dedent$的公共前导空格将从每行前面移除。')
+cn_disc(
+    '创建一个预格式化的段落，不进行任何包装、分行或其他操作。'
+    '在文本中不考虑$XML$样式标签。'
+    '如果dedent是非零，$dedent$的公共前导空格将从每行前面移除。'
+)
 
 # heading3("Defining a maximum line length")
 cn_heading3('定义最大行长')
@@ -178,17 +182,18 @@ disc(
 You can use the property $maxLineLength$ to define a maximum line length. If a line length exceeds this maximum value, the line will be automatically splitted.
 """
 )
-cn_disc('您可以使用属性 $maxLineLength$ 来定义最大行长。'
-        '如果行长超过这个最大值，行将被自动分割。')
+cn_disc('您可以使用属性 $maxLineLength$ 来定义最大行长。' '如果行长超过这个最大值，行将被自动分割。')
 
 disc(
     """
 The line will be split on any single character defined in $splitChars$. If no value is provided for this property, the line will be split on any of the following standard characters: space, colon, full stop, semi-colon, coma, hyphen, forward slash, back slash, left parenthesis, left square bracket and left curly brace
 """
 )
-cn_disc('行将被分割成$splitChars$中定义的任何一个字符。'
-        '如果没有为该属性提供值，'
-        '则行将在以下任何标准字符上进行分割：空格、冒号、句号、分号、逗号、连字符、前斜线、后斜线、左括号、左方括号和左大括号。')
+cn_disc(
+    '行将被分割成$splitChars$中定义的任何一个字符。'
+    '如果没有为该属性提供值，'
+    '则行将在以下任何标准字符上进行分割：空格、冒号、句号、分号、逗号、连字符、前斜线、后斜线、左括号、左方括号和左大括号。'
+)
 
 disc(
     """
@@ -227,9 +232,11 @@ $Preformatted$, if dedent is non zero $dedent$ common leading spaces
 will be removed from the front of each line.
 """
 )
-cn_disc('这是$Paragraph$类的一种非重排形式；'
-        '$text$中允许使用XML标签，其含义与$Paragraph$类相同。'
-        '至于 $Preformatted$，如果dedent是非零，$dedent$普通的前导空格将从每行的前面移除。')
+cn_disc(
+    '这是$Paragraph$类的一种非重排形式；'
+    '$text$中允许使用XML标签，其含义与$Paragraph$类相同。'
+    '至于 $Preformatted$，如果dedent是非零，$dedent$普通的前导空格将从每行的前面移除。'
+)
 
 EmbeddedCode(
     """
@@ -264,12 +271,14 @@ not specified (or specified as $None$) then the corresponding pixel dimension of
 to be in <i>points</i> and used.
 """
 )
-cn_disc('创建一个 $flowable$，它将包含由文件 $filename$ 中的数据定义的图像，'
-        '该文件可以是文件路径、类似文件的对象或 $reportlab.graphics.shapes.Drawing$的实例。'
-        '默认的 <b>PDF</b> 图像类型<i>jpeg</i>被支持，'
-        '如果安装了<b>PIL</b>扩展到<b>Python</b>，其他图像类型也可以被处理。'
-        '如果指定了 $width$和$height$，那么它们决定了显示图像的尺寸，单位是<i>points</i>。'
-        '如果没有指定任何一个尺寸(或者指定为$None$)，那么图像的相应像素尺寸被假定为<i>points</i>并使用。')
+cn_disc(
+    '创建一个 $flowable$，它将包含由文件 $filename$ 中的数据定义的图像，'
+    '该文件可以是文件路径、类似文件的对象或 $reportlab.graphics.shapes.Drawing$的实例。'
+    '默认的 <b>PDF</b> 图像类型<i>jpeg</i>被支持，'
+    '如果安装了<b>PIL</b>扩展到<b>Python</b>，其他图像类型也可以被处理。'
+    '如果指定了 $width$和$height$，那么它们决定了显示图像的尺寸，单位是<i>points</i>。'
+    '如果没有指定任何一个尺寸(或者指定为$None$)，那么图像的相应像素尺寸被假定为<i>points</i>并使用。'
+)
 
 I = "images/lj8100.jpg"
 eg(
@@ -305,7 +314,7 @@ cn_disc('产出')
 try:
     im = Image(I, width=2 * inch, height=2 * inch)
     im.hAlign = 'CENTER'
-    getStory().append(Image(I, width=2 * inch, height=2 * inch))
+    getStory().append(im)
 except:
     disc("""An image should have appeared here.""")
     cn_disc("这里应该出现一张图片。")
@@ -330,10 +339,12 @@ frame break for multiple frames so the $BaseDocTemplate$ mechanism
 detects $pageBreaks$ internally and handles them specially.
 """
 )
-cn_disc('这个 $Flowable$ 代表了一个页面中断。'
-        '它的工作原理是有效地消耗所有给它的垂直空间。'
-        '这对于单个 $Frame$ 文档来说已经足够了，但对于多个框架来说，'
-        '这只是一个框架中断，所以 $BaseDocTemplate$ 机制会在内部检测到 $pageBreaks$ 并进行特殊处理。')
+cn_disc(
+    '这个 $Flowable$ 代表了一个页面中断。'
+    '它的工作原理是有效地消耗所有给它的垂直空间。'
+    '这对于单个 $Frame$ 文档来说已经足够了，但对于多个框架来说，'
+    '这只是一个框架中断，所以 $BaseDocTemplate$ 机制会在内部检测到 $pageBreaks$ 并进行特殊处理。'
+)
 
 CPage(1)
 heading2("""$CondPageBreak(height)$""")
@@ -344,9 +355,11 @@ in the current $Frame$. It is thus probably wrongly named and should probably be
 $CondFrameBreak$.
 """
 )
-cn_disc('如果当前的$Frame$中没有足够的垂直空间，'
-        '那么这个$Flowable$试图强制$Frame$断裂。'
-        '因此，它的命名可能是错误的，也许应该重新命名为$CondFrameBreak$。')
+cn_disc(
+    '如果当前的$Frame$中没有足够的垂直空间，'
+    '那么这个$Flowable$试图强制$Frame$断裂。'
+    '因此，它的命名可能是错误的，也许应该重新命名为$CondFrameBreak$。'
+)
 
 CPage(1)
 heading2("""$KeepTogether(flowables)$""")
@@ -358,10 +371,12 @@ If the total height of the $Flowables$ in the list $flowables$ exceeds the curre
 space then all the space is used and a frame break is forced.
 """
 )
-cn_disc('这个复合的 $Flowable$ 接收一个 $Flowables$ 的列表，'
-        '并试图将它们放在同一个 $Frame$ 中。'
-        '如果列表中 $flowables$ 中的 $Flowables$ 的总高度超过了当前框架的可用空间，'
-        '那么所有的空间都会被使用，并且会强制中断框架。')
+cn_disc(
+    '这个复合的 $Flowable$ 接收一个 $Flowables$ 的列表，'
+    '并试图将它们放在同一个 $Frame$ 中。'
+    '如果列表中 $flowables$ 中的 $Flowables$ 的总高度超过了当前框架的可用空间，'
+    '那么所有的空间都会被使用，并且会强制中断框架。'
+)
 
 CPage(1)
 heading2("""$TableOfContents()$""")
@@ -371,14 +386,14 @@ disc(
 A table of contents can be generated by using the $TableOfContents$ flowable. The following steps are needed to add a table of contents to your document:
 """
 )
-cn_disc('通过使用$TableOfContents$ flowable 可以生成一个目录。'
-        '下面的步骤是在您的文档中添加一个目录表所需要的。')
+cn_disc('通过使用$TableOfContents$ flowable 可以生成一个目录。' '下面的步骤是在您的文档中添加一个目录表所需要的。')
 
 
-disc('Create an instance of $TableOfContents$. '
-     'Override the level styles (optional) and add the object to the story:')
-cn_disc('创建一个 $TableOfContents$ 的实例。'
-        '覆盖关卡样式（可选）并将对象添加到故事中。')
+disc(
+    'Create an instance of $TableOfContents$. '
+    'Override the level styles (optional) and add the object to the story:'
+)
+cn_disc('创建一个 $TableOfContents$ 的实例。' '覆盖关卡样式（可选）并将对象添加到故事中。')
 
 eg(
     """
@@ -412,14 +427,16 @@ like afterFlowable(), making notification calls using the notify()
 method with appropriate data like this:
 """
 )
-cn_disc('对目录的输入可以通过调用 '
-        '$TableOfContents$ 对象的 $addEntry$ 方法手动完成，'
-        '也可以通过在 $DocTemplate$ 的 $afterFlowable$ 方法中自动发送一个 $\'TOCEntry\'$ 通知。'
-        '传递给 $notify$ 的数据是一个由三个或四个项目组成的列表，'
-        '其中包括一个级别号，条目文本，页码和一个可选的目标键，该条目应该指向。'
-        '这个列表通常会在文档模板的方法中创建，'
-        '比如afterFlowable()，使用notify()方法调用通知，'
-        '并提供适当的数据，比如这样。')
+cn_disc(
+    '对目录的输入可以通过调用 '
+    '$TableOfContents$ 对象的 $addEntry$ 方法手动完成，'
+    '也可以通过在 $DocTemplate$ 的 $afterFlowable$ 方法中自动发送一个 $\'TOCEntry\'$ 通知。'
+    '传递给 $notify$ 的数据是一个由三个或四个项目组成的列表，'
+    '其中包括一个级别号，条目文本，页码和一个可选的目标键，该条目应该指向。'
+    '这个列表通常会在文档模板的方法中创建，'
+    '比如afterFlowable()，使用notify()方法调用通知，'
+    '并提供适当的数据，比如这样。'
+)
 
 
 eg(
@@ -446,8 +463,10 @@ disc(
 $Heading2$ entries will be clickable because a bookmarked key has been supplied.
 """
 )
-cn_disc("这样，每当一个样式为 $'Heading1'$ 或 $'Heading2'$ 的段落被添加到故事中，它就会出现在目录中。"
-        "$Heading2$ 条目将可点击，因为已经提供了一个书签键。")
+cn_disc(
+    "这样，每当一个样式为 $'Heading1'$ 或 $'Heading2'$ 的段落被添加到故事中，它就会出现在目录中。"
+    "$Heading2$ 条目将可点击，因为已经提供了一个书签键。"
+)
 
 
 disc(
@@ -535,8 +554,7 @@ An index can be generated by using the $SimpleIndex$ flowable.
 The following steps are needed to add an index to your document:
 """
 )
-cn_disc('可以通过使用 $SimpleIndex$ flowable生成一个索引。'
-        '下面的步骤是为您的文档添加索引所需要的。')
+cn_disc('可以通过使用 $SimpleIndex$ flowable生成一个索引。' '下面的步骤是为您的文档添加索引所需要的。')
 
 
 disc("""Use the index tag in paragraphs to index terms:""")
@@ -569,8 +587,10 @@ story.append(index)
 disc(
     """The parameters which you can pass into the SimpleIndex constructor are explained in the reportlab reference. Now, build the document by using the canvas maker returned by SimpleIndex.getCanvasMaker():"""
 )
-cn_disc('你可以传入 $SimpleIndex$ 构造函数的参数在 reportlab 参考资料中解释。'
-        '现在，使用SimpleIndex.getCanvasMaker()返回的canvasmaker来构建文档。')
+cn_disc(
+    '你可以传入 $SimpleIndex$ 构造函数的参数在 reportlab 参考资料中解释。'
+    '现在，使用SimpleIndex.getCanvasMaker()返回的canvasmaker来构建文档。'
+)
 
 eg(
     """
@@ -594,16 +614,20 @@ eg(
 disc(
     """terma will respresent the top-most level and termc the most specific term. termd and termb will appear in the same level inside terma."""
 )
-cn_disc('$terma$ 将表示最顶层的术语，$termc$ 将表示最具体的术语，$terd$ 和 $termb$ 将出现在 $terma$ 的同一层次。')
+cn_disc(
+    '$terma$ 将表示最顶层的术语，$termc$ 将表示最具体的术语，$terd$ 和 $termb$ 将出现在 $terma$ 的同一层次。'
+)
 
 
 disc(
     """If you need to index a term containing a comma, you will need to escape it by doubling it. To avoid the ambiguity of three consecutive commas (an escaped comma followed by a list separator or a list separator followed by an escaped comma?) introduce a space in the right position. Spaces at the beginning or end of terms will be removed."""
 )
-cn_disc('如果您需要为一个包含逗号的术语编制索引，您需要将其加倍转义。'
-        '为了避免三个连续逗号的歧义（一个转义逗号后面是一个列表分隔符或一个列表分隔符后面是一个转义逗号？）'
-        '在正确的位置引入一个空格。'
-        '术语开头或结尾的空格将被删除。')
+cn_disc(
+    '如果您需要为一个包含逗号的术语编制索引，您需要将其加倍转义。'
+    '为了避免三个连续逗号的歧义（一个转义逗号后面是一个列表分隔符或一个列表分隔符后面是一个转义逗号？）'
+    '在正确的位置引入一个空格。'
+    '术语开头或结尾的空格将被删除。'
+)
 
 
 eg(
@@ -635,10 +659,12 @@ disc(
 $ListFlowable()$ will create an ordered list, which can contain any flowable.  The class has a number of parameters to change font, colour, size, style and position of list numbers, or of bullets in unordered lists.  The type of numbering can also be set to use lower or upper case letters ('A,B,C' etc.) or Roman numerals (capitals or lowercase) using the bulletType property.  To change the list to an unordered type, set bulletType='bullet'.
 """
 )
-cn_disc('$ListFlowable()$ 将创建一个有序的列表，它可以包含任何可流动的。 '
-        '该类有许多参数可以改变列表编号的字体、颜色、大小、样式和位置，或者无序列表中的项目符号。 '
-        '还可以使用 $bulletType$ 属性将编号类型设置为使用小写或大写字母（\'A,B,C\'等）或罗马数字（大写或小写）。 '
-        '要将列表改为无序类型，请设置 bulletType=\'bullet\'。')
+cn_disc(
+    '$ListFlowable()$ 将创建一个有序的列表，它可以包含任何可流动的。 '
+    '该类有许多参数可以改变列表编号的字体、颜色、大小、样式和位置，或者无序列表中的项目符号。 '
+    '还可以使用 $bulletType$ 属性将编号类型设置为使用小写或大写字母（\'A,B,C\'等）或罗马数字（大写或小写）。 '
+    '要将列表改为无序类型，请设置 bulletType=\'bullet\'。'
+)
 
 
 disc(
@@ -687,11 +713,13 @@ disc(
 $bulletchar$, $circle$, $square$, $disc$, $diamond$, $diamondwx$, $rarrowhead$, $sparkle$, $squarelrs$ or  $blackstar$. For $ol$ the $start$ can be any character from $'1iaAI'$ to indicate different number styles.
 """
 )
-cn_disc('为了应对嵌套，$start$参数可以设置为一个可能的起始列表；'
-        '对于$ul$来说，可接受的起始是任何unicode字符或flowables.py已知的特定名称，'
-        '例如$bulletchar$、$circle$、$square$、$disc$、$diamond$、$diamondwx$、'
-        '$rarrowhead$、$sparkle$、$squarelrs$或$blackstar$。'
-        '对于$ol$来说，$start$可以是$\'1iaAI\'$中的任何字符，以表示不同的数字风格。')
+cn_disc(
+    '为了应对嵌套，$start$参数可以设置为一个可能的起始列表；'
+    '对于$ul$来说，可接受的起始是任何unicode字符或flowables.py已知的特定名称，'
+    '例如$bulletchar$、$circle$、$square$、$disc$、$diamond$、$diamondwx$、'
+    '$rarrowhead$、$sparkle$、$squarelrs$或$blackstar$。'
+    '对于$ol$来说，$start$可以是$\'1iaAI\'$中的任何字符，以表示不同的数字风格。'
+)
 
 
 heading2("""$BalancedColumns()$""")
@@ -702,10 +730,12 @@ Effectively $n$ frames are synthesized to take the content and the flowable trie
 will be split when the total height is too large and the split will maintain the balance. 
 """
 )
-cn_disc('使用 $BalancedColumns$ 类来制作一个flowable，'
-        '将其内容 $flowable$ 分割成两个或更多大小大致相等的列。'
-        '实际上，$n$ 框架被合成为内容，而 $flowable$ 试图在它们之间平衡内容。'
-        '当创建的框架总高度过大时，会被拆分，拆分后会保持平衡。')
+cn_disc(
+    '使用 $BalancedColumns$ 类来制作一个flowable，'
+    '将其内容 $flowable$ 分割成两个或更多大小大致相等的列。'
+    '实际上，$n$ 框架被合成为内容，而 $flowable$ 试图在它们之间平衡内容。'
+    '当创建的框架总高度过大时，会被拆分，拆分后会保持平衡。'
+)
 
 eg(
     """
