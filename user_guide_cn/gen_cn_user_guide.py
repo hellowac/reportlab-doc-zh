@@ -4246,7 +4246,7 @@ im.hAlign = 'CENTER'
     pdf.add_heading("$Spacer$", level=2)
     pdf.add_paragraph("定义:")
     pdf.add_code_eg("Spacer(width, height)")
-    pdf.add_paragraph('这与预期的一样，它为故事增加了一定的空间。目前，这只对垂直空间有效。')
+    pdf.add_paragraph('这与预期的一样，它为$story$增加了一定的空间。目前，这只对垂直空间有效。')
     pdf.add_cond_page_break(1)
 
     pdf.add_heading("PageBreak", level=2)
@@ -4548,10 +4548,86 @@ t = ListFlowable(
 
 
 def chapter9(pdf):
-    pass
+    pdf.add_heading("编写 $Flowable$ ")
+    pdf.add_paragraph(
+        '$Flowables$旨在成为创建可重复使用的报表内容的开放标准，您可以轻松创建自己的对象。 '
+        '我们希望随着时间的推移，我们将建立一个贡献库，为 $reportlab$ 用户提供丰富的图表、图形和其他 "report widgets"选择，'
+        '他们可以在自己的报表中使用。本节将向您展示如何创建您自己的 $flowables$。'
+    )
+    pdf.add_paragraph('我们应该把Figure类放在标准库中，因为它是一个非常有用的基础。')
+
+    pdf.add_heading("一个非常简单的 $Flowable$", level=2)
+    pdf.add_paragraph(
+        '回想一下本用户指南中 $pdfgen$ 一节中的 $hand$ 函数，' '它生成了一个由贝塞尔曲线构成的闭合图形的手图。'
+    )
+    pdf.add_illustration(examples.hand, "一只手")
+    pdf.add_paragraph(
+        '为了在 $Platypus flowable$ 中嵌入这个或其他绘图，'
+        '我们必须定义一个 $Flowable$ 的子类，'
+        '至少有一个$wrap$方法和一个$draw$方法。'
+    )
+    pdf.add_code_eg(examples.testhandannotation)
+    pdf.add_paragraph(
+        '$wrap$方法必须提供绘图的大小'
+        '-- $Platypus$ 主循环用它来决定这个元素是否适合当前框架的剩余空间。 '
+        '在 $Platypus$ 主循环将 $(0,0)$ 原点转换到适当的框架中的适当位置后，'
+        '$draw$方法将执行对象的绘制。'
+    )
+    pdf.add_paragraph('以下是 $HandAnnotation flowable$ 的一些使用示例。')
+    pdf.add_hand_note()
+    pdf.add_paragraph("默认情况下")
+    pdf.add_hand_note(size=inch)
+    pdf.add_paragraph('只是一寸高。')
+    pdf.add_hand_note(
+        xoffset=3 * inch,
+        size=inch,
+        strokecolor=colors.blue,
+        fillcolor=colors.cyan,
+    )
+    pdf.add_paragraph('高1英寸，向左偏蓝和青色。')
+
+    pdf.add_heading('修改内置的 $Flowable$', level=2)
+    pdf.add_paragraph("要修改现有的可流动对象，您应该创建一个派生类并覆盖需要更改以获得所需行为的方法。")
+    pdf.add_paragraph('作为创建旋转图像的示例，您需要覆盖现有 $Image$ 类的 $wrap$ 和 $draw$ 方法')
+
+    img = 'images/replogo.gif'
+    pdf.add_embedded_code(
+        """
+from reportlab.platypus.flowables import Image
+class RotatedImage(Image):
+    def wrap(self,availWidth,availHeight):
+        h, w = Image.wrap(self,availHeight,availWidth)
+        return w, h
+    def draw(self):
+        self.canv.rotate(90)
+        Image.draw(self)
+I = RotatedImage('{}')
+I.hAlign = 'CENTER'
+""".format(
+            img
+        ),
+        name='I',
+    )
 
 
 def chapter10(pdf):
+
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
     pass
 
 
