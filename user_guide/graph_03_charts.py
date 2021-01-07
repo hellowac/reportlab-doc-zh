@@ -57,9 +57,7 @@ package. This section presents a treatment of the ideas behind our charting
 model, what the design goals are and what components of the chart package already exist.
 """
 )
-cn_disc('其中大部分的动机是为了创建一个灵活的图表包。'
-        '本节将介绍我们的图表模型背后的想法，'
-        '设计目标是什么，以及图表包的哪些组件已经存在。')
+cn_disc('其中大部分的动机是为了创建一个灵活的图表包。' '本节将介绍我们的图表模型背后的想法，' '设计目标是什么，以及图表包的哪些组件已经存在。')
 
 
 # heading3("Design Goals")
@@ -79,18 +77,20 @@ settings. The pie chart snippets above do this. If a real chart has
 many subcomponents, you still should not need to interact with them
 unless you want to customize what they do.</para>"""
 )
-cn_disc('<para lindent="+36">应该可以用最少的代码行来创建一个简单的图表，'
-        '并通过合理的自动设置让它 "做正确的事情"。'
-        '上面的饼图片段就是这样做的。'
-        '如果一个真正的图表有许多子组件，'
-        '您仍然不需要与它们交互，除非您想自定义它们的功能。</para>')
+cn_disc(
+    '<para lindent="+36">应该可以用最少的代码行来创建一个简单的图表，'
+    '并通过合理的自动设置让它 "做正确的事情"。'
+    '上面的饼图片段就是这样做的。'
+    '如果一个真正的图表有许多子组件，'
+    '您仍然不需要与它们交互，除非您想自定义它们的功能。</para>'
+)
 
 
 disc("<i>Allow precise positioning </i>")
 cn_disc('允许精确定位')
 
 disc(
-"""<para lindent="+36">An absolute requirement in publishing and graphic design is to control
+    """<para lindent="+36">An absolute requirement in publishing and graphic design is to control
 the placing and style of every element. We will try to have properties
 that specify things in fixed sizes and proportions of the drawing,
 rather than having automatic resizing. Thus, the 'inner plot
@@ -99,25 +99,29 @@ the y labels bigger, even if this means your labels can spill out of
 the left edge of the chart rectangle. It is your job to preview the
 chart and choose sizes and spaces which will work.</para>"""
 )
-cn_disc('<para lindent="+36">在出版和平面设计中，一个绝对的要求是控制每个元素的位置和风格。'
-        '我们会尽量让属性以固定的尺寸和绘图比例来指定事物，'
-        '而不是有自动调整大小的功能。'
-        '因此，当你把y标签的字体大小变大时，"内图矩形" 不会神奇地改变，'
-        '即使这意味着你的标签可以溢出图表矩形的左边缘。'
-        '你的工作是预览图表，并选择能用的大小和空间。</para>')
+cn_disc(
+    '<para lindent="+36">在出版和平面设计中，一个绝对的要求是控制每个元素的位置和风格。'
+    '我们会尽量让属性以固定的尺寸和绘图比例来指定事物，'
+    '而不是有自动调整大小的功能。'
+    '因此，当你把y标签的字体大小变大时，"内图矩形" 不会神奇地改变，'
+    '即使这意味着你的标签可以溢出图表矩形的左边缘。'
+    '你的工作是预览图表，并选择能用的大小和空间。</para>'
+)
 
 
 disc(
-"""<para lindent="+36">Some things do need to be automatic. For example, if you want to fit N
+    """<para lindent="+36">Some things do need to be automatic. For example, if you want to fit N
 bars into a 200 point space and don't know N in advance, we specify
 bar separation as a percentage of the width of a bar rather than a
 point size, and let the chart work it out. This is still deterministic
 and controllable.</para>"""
 )
-cn_disc('<para lindent="+36">有些事情确实需要自动完成。'
-        '例如，如果你想在一个200点的空间里放进N个条形图，而事先又不知道N，'
-        '我们就把条形图的分隔指定为条形图宽度的百分比，而不是一个点的大小，让图表来计算。'
-        '这样做还是具有确定性和可控性的。</para>')
+cn_disc(
+    '<para lindent="+36">有些事情确实需要自动完成。'
+    '例如，如果你想在一个200点的空间里放进N个条形图，而事先又不知道N，'
+    '我们就把条形图的分隔指定为条形图宽度的百分比，而不是一个点的大小，让图表来计算。'
+    '这样做还是具有确定性和可控性的。</para>'
+)
 
 
 disc("<i>Control child elements individually or as a group</i>")
@@ -128,8 +132,10 @@ disc(
 things, or just one of them. For example you can do this in our
 experimental pie chart:</para>"""
 )
-cn_disc('<para lindent="+36">我们使用智能集合类，让你自定义一组东西，或者只是其中的一个。'
-        '例如你可以在我们的实验饼图中这样做。</para>')
+cn_disc(
+    '<para lindent="+36">我们使用智能集合类，让你自定义一组东西，或者只是其中的一个。'
+    '例如你可以在我们的实验饼图中这样做。</para>'
+)
 
 
 eg(
@@ -151,13 +157,15 @@ d.add(pc, '')
 )
 
 disc(
-"""<para lindent="+36">pc.slices[3] actually lazily creates a little object which holds
+    """<para lindent="+36">pc.slices[3] actually lazily creates a little object which holds
 information about the slice in question; this will be used to format a
 fourth slice at draw-time if there is one.</para>"""
 )
-cn_disc('<para lindent="+36"> $pc.slices[3]$ 实际上是懒惰地创建了一个小对象，'
-        '它保存了有关片子的信息；'
-        '如果有第四个片子的话，这个对象将在绘制时被用来格式化。</para>')
+cn_disc(
+    '<para lindent="+36"> $pc.slices[3]$ 实际上是懒惰地创建了一个小对象，'
+    '它保存了有关片子的信息；'
+    '如果有第四个片子的话，这个对象将在绘制时被用来格式化。</para>'
+)
 
 
 disc("<i>Only expose things you should change </i>")
@@ -171,25 +179,29 @@ through the public properties. There may be 'back doors' to let you
 violate this when you really need to, or methods to provide advanced
 functionality, but in general properties will be orthogonal.</para>"""
 )
-cn_disc('<para lindent="+36">从统计学的角度来看，让你直接调整上面例子中的一个饼片的角度是错误的，因为这是由数据决定的。'
-        '所以并不是所有的东西都会通过公共属性暴露出来。'
-        '可能会有 "后门 "让你在真正需要的时候违反这一点，'
-        '或者提供高级功能的方法，但一般来说，属性会是正交的。</para>')
+cn_disc(
+    '<para lindent="+36">从统计学的角度来看，让你直接调整上面例子中的一个饼片的角度是错误的，因为这是由数据决定的。'
+    '所以并不是所有的东西都会通过公共属性暴露出来。'
+    '可能会有 "后门 "让你在真正需要的时候违反这一点，'
+    '或者提供高级功能的方法，但一般来说，属性会是正交的。</para>'
+)
 
 
 disc("<i>Composition and component based </i>")
 cn_disc('<i>组成和成分</i>')
 
 disc(
-"""<para lindent="+36">Charts are built out of reusable child widgets. A Legend is an
+    """<para lindent="+36">Charts are built out of reusable child widgets. A Legend is an
 easy-to-grasp example. If you need a specialized type of legend (e.g.
 circular colour swatches), you should subclass the standard Legend
 widget. Then you could either do something like...</para>"""
 )
-cn_disc('<para lindent="+36">图表是由可重复使用的儿童部件构建的。'
-        '图例是一个易于掌握的例子。'
-        '如果你需要一个特殊类型的图例（例如圆形色板），'
-        '你应该将标准的图例部件子类化。然后你可以做一些像...</para>')
+cn_disc(
+    '<para lindent="+36">图表是由可重复使用的儿童部件构建的。'
+    '图例是一个易于掌握的例子。'
+    '如果你需要一个特殊类型的图例（例如圆形色板），'
+    '你应该将标准的图例部件子类化。然后你可以做一些像...</para>'
+)
 
 eg(
     """
@@ -201,56 +213,63 @@ c.data = [10,20,30]   #   and then configure as usual...
 )
 
 disc(
-"""<para lindent="+36">...or create/modify your own chart or drawing class which creates one
+    """<para lindent="+36">...or create/modify your own chart or drawing class which creates one
 of these by default. This is also very relevant for time series
 charts, where there can be many styles of x axis.</para>"""
 )
-cn_disc('<para lindent="+36">...或者创建/修改你自己的图表或绘图类，默认创建其中一个。'
-        '这对于时间序列图来说也是非常重要的，因为在时间序列图中，X轴可以有很多样式。</para>')
+cn_disc(
+    '<para lindent="+36">...或者创建/修改你自己的图表或绘图类，默认创建其中一个。'
+    '这对于时间序列图来说也是非常重要的，因为在时间序列图中，X轴可以有很多样式。</para>'
+)
 
 
 disc(
-"""<para lindent="+36">Top level chart classes will create a number of such components, and
+    """<para lindent="+36">Top level chart classes will create a number of such components, and
 then either call methods or set private properties to tell them their
 height and position - all the stuff which should be done for you and
 which you cannot customise. We are working on modelling what the
 components should be and will publish their APIs here as a consensus
 emerges.</para>"""
 )
-cn_disc('<para lindent="+36">'
-        '顶层图表类会创建一些这样的组件，然后调用方法或设置私有属性来告诉它们的高度和位置'
-        '--所有这些东西都应该为你做，而你无法定制。'
-        '我们正在努力模拟这些组件应该是什么，'
-        '并将在达成共识后在这里发布它们的API。</para>')
+cn_disc(
+    '<para lindent="+36">'
+    '顶层图表类会创建一些这样的组件，然后调用方法或设置私有属性来告诉它们的高度和位置'
+    '--所有这些东西都应该为你做，而你无法定制。'
+    '我们正在努力模拟这些组件应该是什么，'
+    '并将在达成共识后在这里发布它们的API。</para>'
+)
 
 
 disc("<i>Multiples </i>")
 cn_disc('<i>倍数</i>')
 
 disc(
-"""<para lindent="+36">A corollary of the component approach is that you can create diagrams
+    """<para lindent="+36">A corollary of the component approach is that you can create diagrams
 with multiple charts, or custom data graphics. Our favourite example
 of what we are aiming for is the weather report in our gallery
 contributed by a user; we'd like to make it easy to create such
 drawings, hook the building blocks up to their legends, and feed that
 data in a consistent way.</para>"""
 )
-cn_disc('<para lindent="+36">组件方法的一个必然结果是，'
-        '你可以用多个图表或自定义数据图形来创建图表。'
-        '我们最喜欢的例子是我们图库中由用户贡献的天气报告；'
-        '我们希望能够轻松创建这样的图，将构件与它们的图例挂钩，'
-        '并以一致的方式提供这些数据。</para>')
+cn_disc(
+    '<para lindent="+36">组件方法的一个必然结果是，'
+    '你可以用多个图表或自定义数据图形来创建图表。'
+    '我们最喜欢的例子是我们图库中由用户贡献的天气报告；'
+    '我们希望能够轻松创建这样的图，将构件与它们的图例挂钩，'
+    '并以一致的方式提供这些数据。</para>'
+)
 
 disc(
     """<para lindent="+36">(If you want to see the image, it is available on our website
 <font color="blue"><a href="https://www.reportlab.com/media/imadj/data/RLIMG_e5e5cb85cc0a555f5433528ac38c5884.PDF">here</a></font>)</para>"""
 )
-cn_disc('<para lindent="+36">(如果你想看图片，可以在我们的网站上找到。'
-        '<font color="blue">'
-        '<a href="https://www.reportlab.com/media/imadj/'
-        'data/RLIMG_e5e5cb85cc0a555f5433528ac38c5884.PDF">'
-        '这儿</a></font>)</para>')
-
+cn_disc(
+    '<para lindent="+36">(如果你想看图片，可以在我们的网站上找到。'
+    '<font color="blue">'
+    '<a href="https://www.reportlab.com/media/imadj/'
+    'data/RLIMG_e5e5cb85cc0a555f5433528ac38c5884.PDF">'
+    '这儿</a></font>)</para>'
+)
 
 
 ##heading3("Key Concepts and Components")
@@ -258,44 +277,46 @@ cn_disc('<para lindent="+36">(如果你想看图片，可以在我们的网站�
 cn_heading3('概述')
 
 disc(
-"""A chart or plot is an object which is placed on a drawing; it is not
+    """A chart or plot is an object which is placed on a drawing; it is not
 itself a drawing. You can thus control where it goes, put several on
 the same drawing, or add annotations."""
 )
-cn_disc('图表或图是一个放置在图纸上的对象，'
-        '它本身不是一个图纸。因此，你可以控制它的位置，在同一张图上放几个，或者添加注释。')
+cn_disc('图表或图是一个放置在图纸上的对象，' '它本身不是一个图纸。因此，你可以控制它的位置，在同一张图上放几个，或者添加注释。')
 
 
 disc(
-"""Charts have two axes; axes may be Value or Category axes. Axes in turn
+    """Charts have two axes; axes may be Value or Category axes. Axes in turn
 have a Labels property which lets you configure all text labels or
 each one individually. Most of the configuration details which vary
 from chart to chart relate to axis properties, or axis labels."""
 )
-cn_disc('图表有两个轴，轴可以是 $Value$ 轴或 $Category$ 轴。'
-        '轴又有一个 Labels 属性，可以让你配置所有的文本标签或单独配置每个标签。'
-        '不同图表的大多数配置细节都与轴属性或轴标签有关。')
+cn_disc(
+    '图表有两个轴，轴可以是 $Value$ 轴或 $Category$ 轴。'
+    '轴又有一个 Labels 属性，可以让你配置所有的文本标签或单独配置每个标签。'
+    '不同图表的大多数配置细节都与轴属性或轴标签有关。'
+)
 
 
 disc(
-"""Objects expose properties through the interfaces discussed in the
+    """Objects expose properties through the interfaces discussed in the
 previous section; these are all optional and are there to let the end
 user configure the appearance. Things which must be set for a chart to
 work, and essential communication between a chart and its components,
 are handled through methods."""
 )
-cn_disc('对象通过上一节中讨论的接口暴露出属性；'
-        '这些都是可选的，是为了让最终用户配置外观。'
-        '为了使图表工作而必须设置的东西，'
-        '以及图表和它的组件之间的基本通信，都是通过方法来处理的。')
+cn_disc(
+    '对象通过上一节中讨论的接口暴露出属性；'
+    '这些都是可选的，是为了让最终用户配置外观。'
+    '为了使图表工作而必须设置的东西，'
+    '以及图表和它的组件之间的基本通信，都是通过方法来处理的。'
+)
 
 
 disc(
     """You can subclass any chart component and use your replacement instead
 of the original provided you implement the essential methods and properties."""
 )
-cn_disc('你可以对任何图表组件进行子类化，'
-        '并使用你的替代品来代替原来的组件，只要你实现了基本的方法和属性。')
+cn_disc('你可以对任何图表组件进行子类化，' '并使用你的替代品来代替原来的组件，只要你实现了基本的方法和属性。')
 
 # heading2("Labels")
 cn_heading2('$Labels$ 属性')
@@ -308,25 +329,27 @@ to individual data points. Labels may contain newline characters, but only
 one font.
 """
 )
-cn_disc('标签是附加在某些图表元素上的一串文本。'
-        '它们用于坐标轴、标题或坐标轴旁，或附加到单个数据点上。'
-        '标签可以包含换行符，但只能用一种字体。')
+cn_disc(
+    '标签是附加在某些图表元素上的一串文本。' '它们用于坐标轴、标题或坐标轴旁，或附加到单个数据点上。' '标签可以包含换行符，但只能用一种字体。'
+)
 
 
 disc(
-"""The text and 'origin' of a label are typically set by its parent
+    """The text and 'origin' of a label are typically set by its parent
 object. They are accessed by methods rather than properties. Thus, the
 X axis decides the 'reference point' for each tick mark label and the
 numeric or date text for each label. However, the end user can set
 properties of the label (or collection of labels) directly to affect
 its position relative to this origin and all of its formatting."""
 )
-cn_disc('标签的文本和 "origin" 通常由其父对象设置。'
-        '它们是通过方法而不是属性来访问的。'
-        '因此，X轴决定了每个刻度线标签的 "reference point" （参考点）'
-        '和每个标签的数字或日期文本。'
-        '然而，最终用户可以直接设置标签（或标签集合）的属性，'
-        '以影响其相对于该原点的位置及其所有格式化。')
+cn_disc(
+    '标签的文本和 "origin" 通常由其父对象设置。'
+    '它们是通过方法而不是属性来访问的。'
+    '因此，X轴决定了每个刻度线标签的 "reference point" （参考点）'
+    '和每个标签的数字或日期文本。'
+    '然而，最终用户可以直接设置标签（或标签集合）的属性，'
+    '以影响其相对于该原点的位置及其所有格式化。'
+)
 
 eg(
     """
@@ -369,7 +392,6 @@ d.add(lab)
 
 # draw(d, 'Label example')
 cn_draw(d, '$Label$ 示例')
-
 
 
 disc(
@@ -489,9 +511,11 @@ script $test_charts_textlabels.py$ and look at the PDF document
 it generates!
 """
 )
-cn_disc('要查看更多的具有不同属性组合的 $Label$ 对象的例子，'
-        '请查看文件夹 $tests$ 中的ReportLab测试套件，'
-        '运行脚本 $test_charts_textlabels.py$ 并查看它所生成的PDF文档。')
+cn_disc(
+    '要查看更多的具有不同属性组合的 $Label$ 对象的例子，'
+    '请查看文件夹 $tests$ 中的ReportLab测试套件，'
+    '运行脚本 $test_charts_textlabels.py$ 并查看它所生成的PDF文档。'
+)
 
 
 heading2("Axes")
@@ -506,12 +530,14 @@ in a time series application, or want irregular scaling, you override
 the axis and make a new one.
 """
 )
-cn_disc('我们确定了两种基本的轴 '
-        '--<i>Value</i>和<i>Category</i>。'
-        '这两种轴都有水平和垂直的味道。'
-        '两者都可以被子类化来制作非常特殊类型的轴。'
-        '例如，如果您有复杂的规则，在时间序列应用程序中显示哪些日期，或者想要不规则的缩放，'
-        '您可以覆盖该轴并创建一个新的轴。')
+cn_disc(
+    '我们确定了两种基本的轴 '
+    '--<i>Value</i>和<i>Category</i>。'
+    '这两种轴都有水平和垂直的味道。'
+    '两者都可以被子类化来制作非常特殊类型的轴。'
+    '例如，如果您有复杂的规则，在时间序列应用程序中显示哪些日期，或者想要不规则的缩放，'
+    '您可以覆盖该轴并创建一个新的轴。'
+)
 
 disc(
     """
@@ -520,9 +546,7 @@ coordinates; transforming points on request from the chart; drawing
 themselves and their tick marks, grid lines and axis labels.
 """
 )
-cn_disc('轴负责确定从数据到图像坐标的映射；'
-        '根据图表的要求变换点；'
-        '绘制自己及其刻度线、网格线和轴标签。')
+cn_disc('轴负责确定从数据到图像坐标的映射；' '根据图表的要求变换点；' '绘制自己及其刻度线、网格线和轴标签。')
 
 disc(
     """
@@ -530,8 +554,7 @@ This drawing shows two axes, one of each kind, which have been created
 directly without reference to any chart:
 """
 )
-cn_disc('这张图显示了两个轴，每一种都有一个，'
-        '它们是在没有参考任何图表的情况下直接创建的。')
+cn_disc('这张图显示了两个轴，每一种都有一个，' '它们是在没有参考任何图表的情况下直接创建的。')
 
 
 drawing = Drawing(400, 200)
@@ -603,11 +626,13 @@ The orthogonally dual axes to those we describe have essentially
 the same properties, except for those refering to ticks.
 """
 )
-cn_disc('请记住，通常情况下，你不必直接创建轴；'
-        '当使用标准图表时，它自带现成的轴。'
-        '这些方法是图表用来配置它和处理几何体的。'
-        '不过，下面我们将详细介绍它们。'
-        '正交双轴到我们描述的那些轴，除了指的是刻度线外，其他的属性基本相同。')
+cn_disc(
+    '请记住，通常情况下，你不必直接创建轴；'
+    '当使用标准图表时，它自带现成的轴。'
+    '这些方法是图表用来配置它和处理几何体的。'
+    '不过，下面我们将详细介绍它们。'
+    '正交双轴到我们描述的那些轴，除了指的是刻度线外，其他的属性基本相同。'
+)
 
 
 # heading3("XCategoryAxis class")
@@ -628,15 +653,17 @@ a given category begins and ends on the page. We have not yet seen any need
 to let people override the widths or positions of categories.
 """
 )
-cn_disc('类别轴并没有真正的刻度，它只是把自己分成大小相等的 $buckets$ 。'
-        '它比值轴更简单。图表（或程序员）用方法 $setPosition(x, y, length)$ 设置它的位置。'
-        '下一个阶段是向它显示数据，以便它能够自行配置。'
-        '对于类别轴来说，这很容易'
-        '--它只是计算其中一个数据系列中的数据点数量。'
-        '$reversed$ 属性（如果是1）表示类别应该反过来。'
-        '绘制时，该轴可以通过其 $scale()$ 方法为图表提供一些帮助，'
-        '该方法告诉图表一个给定类别在页面上的开始和结束位置。'
-        '我们还没有看到任何让人们覆盖类别的宽度或位置的需求。')
+cn_disc(
+    '类别轴并没有真正的刻度，它只是把自己分成大小相等的 $buckets$ 。'
+    '它比值轴更简单。图表（或程序员）用方法 $setPosition(x, y, length)$ 设置它的位置。'
+    '下一个阶段是向它显示数据，以便它能够自行配置。'
+    '对于类别轴来说，这很容易'
+    '--它只是计算其中一个数据系列中的数据点数量。'
+    '$reversed$ 属性（如果是1）表示类别应该反过来。'
+    '绘制时，该轴可以通过其 $scale()$ 方法为图表提供一些帮助，'
+    '该方法告诉图表一个给定类别在页面上的开始和结束位置。'
+    '我们还没有看到任何让人们覆盖类别的宽度或位置的需求。'
+)
 
 
 disc("An XCategoryAxis has the following editable properties:")
@@ -668,7 +695,7 @@ Defaults to None""",
     ["tickDown", """How far below the axis should the tick mark protrude?"""],
     [
         "categoryNames",
-        """Either None, or a list of strings. This should have the
+        """ Either None, or a list of strings.This should have the
 same length as each data series.""",
     ],
     [
@@ -708,8 +735,7 @@ cn_data = [
     ["属性", "描述"],
     [
         "visible",
-        '轴是否应该被绘制？有时你不想显示一个或两个轴，\n'
-        '但它们仍然需要存在，因为它们管理着点的缩放。',
+        '轴是否应该被绘制？有时你不想显示一个或两个轴，\n' '但它们仍然需要存在，因为它们管理着点的缩放。',
     ],
     ["strokeColor", "轴的颜色"],
     [
@@ -719,8 +745,7 @@ cn_data = [
     ["strokeWidth", "轴的宽度，以点为单位（points）"],
     [
         "tickUp",
-        '刻度线应突出到轴上方多远？\n'
-        '（请注意，使其等于图表高度会给您一条网格线）',
+        '刻度线应突出到轴上方多远？\n' '（请注意，使其等于图表高度会给您一条网格线）',
     ],
     ["tickDown", '刻度线应突出到轴下方多远？'],
     [
@@ -737,8 +762,7 @@ cn_data = [
     ],
     [
         "title",
-        '尚未实现。 这需要像一个标签，但也可以让您直接设置文本。 \n'
-        '它在轴下方将具有默认位置。',
+        '尚未实现。 这需要像一个标签，但也可以让您直接设置文本。 \n' '它在轴下方将具有默认位置。',
     ],
 ]
 cn_t = Table(cn_data, colWidths=(100, 330))
@@ -755,7 +779,9 @@ cn_t.setStyle(
     )
 )
 getStory().append(cn_t)
-cn_caption('表 <seq template="%(Chapter)s - %(Table+)s"/> - $XCategoryAxis$ 类的属性')
+cn_caption(
+    '表 <seq template="%(Chapter)s - %(Table+)s"/> - $XCategoryAxis$ 类的属性'
+)
 
 
 # heading3("YValueAxis")
@@ -771,9 +797,11 @@ from chart space to points on demand to assist the parent chart in
 plotting.
 """
 )
-cn_disc('图中的左轴是 $YValueAxis$。 '
-        '值轴与类别轴的不同之处在于，沿其长度的每个点都对应于图表空间中的 $y$ 值。 '
-        '轴的工作是配置自身，并将 $Y$ 值从图表空间转换为按需点，以辅助父图表进行绘制。')
+cn_disc(
+    '图中的左轴是 $YValueAxis$。 '
+    '值轴与类别轴的不同之处在于，沿其长度的每个点都对应于图表空间中的 $y$ 值。 '
+    '轴的工作是配置自身，并将 $Y$ 值从图表空间转换为按需点，以辅助父图表进行绘制。'
+)
 
 
 disc(
@@ -785,9 +813,11 @@ values. Once configured, the value axis can convert y data values to drawing
 space with the $scale()$ method. Thus:
 """
 )
-cn_disc('$setPosition(x, y, length)$和$configure(data)$的作用与类别轴完全相同。 '
-        '如果尚未完全指定最大，最小和刻度间隔，则 $configure()$ 会导致轴选择合适的值。'
-        '配置完成后，值轴可以使用 $scale()$ 方法将 y 个数据值转换为绘图空间。 从而：')
+cn_disc(
+    '$setPosition(x, y, length)$和$configure(data)$的作用与类别轴完全相同。 '
+    '如果尚未完全指定最大，最小和刻度间隔，则 $configure()$ 会导致轴选择合适的值。'
+    '配置完成后，值轴可以使用 $scale()$ 方法将 y 个数据值转换为绘图空间。 从而：'
+)
 
 
 eg(
@@ -805,16 +835,18 @@ eg(
 )
 
 disc(
-"""By default, the highest data point is aligned with the top of the
+    """By default, the highest data point is aligned with the top of the
 axis, the lowest with the bottom of the axis, and the axis choose
 'nice round numbers' for its tickmark points. You may override these
 settings with the properties below. """
 )
 
-cn_disc("默认情况下，"
-     "最高的数据点与轴的顶部对齐，最低的数据点与轴的底部对齐，"
-     "轴为其刻度线点选择 $'nice round numbers'$ (漂亮的整数)。"
-     "您可以用下面的属性覆盖这些设置。")
+cn_disc(
+    "默认情况下，"
+    "最高的数据点与轴的顶部对齐，最低的数据点与轴的底部对齐，"
+    "轴为其刻度线点选择 $'nice round numbers'$ (漂亮的整数)。"
+    "您可以用下面的属性覆盖这些设置。"
+)
 
 data = [
     ["Property", "Meaning"],
@@ -910,8 +942,7 @@ cn_data = [
     ["属性", "描述"],
     [
         "visible",
-        '轴是否应该被绘制？有时你不想显示一个或两个轴，\n'
-        '但它们仍然需要存在，因为它们管理着点的缩放。',
+        '轴是否应该被绘制？有时你不想显示一个或两个轴，\n' '但它们仍然需要存在，因为它们管理着点的缩放。',
     ],
     ["strokeColor", "轴的颜色"],
     [
@@ -921,8 +952,7 @@ cn_data = [
     ["strokeWidth", "轴的宽度，以点为单位（points）"],
     [
         "tickLeft",
-        '刻度线应突出到轴的左侧多远？\n'
-        '（请注意，使其等于图表宽度会给您一条网格线）',
+        '刻度线应突出到轴的左侧多远？\n' '（请注意，使其等于图表宽度会给您一条网格线）',
     ],
     [
         "tickRight",
@@ -942,8 +972,7 @@ cn_data = [
     ],
     [
         "valueStep",
-        'y在刻度间隔之间变化。 默认情况下，此值为“None”，\n'
-        '图表尝试选择比下面的最小刻度间距更宽的“很好的整数”。',
+        'y在刻度间隔之间变化。 默认情况下，此值为“None”，\n' '图表尝试选择比下面的最小刻度间距更宽的“很好的整数”。',
     ],
     ["valueSteps", '放置刻度的数字列表。'],
     [
@@ -963,8 +992,7 @@ cn_data = [
     ],
     [
         "title",
-        '尚未实现。 这需要像一个标签，但也可以让您直接设置文本。\n'
-        '它在轴下方将具有默认位置。',
+        '尚未实现。 这需要像一个标签，但也可以让您直接设置文本。\n' '它在轴下方将具有默认位置。',
     ],
 ]
 cn_t = Table(cn_data, colWidths=(100, 330))
@@ -996,10 +1024,12 @@ special tick intervals. Make sure to set the $valueSteps$ attribute before
 calling the configure method!
 """
 )
-cn_disc('$valueSteps$属性让您明确指定刻度线的位置，因此您不必遵循常规的时间间隔。'
-        '因此，你可以通过几个辅助函数来绘制月末和月末日期，而且不需要特殊的时间序列图表类。'
-        '下面的代码显示了如何创建一个简单的 $XValueAxis$ 与特殊的刻度间隔。'
-        '请确保在调用配置方法之前设置 $valueSteps$ 属性!')
+cn_disc(
+    '$valueSteps$属性让您明确指定刻度线的位置，因此您不必遵循常规的时间间隔。'
+    '因此，你可以通过几个辅助函数来绘制月末和月末日期，而且不需要特殊的时间序列图表类。'
+    '下面的代码显示了如何创建一个简单的 $XValueAxis$ 与特殊的刻度间隔。'
+    '请确保在调用配置方法之前设置 $valueSteps$ 属性!'
+)
 
 eg(
     """
@@ -1047,11 +1077,13 @@ but you can find a host of sample functions in the module
 $reportlab/graphics/axes.py$ which you can examine...
 """
 )
-cn_disc('除了这些属性之外，所有的轴类都有三个属性，描述如何将其中的两个轴相互连接。'
-        '再次强调，只有当你定义你自己的图表或者想使用这些坐标轴修改现有图表的外观时，这才是有趣的。'
-        '这些属性在这里只是非常简单的列出，'
-        '但你可以在$reportlab/graphics/axes.py$模块中找到大量的示例函数，'
-        '你可以检查......')
+cn_disc(
+    '除了这些属性之外，所有的轴类都有三个属性，描述如何将其中的两个轴相互连接。'
+    '再次强调，只有当你定义你自己的图表或者想使用这些坐标轴修改现有图表的外观时，这才是有趣的。'
+    '这些属性在这里只是非常简单的列出，'
+    '但你可以在$reportlab/graphics/axes.py$模块中找到大量的示例函数，'
+    '你可以检查......'
+)
 
 
 disc(
@@ -1065,11 +1097,13 @@ to use a relative value (both indicated by the the
 $joinAxisPos$ property) along the axis.
 """
 )
-cn_disc("通过在第一个轴上调用方法$joinToAxis(otherAxis, mode, pos)$"
-        "将一个轴连接到另一个轴，"
-        "$mode$和$pos$分别是$joinAxisMode$和$joinAxisPos$描述的属性。"
-        "$'points'$表示使用绝对值，$'value'$表示使用沿轴的相对值"
-        "（均由$joinAxisPos$属性表示）。")
+cn_disc(
+    "通过在第一个轴上调用方法$joinToAxis(otherAxis, mode, pos)$"
+    "将一个轴连接到另一个轴，"
+    "$mode$和$pos$分别是$joinAxisMode$和$joinAxisPos$描述的属性。"
+    "$'points'$表示使用绝对值，$'value'$表示使用沿轴的相对值"
+    "（均由$joinAxisPos$属性表示）。"
+)
 
 
 disc("")
@@ -1143,11 +1177,13 @@ we take it to mean that the bars rather than the category axis
 are vertical.
 """
 )
-cn_disc("这描述了我们目前的$VerticalBarChart$类，它使用了上面的轴和标签。"
-        "我们认为这是正确方向的一步，但还远未到最后的阶段。"
-        "请注意，与我们交谈过的人对这是'垂直'还是'水平'条形图的看法不一。"
-        "我们选择这个名字是因为'垂直'出现在'条形图'旁边，"
-        "所以我们认为它的意思是条形图而不是类别轴是垂直的。")
+cn_disc(
+    "这描述了我们目前的$VerticalBarChart$类，它使用了上面的轴和标签。"
+    "我们认为这是正确方向的一步，但还远未到最后的阶段。"
+    "请注意，与我们交谈过的人对这是'垂直'还是'水平'条形图的看法不一。"
+    "我们选择这个名字是因为'垂直'出现在'条形图'旁边，"
+    "所以我们认为它的意思是条形图而不是类别轴是垂直的。"
+)
 
 disc(
     """
@@ -1238,8 +1274,7 @@ labels, which we have already covered.
 Here are the top-level properties of the $VerticalBarChart$ class:
 """
 )
-cn_disc('这段代码的大部分内容是关于设置坐标轴和标签的，我们已经介绍过了，'
-        '下面是$VerticalBarChart$类的顶层属性。')
+cn_disc('这段代码的大部分内容是关于设置坐标轴和标签的，我们已经介绍过了，' '下面是$VerticalBarChart$类的顶层属性。')
 
 
 disc("")
@@ -1348,8 +1383,7 @@ cn_data = [
     ["属性", "描述"],
     [
         "data",
-        '这应该是“数字列表列表”或“数字元组列表”。 \n'
-        '如果只有一个系列，则将其写为 data=[(10,20,30,42),]',
+        '这应该是“数字列表列表”或“数字元组列表”。 \n' '如果只有一个系列，则将其写为 data=[(10,20,30,42),]',
     ],
     [
         "x, y, width, height",
@@ -1360,13 +1394,11 @@ cn_data = [
     ],
     [
         "strokeColor",
-        '默认为 None。 这将在绘图矩形周围绘制边框，\n'
-        '这可能对调试很有用。 轴将覆盖此位置。',
+        '默认为 None。 这将在绘图矩形周围绘制边框，\n' '这可能对调试很有用。 轴将覆盖此位置。',
     ],
     [
         "fillColor",
-        '默认为 None。 这将用纯色填充绘图矩形。 \n'
-        '（请注意，我们可以像其他任何实心形状一样实现 $dashArray$ 等）',
+        '默认为 None。 这将用纯色填充绘图矩形。 \n' '（请注意，我们可以像其他任何实心形状一样实现 $dashArray$ 等）',
     ],
     [
         "useAbsolute",
@@ -1383,8 +1415,7 @@ cn_data = [
     ],
     [
         "barSpacing",
-        '默认值为0。这是每个组中的条之间的间距。 \n'
-        '如果在上面的示例中绿色和红色条形之间要有一点间隙，则可以将其设置为非零。',
+        '默认值为0。这是每个组中的条之间的间距。 \n' '如果在上面的示例中绿色和红色条形之间要有一点间隙，则可以将其设置为非零。',
     ],
     [
         "barLabelFormat",
@@ -1409,8 +1440,7 @@ cn_data = [
     ],
     [
         "title",
-        '还没有实现。这需要像一个标签一样，\n'
-        '但也可以让你直接设置文本。它将有一个默认的位置在轴的下方。',
+        '还没有实现。这需要像一个标签一样，\n' '但也可以让你直接设置文本。它将有一个默认的位置在轴的下方。',
     ],
 ]
 cn_t = Table(cn_data, colWidths=(100, 330))
@@ -1427,8 +1457,10 @@ cn_t.setStyle(
     )
 )
 getStory().append(cn_t)
-cn_caption('表 <seq template="%(Chapter)s - %(Table+)s"/>'
-           ' - 柱状图($VerticalBarChart$) 属性列表')
+cn_caption(
+    '表 <seq template="%(Chapter)s - %(Table+)s"/>'
+    ' - 柱状图($VerticalBarChart$) 属性列表'
+)
 
 
 disc(
@@ -1439,9 +1471,11 @@ attribute has a default value of five points) and we should also see
 some tiny space between bars of the same group ($barSpacing$).
 """
 )
-cn_disc('从该表中我们可以得出结论，在上面的代码中加入以下几行，'
-        '应该会使条形图组之间的间距增加一倍($groupSpacing$属性的默认值为5点)，'
-        '我们还应该看到同一组的条形组之间有一些微小的空间($barSpacing$)。')
+cn_disc(
+    '从该表中我们可以得出结论，在上面的代码中加入以下几行，'
+    '应该会使条形图组之间的间距增加一倍($groupSpacing$属性的默认值为5点)，'
+    '我们还应该看到同一组的条形组之间有一些微小的空间($barSpacing$)。'
+)
 
 eg(
     """
@@ -1459,9 +1493,11 @@ This is because the space added between the bars has to be 'taken'
 from somewhere as the total chart width stays unchanged.
 """
 )
-cn_disc('而且，实际上，这就是在将这些行添加到上面的代码之后所能看到的。 '
-        '注意各个条的宽度也如何变化。 '
-        '这是因为随着总图表宽度保持不变，必须从某处“占用”条形之间的空格。')
+cn_disc(
+    '而且，实际上，这就是在将这些行添加到上面的代码之后所能看到的。 '
+    '注意各个条的宽度也如何变化。 '
+    '这是因为随着总图表宽度保持不变，必须从某处“占用”条形之间的空格。'
+)
 
 drawing = Drawing(400, 200)
 
@@ -1512,7 +1548,6 @@ Bars labels are automatically displayed for negative values
 cn_disc('条形图标签将自动显示为条形下限以下的负值，其他条形上限值以上的正值。')
 
 
-
 disc(
     """
 Stacked bars are also supported for vertical bar graphs.
@@ -1520,9 +1555,11 @@ You enable this layout for your chart by setting the $style$
 attribute to $'stacked'$ on the $categoryAxis$.
 """
 )
-cn_disc("垂直条形图也支持堆叠条形图。"
-        "您可以通过在 $categoryAxis$ 上设置 $style$ 属性"
-        "为 $'stacked'$ 来为您的图表启用这种布局。")
+cn_disc(
+    "垂直条形图也支持堆叠条形图。"
+    "您可以通过在 $categoryAxis$ 上设置 $style$ 属性"
+    "为 $'stacked'$ 来为您的图表启用这种布局。"
+)
 
 
 eg(
@@ -1613,9 +1650,11 @@ This is in contrast to "Line Plots", where both axes are
 <i>Value</i> axes.
 """
 )
-cn_disc('我们认为 "折线图"($Line Charts$)  与 "柱状图"($Bar Charts$) 本质上是一样的，只是用线代替了条。'
-        '两者共享同一对类别/数值轴对。这与 "线图"不同，'
-        '在"线图"($Line Plots$) 中，两个轴都是<i>值</i>轴。')
+cn_disc(
+    '我们认为 "折线图"($Line Charts$)  与 "柱状图"($Bar Charts$) 本质上是一样的，只是用线代替了条。'
+    '两者共享同一对类别/数值轴对。这与 "线图"不同，'
+    '在"线图"($Line Plots$) 中，两个轴都是<i>值</i>轴。'
+)
 
 
 disc(
@@ -1626,10 +1665,12 @@ the output of running the tool $reportlab/lib/graphdocpy.py$ withough any
 arguments and search the generated PDF document for examples of Line Charts.
 """
 )
-cn_disc('以下代码及其输出将作为一个简单的例子。'
-        '后面会有更多的解释。'
-        '目前，您也可以研究运行 $reportlab/lib/graphdocpy.py$ 工具的输出，'
-        '并在生成的PDF文档中搜索柱状图($Line Charts$)的例子。')
+cn_disc(
+    '以下代码及其输出将作为一个简单的例子。'
+    '后面会有更多的解释。'
+    '目前，您也可以研究运行 $reportlab/lib/graphdocpy.py$ 工具的输出，'
+    '并在生成的PDF文档中搜索柱状图($Line Charts$)的例子。'
+)
 
 
 eg(
@@ -1772,8 +1813,7 @@ cn_data = [
     ],
     [
         "strokeColor",
-        '默认值为 "None"。这将在绘图矩形周围画一个边框，\n'
-        '这在调试时可能很有用。轴将覆盖它。',
+        '默认值为 "None"。这将在绘图矩形周围画一个边框，\n' '这在调试时可能很有用。轴将覆盖它。',
     ],
     [
         "fillColor",
@@ -1814,8 +1854,10 @@ cn_t.setStyle(
     )
 )
 getStory().append(cn_t)
-cn_caption('表 <seq template="%(Chapter)s - %(Table+)s"/>'
-           ' - 折线图属性列表 $HorizontalLineChart$')
+cn_caption(
+    '表 <seq template="%(Chapter)s - %(Table+)s"/>'
+    ' - 折线图属性列表 $HorizontalLineChart$'
+)
 
 # heading2("Line Plots")
 cn_heading2('点线图')
@@ -1827,8 +1869,7 @@ also uses some experimental features like line markers
 placed at each data point.
 """
 )
-cn_disc('下面我们展示了一个更复杂的线型图的例子，'
-        '也使用了一些实验功能，比如在每个数据点放置线型标记。')
+cn_disc('下面我们展示了一个更复杂的线型图的例子，' '也使用了一些实验功能，比如在每个数据点放置线型标记。')
 
 
 eg(
@@ -1993,8 +2034,7 @@ cn_data = [
     ],
     [
         "strokeColor",
-        '默认为None。 这将在绘图矩形周围绘制边框，\n'
-        '这可能对调试很有用。 轴将覆盖此位置。',
+        '默认为None。 这将在绘图矩形周围绘制边框，\n' '这可能对调试很有用。 轴将覆盖此位置。',
     ],
     [
         "strokeWidth",
@@ -2044,9 +2084,7 @@ cn_t.setStyle(
     )
 )
 getStory().append(cn_t)
-cn_caption(
-    """表 <seq template="%(Chapter)s-%(Table+)s"/> - 点线图属性 $LinePlot$"""
-)
+cn_caption("""表 <seq template="%(Chapter)s-%(Table+)s"/> - 点线图属性 $LinePlot$""")
 
 
 # heading2("Pie Charts")
@@ -2271,10 +2309,7 @@ cn_t.setStyle(
     )
 )
 getStory().append(cn_t)
-cn_caption('表 <seq template="%(Chapter)s-%(Table+)s"/>'
-           ' - 饼图属性 $Pie$')
-
-
+cn_caption('表 <seq template="%(Chapter)s-%(Table+)s"/>' ' - 饼图属性 $Pie$')
 
 
 # heading3("Customizing Labels")
@@ -2288,9 +2323,11 @@ For example $pc.slices[2].label_angle = 10$ changes the angle
 of the third label.
 """
 )
-cn_disc('通过改变集合$slices$中以$label_$为前缀的属性，'
-        '可以单独定制每个幻灯片标签。'
-        '例如 $pc.slices[2].label_angle = 10$ 改变第三个标签的角度。')
+cn_disc(
+    '通过改变集合$slices$中以$label_$为前缀的属性，'
+    '可以单独定制每个幻灯片标签。'
+    '例如 $pc.slices[2].label_angle = 10$ 改变第三个标签的角度。'
+)
 
 
 disc(
@@ -2393,8 +2430,10 @@ cn_t.setStyle(
     )
 )
 getStory().append(cn_t)
-cn_caption('表 <seq template="%(Chapter)s - %(Table+)s"/>'
-           ' - 扇形标签自定义属性 $Pie.slices custom label$')
+cn_caption(
+    '表 <seq template="%(Chapter)s - %(Table+)s"/>'
+    ' - 扇形标签自定义属性 $Pie.slices custom label$'
+)
 
 # heading3("Side Labels")
 cn_heading3('侧面标签')
@@ -2413,13 +2452,15 @@ If xradius is changed, the pie can overlap the labels, and so
 we advise leaving xradius as None. There is an example below.
 """
 )
-cn_disc('如果 $sideLabels$ 属性被设置为 $true$，那么切片分为两列，两边各一列。 '
-        '饼和饼的起始角度将被自动设置。'
-        '右侧栏的锚点设置为 "start"，并设置了左手列的锚点设置为 "end"。'
-        '饼的边缘与左手列中任何一个的边缘的距离。'
-        '列由 $sideLabelsOffset$ 属性决定，该属性为饼的宽度的一小部分。'
-        '如果改变 $xradius$，饼会与标签重叠，这样一来...。'
-        '我们建议将 $xradius$ 改为 $None$。下面是一个例子。')
+cn_disc(
+    '如果 $sideLabels$ 属性被设置为 $true$，那么切片分为两列，两边各一列。 '
+    '饼和饼的起始角度将被自动设置。'
+    '右侧栏的锚点设置为 "start"，并设置了左手列的锚点设置为 "end"。'
+    '饼的边缘与左手列中任何一个的边缘的距离。'
+    '列由 $sideLabelsOffset$ 属性决定，该属性为饼的宽度的一小部分。'
+    '如果改变 $xradius$，饼会与标签重叠，这样一来...。'
+    '我们建议将 $xradius$ 改为 $None$。下面是一个例子。'
+)
 
 drawing5 = sample5()
 # draw(drawing5, 'An example of a piechart with sideLabels =1')
@@ -2432,8 +2473,10 @@ become redundant, such as pointerLabelMode. Also sideLabelsOffset only
 changes the piechart if sideLabels is set to true.
 """
 )
-cn_disc('如果将 $sideLabels$ 设置为 $True$，则某些属性将变得多余，例如 $pointerLabelMode$。 '
-        '同样，$sideLabelsOffset$ 仅在将 $sideLabels$ 设置为 $true$ 时更改饼图。')
+cn_disc(
+    '如果将 $sideLabels$ 设置为 $True$，则某些属性将变得多余，例如 $pointerLabelMode$。 '
+    '同样，$sideLabelsOffset$ 仅在将 $sideLabels$ 设置为 $true$ 时更改饼图。'
+)
 
 # heading4("Some issues")
 cn_heading4('一些问题')
@@ -2476,10 +2519,12 @@ a $legend$ attribute which is invisible. One would then do the following to
 specify colors:
 """
 )
-cn_disc('可以找到各种初步的图例类，但需要进行清理以与图表模型的其他部分保持一致。'
-        '图例是指定图表颜色和线条风格的自然场所；'
-        '我们建议每个图表都创建一个不可见的$legend$属性。'
-        '然后，将执行以下操作以指定颜色：')
+cn_disc(
+    '可以找到各种初步的图例类，但需要进行清理以与图表模型的其他部分保持一致。'
+    '图例是指定图表颜色和线条风格的自然场所；'
+    '我们建议每个图表都创建一个不可见的$legend$属性。'
+    '然后，将执行以下操作以指定颜色：'
+)
 
 
 eg(
@@ -2528,8 +2573,7 @@ is is a bit too early to start making them really public.
 Nevertheless, here is a list of things that are under way:
 """
 )
-cn_disc('有几个问题已经解决了，但现在开始真正公开这些问题还为时过早。'
-        '不过，这里有一个正在进行的事情清单。')
+cn_disc('有几个问题已经解决了，但现在开始真正公开这些问题还为时过早。' '不过，这里有一个正在进行的事情清单。')
 
 
 bullet(
@@ -2553,14 +2597,15 @@ as well as the side-by-side variant seen here.
 """
 )
 
-cn_bullet('颜色规范: -- 现在图表有一个没文档化的属性 $defaultColors$, '
-          '该属性提供要循环显示的颜色列表，以便每个数据系列都有自己的颜色。'
-          '现在，如果你要引入图例，则需要确保它具有相同的颜色列表。'
-          '最有可能的是，它将被一种方案取代，该方案指定一种图例，该图例包含每个数据系列具有不同值的属性。 '
-          '然后，该图例也可以由多个图表共享，但本身不必可见。')
+cn_bullet(
+    '颜色规范: -- 现在图表有一个没文档化的属性 $defaultColors$, '
+    '该属性提供要循环显示的颜色列表，以便每个数据系列都有自己的颜色。'
+    '现在，如果你要引入图例，则需要确保它具有相同的颜色列表。'
+    '最有可能的是，它将被一种方案取代，该方案指定一种图例，该图例包含每个数据系列具有不同值的属性。 '
+    '然后，该图例也可以由多个图表共享，但本身不必可见。'
+)
 
-cn_bullet('额外的图表类型--当目前的设计变得更加稳定时，'
-          '我们希望增加条形图的变体，以处理百分位条形图以及这里看到的并排变体。')
+cn_bullet('额外的图表类型--当目前的设计变得更加稳定时，' '我们希望增加条形图的变体，以处理百分位条形图以及这里看到的并排变体。')
 
 # heading3("Outlook")
 cn_heading3('展望 ($Outlook$)')
@@ -2592,14 +2637,15 @@ custom chart type just by overriding a single method - say,
 $drawSeries()$.
 """
 )
-cn_disc('大多数其他图都涉及两个值轴，并以某种形式直接绘制x-y数据。 '
-        '该系列可以绘制为线条，标记符号，两者兼而有之,'
-        '或自定义图形（例如，开-高-低-闭图形）'
-        '所有这些都具有缩放和轴/标题格式的概念。 '
-        '在某一点上，一个例程将在数据序列上循环，并在给定的x-y位置上对数据点 "做一些事情"。'
-        '给定一个基本的折线图，只需覆盖一个方法--比如说，$drawSeries()$，'
-        '就可以很容易地推导出一个自定义的图表类型。')
-
+cn_disc(
+    '大多数其他图都涉及两个值轴，并以某种形式直接绘制x-y数据。 '
+    '该系列可以绘制为线条，标记符号，两者兼而有之,'
+    '或自定义图形（例如，开-高-低-闭图形）'
+    '所有这些都具有缩放和轴/标题格式的概念。 '
+    '在某一点上，一个例程将在数据序列上循环，并在给定的x-y位置上对数据点 "做一些事情"。'
+    '给定一个基本的折线图，只需覆盖一个方法--比如说，$drawSeries()$，'
+    '就可以很容易地推导出一个自定义的图表类型。'
+)
 
 
 # heading3("Marker customisation and custom shapes")
@@ -2613,11 +2659,12 @@ We can do better - you can write any kind of chart widget you
 want and just tell the chart to use it as an example.
 """
 )
-cn_disc('众所周知的绘图软件包，如 $excel$、$Mathematica$和$Excel$，'
-        '都提供了一系列的标记类型来添加到图表中。'
-        '我们可以做得更好'
-        '--你可以编写任何一种你想要的图表部件，只需告诉图表使用它作为例子。')
-
+cn_disc(
+    '众所周知的绘图软件包，如 $excel$、$Mathematica$和$Excel$，'
+    '都提供了一系列的标记类型来添加到图表中。'
+    '我们可以做得更好'
+    '--你可以编写任何一种你想要的图表部件，只需告诉图表使用它作为例子。'
+)
 
 
 # heading4("Combination plots")
@@ -2633,13 +2680,15 @@ inflation rates on the right axis. If anyone can remind us where this example ca
 attribute it, and happily show the well-known graph as an example.
 """
 )
-cn_disc('结合多种绘图类型真的很容易。'
-        '你只需在同一个矩形中绘制几个图表（条形图、线形图或其他什么图），'
-        '根据需要取消显示轴。'
-        '因此，一个图表可以将一条线与左轴上15年内的苏格兰伤寒病例相关联，'
-        '右轴上有一组显示通货膨胀率的条形图。'
-        '如果有谁能提醒我们这个例子的出处，'
-        '我们会注明出处，并很高兴地展示这个著名的图表作为例子。')
+cn_disc(
+    '结合多种绘图类型真的很容易。'
+    '你只需在同一个矩形中绘制几个图表（条形图、线形图或其他什么图），'
+    '根据需要取消显示轴。'
+    '因此，一个图表可以将一条线与左轴上15年内的苏格兰伤寒病例相关联，'
+    '右轴上有一组显示通货膨胀率的条形图。'
+    '如果有谁能提醒我们这个例子的出处，'
+    '我们会注明出处，并很高兴地展示这个著名的图表作为例子。'
+)
 
 # heading3("Interactive editors")
 cn_heading3('互动式编辑')
@@ -2653,10 +2702,12 @@ This makes it very tempting to build a tool like a GUI editor that
 that helps you with doing that interactively.
 """
 )
-cn_disc('图形包的一个原则是使图形组件的所有 "有趣的" '
-        '属性都可以通过设置相应的公共属性的适当值来访问和改变。'
-        '这使得我们很想建立一个像GUI编辑器一样的工具，'
-        '来帮助你交互式地完成这些工作。')
+cn_disc(
+    '图形包的一个原则是使图形组件的所有 "有趣的" '
+    '属性都可以通过设置相应的公共属性的适当值来访问和改变。'
+    '这使得我们很想建立一个像GUI编辑器一样的工具，'
+    '来帮助你交互式地完成这些工作。'
+)
 
 
 disc(
@@ -2669,11 +2720,13 @@ just like any other chart or as a new starting point for another interactive
 editing session.
 """
 )
-cn_disc('ReportLab使用Tkinter工具箱构建了这样的工具，'
-        '该工具箱可加载描述图纸的纯Python代码并记录您的属性编辑操作。 '
-        '然后，此“更改历史记录”用于为该图表的子类创建代码，'
-        '例如，可以像其他任何图表一样立即保存和使用该代码，'
-        '或将其用作另一个交互式编辑会话的新起点。')
+cn_disc(
+    'ReportLab使用Tkinter工具箱构建了这样的工具，'
+    '该工具箱可加载描述图纸的纯Python代码并记录您的属性编辑操作。 '
+    '然后，此“更改历史记录”用于为该图表的子类创建代码，'
+    '例如，可以像其他任何图表一样立即保存和使用该代码，'
+    '或将其用作另一个交互式编辑会话的新起点。'
+)
 
 
 disc(
@@ -2683,7 +2736,6 @@ releasing this need to be further elaborated.
 """
 )
 cn_disc('不过这还在进行中，发布的条件还需要进一步细化。')
-
 
 
 # heading3("Misc.")
@@ -2700,11 +2752,13 @@ and produce a full report.
 $graphdocpy.py -h$ prints a help message that will tell you how.)
 """
 )
-cn_disc('这并不是对所有图表类的详尽介绍。这些类还在不断地改进中。'
-        '要查看当前发行版中的确切内容，请使用 $graphdocpy.py$工具。'
-        '默认情况下，它将在 $reportlab/graphics$ 上运行，并生成一份完整的报告。'
-        '(如果你想在其他模块或软件包上运行它，'
-        '$graphdocpy.py -h$ 会打印出一条帮助信息，告诉你如何运行。)')
+cn_disc(
+    '这并不是对所有图表类的详尽介绍。这些类还在不断地改进中。'
+    '要查看当前发行版中的确切内容，请使用 $graphdocpy.py$工具。'
+    '默认情况下，它将在 $reportlab/graphics$ 上运行，并生成一份完整的报告。'
+    '(如果你想在其他模块或软件包上运行它，'
+    '$graphdocpy.py -h$ 会打印出一条帮助信息，告诉你如何运行。)'
+)
 
 
 disc(
@@ -2714,4 +2768,3 @@ Widgets'.
 """
 )
 cn_disc('这是“文档小部件” ($Documenting Widgets$) 部分中提到的工具')
-
