@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 
 import reportlab
+from reportlab import rl_config
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.codecharts import SingleByteEncodingChart
@@ -15,9 +16,14 @@ from reportlab.platypus.paraparser import (
     _paraAttrMap,
     _bulletAttrMap,
 )
+from reportlab.graphics.shapes import Drawing
 from reportlab.platypus.flowables import Spacer, Image
 from reportlab.lib.units import inch
 from reportlab.graphics import testshapes
+from reportlab.graphics.shapes import (
+    Drawing, Line, PolyLine, String, Group,
+    mmult, translate, rotate
+)
 from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
 from components import constant
@@ -6306,12 +6312,170 @@ r.strokeWidth = 3
 d.add(r)
     """, name='d')
     pdf.add_caption('红色矩形和绿色边框', category=constant.CAPTION_IMAGE)
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
-    # pdf.add_paragraph()
+
+    pdf.add_pencil_note()
+    pdf.add_text_note("在未来的例子中，我们将省略导入语句。")
+    pdf.add_paragraph('所有的形状都有一些可以设置的属性。'
+                      '在交互式提示下，我们可以使用它们的^dumpProperties()^方法来列出这些属性。'
+                      '下面是你可以用来配置一个^Rect.Rex^的方法。')
+
+    pdf.add_code_eg(
+        """
+    >>> r.dumpProperties()
+    fillColor = Color(1.00,0.00,0.00)
+    height = 100
+    rx = 0
+    ry = 0
+    strokeColor = Color(0.00,0.50,0.00)
+    strokeDashArray = None
+    strokeLineCap = 0
+    strokeLineJoin = 0
+    strokeMiterLimit = 0
+    strokeWidth = 3
+    width = 200
+    x = 5
+    y = 5
+    >>>
+    """
+    )
+    pdf.add_paragraph('形状一般有<i>style属性</i>和<i>geometry属性</i>。'
+                      '$x$, $y$, $width$ 和 $height$ 是几何属性的一部分，'
+                      '在创建矩形时必须提供，因为没有这些属性就没有什么意义。'
+                      '其他的属性是可选的，并且有合理的默认值。')
+    pdf.add_paragraph('你可以在随后的行中设置其他属性，或者将它们作为可选参数传递给构造函数。'
+                      '我们也可以用这种方式来创建我们的矩形。')
+    pdf.add_code_eg(
+        """
+    >>> r = Rect(5, 5, 200, 100,
+                 fillColor=red,
+                 strokeColor=green,
+                 strokeWidth=3)
+    """
+    )
+    pdf.add_paragraph('我们来看看样式属性。'
+                      '$fillColor$是显而易见的。'
+                      '$stroke$ 是形状边缘的发布术语；$stroke$有一个颜色、宽度，'
+                      '可能还有一个破折号图案，以及一些（很少使用的）功能，'
+                      '用于当一条线转角时发生的情况。'
+                      '$rx$ 和 $ry$ 是可选的几何属性，用于定义圆角矩形的角半径。')
+    pdf.add_paragraph('其他所有的实体形状都具有相同的样式属性。')
+
+    pdf.add_heading("Lines - 线")
+
+    pdf.add_paragraph('我们提供单条直线、多条直线和曲线。'
+                      '线条具有所有的$stroke*$属性，但没有$fillColor$。'
+                      '下面是一些直线和多线的例子以及相应的图形输出。')
+
+    pdf.add_embedded_code("""
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.shapes import (
+    Drawing, Line, PolyLine
+)
+
+d = Drawing(400, 200)
+d.add(Line(50,50, 300,100,
+     strokeColor=colors.blue, strokeWidth=5))
+d.add(Line(50,100, 300,50,
+     strokeColor=colors.red,
+     strokeWidth=10,
+     strokeDashArray=[10, 20]))
+d.add(PolyLine([120,110, 130,150, 140,110, 150,150, 160,110,
+          170,150, 180,110, 190,150, 200,110],
+         strokeWidth=2,
+         strokeColor=colors.purple))
+    """, name='d')
+    pdf.add_caption("线和折线示例")
+
+    pdf.add_heading("字符串", level=3)
+    pdf.add_paragraph('$ReportLab$ 图形包并不是为花哨的文本布局而设计的，'
+                      '但它可以将字符串放置在所需的位置上，'
+                      '并进行 $left/right/center$ 对齐。'
+                      '让我们指定一个$String$对象，看看它的属性。')
+    pdf.add_code_eg(
+        """
+    >>> s = String(10, 50, 'Hello World')
+    >>> s.dumpProperties()
+    fillColor = Color(0.00,0.00,0.00)
+    fontName = Times-Roman
+    fontSize = 10
+    text = Hello World
+    textAnchor = start
+    x = 10
+    y = 50
+    >>>
+    """
+    )
+    pdf.add_paragraph("字符串有一个 $textAnchor$ 属性，它的值可以是 $'start'$、$'middle'$、$'end'$之一。"
+                      "如果设置为$'start'$，则$x$和$y$与字符串的开始相关，以此类推。"
+                      "这提供了一个简单的方法来对齐文本。")
+    pdf.add_paragraph('字符串使用一个通用的字体标准：$Acrobat Reader$ 中存在的 $Type 1 Postscript$ 字体。'
+                      '因此，我们可以在 $ReportLab$ 中使用基本的14种字体，并获得准确的指标。'
+                      '我们最近还增加了对额外的$Type 1$字体的支持，'
+                      '渲染器都知道如何渲染$Type 1$字体。')
+    pdf.add_paragraph("下面是一个使用下面代码片段的更漂亮的例子。"
+                      "请查阅 $ReportLab$ 用户指南，了解像 $'DarkGardenMK'$ 这样的非标准字体是如何被注册的。")
+    pdf.add_code_eg(
+        """
+        d = Drawing(400, 200)
+        for size in range(12, 36, 4):
+            d.add(String(10+size*2, 10+size*2, 'Hello World',
+                         fontName='Times-Roman',
+                         fontSize=size))
+    
+        d.add(String(130, 120, 'Hello World',
+                     fontName='Courier',
+                     fontSize=36))
+    
+        d.add(String(150, 160, 'Hello World',
+                     fontName='DarkGardenMK',
+                     fontSize=36))
+    """
+    )
+    rl_config.warnOnMissingFontGlyphs = 0
+    flolder = folder = os.path.dirname(reportlab.__file__) + os.sep + 'fonts'
+    afmFile = os.path.join(folder, 'DarkGardenMK.afm')
+    pfbFile = os.path.join(folder, 'DarkGardenMK.pfb')
+    T1face = pdfmetrics.EmbeddedType1Face(afmFile, pfbFile)
+    T1faceName = 'DarkGardenMK'
+    pdfmetrics.registerTypeFace(T1face)
+    T1font = pdfmetrics.Font(T1faceName, T1faceName, 'WinAnsiEncoding')
+    pdfmetrics.registerFont(T1font)
+
+    d = Drawing(400, 200)
+    for size in range(12, 36, 4):
+        d.add(
+            String(
+                10 + size * 2,
+                10 + size * 2,
+                'Hello World',
+                fontName='Times-Roman',
+                fontSize=size,
+                )
+        )
+
+    d.add(String(130, 120, 'Hello World', fontName='Courier', fontSize=36))
+
+    d.add(String(150, 160, 'Hello World', fontName='DarkGardenMK', fontSize=36))
+
+    pdf.add_draw(d, '花式字体样例')
+
+    pdf.add_heading("Paths", level=3)
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
+    pdf.add_paragraph()
 
 
 def chapter11(pdf):
