@@ -51,7 +51,7 @@ def get_default_style_sheet(font_name=None, font_bold=None):
     heading_1_style = ParagraphStyle(
         name=constant.STYLE_HEADING_1,
         parent=normal_style,
-        fontName=_font_name,
+        fontName=_font_bold,
         alignment=TA_CENTER,
         fontSize=18,
         leading=22,
@@ -60,7 +60,7 @@ def get_default_style_sheet(font_name=None, font_bold=None):
     heading_2_style = ParagraphStyle(
         name=constant.STYLE_HEADING_2,
         parent=normal_style,
-        fontName=_font_name,
+        fontName=_font_bold,
         fontSize=14,
         leading=17,
         spaceBefore=12,
@@ -69,7 +69,7 @@ def get_default_style_sheet(font_name=None, font_bold=None):
     heading_3_style = ParagraphStyle(
         name=constant.STYLE_HEADING_3,
         parent=normal_style,
-        fontName=_font_name,
+        fontName=_font_bold,
         fontSize=12,
         leading=14,
         spaceBefore=12,
@@ -78,14 +78,14 @@ def get_default_style_sheet(font_name=None, font_bold=None):
     heading_4_style = ParagraphStyle(
         name=constant.STYLE_HEADING_4,
         parent=normal_style,
-        fontName=_font_name,
+        fontName=_font_bold,
         spaceBefore=10,
         spaceAfter=4,
     )
     title_style = ParagraphStyle(
         name=constant.STYLE_TITLE,
         parent=normal_style,
-        fontName=_font_name,
+        fontName=_font_bold,
         fontSize=32,
         leading=40,
         spaceAfter=36,

@@ -115,14 +115,13 @@ class PDF(object):
         # 计数器flag
         self._SEQ_CHAPTER_FLAG = 'Chapter'
         self._SEQ_SECTION_FLAG = 'Section'
-        self._SEQ_APPENDIX_FLAG = 'Appendix'
         self._SEQ_TABLE_FLAG = 'Table'
         self._SEQ_FIGURE_FLAG = 'Figure'
+        self._appendix_mode = False
 
         self.seq = getSequencer()
         self.seq.setFormat(self._SEQ_CHAPTER_FLAG, '1')  # 一级标题
         self.seq.setFormat(self._SEQ_SECTION_FLAG, '1')  # 二级标题
-        self.seq.setFormat(self._SEQ_APPENDIX_FLAG, 'A')  # 附录
         self.seq.setFormat(self._SEQ_FIGURE_FLAG, '1')  # 图
         self.seq.chain(self._SEQ_CHAPTER_FLAG, self._SEQ_SECTION_FLAG)
         self.seq.chain(self._SEQ_CHAPTER_FLAG, self._SEQ_FIGURE_FLAG)
@@ -289,6 +288,19 @@ class PDF(object):
             self.add_cond_page_break()
             self.store.append(Paragraph(_text, _style))
 
+    def add_appendix(self, text, style=None):
+        self.add_page_break()
+
+        if not self._appendix_mode:
+            self._appendix_mode = True
+            self.seq.setFormat(self._SEQ_CHAPTER_FLAG, 'A')
+            self.seq.reset(self._SEQ_CHAPTER_FLAG)
+
+        _style = style or self.stylesheet[constant.STYLE_HEADING_1]
+        _prefix = f'附录 <seq id="{self._SEQ_CHAPTER_FLAG}"/>'
+        p = Paragraph(f'{_prefix} {self.quick_fix(text)}', _style)
+        self.store.append(p)
+
     def add_caption(self, text, category=CAPTION_IMAGE):
         """ 添加一个caption(说明) """
         if category == CAPTION_TABLE:
@@ -402,8 +414,9 @@ class PDF(object):
             f'图 <seq template="%({self._SEQ_CHAPTER_FLAG})s - '
             f'%({self._SEQ_FIGURE_FLAG}+)s"/> : {self.quick_fix(caption)}'
         )
-        self.store.append(GraphicsDrawing(drawing, _caption,
-                                          font_name=self.font_regular))
+        self.store.append(
+            GraphicsDrawing(drawing, _caption, font_name=self.font_regular)
+        )
 
     def add_flowable(self, flowable):
         """ 添加一个flowable对象，（动态布局对象，不用封装样式），比如一个table """

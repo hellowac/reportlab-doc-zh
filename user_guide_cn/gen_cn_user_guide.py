@@ -17,12 +17,19 @@ from reportlab.platypus.paraparser import (
     _bulletAttrMap,
 )
 from reportlab.graphics.shapes import Drawing
+from reportlab.graphics import widgetbase
 from reportlab.platypus.flowables import Spacer, Image
 from reportlab.lib.units import inch
 from reportlab.graphics import testshapes
 from reportlab.graphics.shapes import (
-    Drawing, Line, PolyLine, String, Group,
-    mmult, translate, rotate
+    Drawing,
+    Line,
+    PolyLine,
+    String,
+    Group,
+    mmult,
+    translate,
+    rotate,
 )
 from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
@@ -46,7 +53,7 @@ def setup_logging():
     )
 
 
-def chapter1(pdf):
+def chapter1_introduction(pdf):
     pdf.add_title('用户手册')
     pdf.add_centred(f'版本 {reportlab.Version}')
     pdf.add_centred(datetime.now().strftime('文档生成自 %Y/%m/%d %H:%M:%S %Z'))
@@ -400,7 +407,7 @@ and many more."""
     )
 
 
-def chapter2(pdf):
+def chapter2_overview(pdf):
     pdf.add_heading("使用 $pdfgen$ 生成图形和文本", level=1)
     pdf.add_heading("基本概念", level=2)
     pdf.add_paragraph(
@@ -1196,7 +1203,7 @@ def chapter2(pdf):
     )
 
 
-def chapter3(pdf):
+def chapter3_font(pdf):
     pdf.add_heading("字体和编码", level=1)
     pdf.add_paragraph(
         '本章包括字体、编码和亚洲语言功能。'
@@ -1652,7 +1659,7 @@ data
     pdf.add_paragraph("与字体相关的测试，你可能会想看看#11（'非标准字体中的文本字符串'）和#12（'测试各种字体'）。")
 
 
-def chapter4(pdf):
+def chapter4_special_features(pdf):
     pdf.add_heading("PDF的特殊功能", level=1)
     pdf.add_paragraph("PDF提供了许多功能，使电子文档的浏览更加高效和舒适，我们的类库就公开了其中的一些功能。")
 
@@ -2628,7 +2635,7 @@ def chapter4(pdf):
     pdf.add_flowable(table)
 
 
-def chapter5(pdf):
+def chapter5_platypus(pdf):
     pdf.add_heading("PLATYPUS - 页面布局和排版", level=1)
     pdf.add_heading("设计目标", level=2)
     pdf.add_paragraph(
@@ -3046,7 +3053,7 @@ def chapter5(pdf):
     )
 
 
-def chapter6(pdf):
+def chapter6_paragraph(pdf):
     pdf.add_heading("Paragraphs - 文本段落", level=1)
     pdf.add_paragraph(
         '$reportlab.platypus.Paragraph$类是$Platypus Flowables$中最有用的一个；'
@@ -3625,7 +3632,7 @@ def chapter6(pdf):
     )
 
 
-def chapter7(pdf):
+def chapter7_table(pdf):
     pdf.add_heading("表格和表格样式", level=1)
 
     pdf.add_paragraph(
@@ -4069,7 +4076,7 @@ t=Table(data,style=[
     )
 
 
-def chapter8(pdf):
+def chapter8_flowables(pdf):
     pdf.add_heading("$Flowables$", level=1)
     pdf.add_paragraph('下列$flowable$使您可以在包装文本时有条件地求值并执行表达式和语句：')
 
@@ -4555,7 +4562,7 @@ t = ListFlowable(
     )
 
 
-def chapter9(pdf):
+def chapter9_useful_flowables(pdf):
     pdf.add_heading("编写 $Flowable$ ")
     pdf.add_paragraph(
         '$Flowables$旨在成为创建可重复使用的报表内容的开放标准，您可以轻松创建自己的对象。 '
@@ -4618,7 +4625,7 @@ I.hAlign = 'CENTER'
     )
 
 
-def chapter10(pdf):
+def chapter10_custom_flowables(pdf):
     pdf.add_heading("绘制", level=1)
     pdf.add_heading("简介", level=2)
     pdf.add_paragraph(
@@ -5771,15 +5778,20 @@ drawing.add(bc)
     )
     pdf.add_caption("柱状叠加图", category=constant.CAPTION_IMAGE)
     pdf.add_heading("折线图", level=2)
-    pdf.add_paragraph('我们认为 "折线图"($Line Charts$)  与 "柱状图"($Bar Charts$) 本质上是一样的，只是用线代替了条。'
-                      '两者共享同一对类别/数值轴对。这与 "线图"不同，'
-                      '在"线图"($Line Plots$) 中，两个轴都是<i>值</i>轴。')
-    pdf.add_paragraph('以下代码及其输出将作为一个简单的例子。'
-                      '后面会有更多的解释。'
-                      '目前，您也可以研究运行 $reportlab/lib/graphdocpy.py$ 工具的输出，'
-                      '并在生成的PDF文档中搜索柱状图($Line Charts$)的例子。')
+    pdf.add_paragraph(
+        '我们认为 "折线图"($Line Charts$)  与 "柱状图"($Bar Charts$) 本质上是一样的，只是用线代替了条。'
+        '两者共享同一对类别/数值轴对。这与 "线图"不同，'
+        '在"线图"($Line Plots$) 中，两个轴都是<i>值</i>轴。'
+    )
+    pdf.add_paragraph(
+        '以下代码及其输出将作为一个简单的例子。'
+        '后面会有更多的解释。'
+        '目前，您也可以研究运行 $reportlab/lib/graphdocpy.py$ 工具的输出，'
+        '并在生成的PDF文档中搜索柱状图($Line Charts$)的例子。'
+    )
 
-    pdf.add_embedded_code("""
+    pdf.add_embedded_code(
+        """
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.linecharts import HorizontalLineChart
 from reportlab.lib import colors
@@ -5804,15 +5816,21 @@ lc.valueAxis.valueStep = 15
 lc.lines[0].strokeWidth = 2
 lc.lines[1].strokeWidth = 1.5
 drawing.add(lc)
-    """, name="drawing")
-    pdf.add_caption('HorizontalLineChart - 折线图',
-                    category=constant.CAPTION_IMAGE)
+    """,
+        name="drawing",
+    )
+    pdf.add_caption(
+        'HorizontalLineChart - 折线图', category=constant.CAPTION_IMAGE
+    )
     pdf.add_space()
 
     attribute = [
         ["属性", "描述"],
-        ["data", "要绘制的数据，（列表）整数清单。\n"
-                 "Data to be plotted, list of (lists of) numbers."],
+        [
+            "data",
+            "要绘制的数据，（列表）整数清单。\n"
+            "Data to be plotted, list of (lists of) numbers.",
+        ],
         [
             "x, y, width, height",
             '折线图的边界框。 请注意，x和y不指定中心，而是左下角\n'
@@ -5831,7 +5849,7 @@ drawing.add(lc)
         ],
         [
             "strokeColor",
-            '默认值为 "None"。这将在绘图矩形周围画一个边框，\n' 
+            '默认值为 "None"。这将在绘图矩形周围画一个边框，\n'
             '这在调试时可能很有用。轴将覆盖它。\n'
             'Defaults to None. This will draw a border around the plot '
             'rectangle,\n'
@@ -5916,15 +5934,19 @@ lp.yValueAxis.valueMax = 7
 lp.yValueAxis.valueSteps = [1, 2, 3, 5, 6]
 
 drawing.add(lp)
-    """, name="drawing"
+    """,
+        name="drawing",
     )
     pdf.add_caption("LinePlot 示例图", category=constant.CAPTION_IMAGE)
     pdf.add_space()
 
     attribute = [
         ["属性", "描述"],
-        ["data", "要绘制的数据，（列表）整数清单。\n"
-                 "Data to be plotted, list of (lists of) numbers."],
+        [
+            "data",
+            "要绘制的数据，（列表）整数清单。\n"
+            "Data to be plotted, list of (lists of) numbers.",
+        ],
         [
             "x, y, width, height",
             '折线图的边界框。 请注意，x和y不指定中心，而是左下角\n'
@@ -5943,7 +5965,7 @@ drawing.add(lp)
         ],
         [
             "strokeColor",
-            '默认为None。 这将在绘图矩形周围绘制边框，\n' 
+            '默认为None。 这将在绘图矩形周围绘制边框，\n'
             '这可能对调试很有用。 轴将覆盖此位置。\n'
             'Defaults to None. This will draw a border around the plot '
             'rectangle,\n'
@@ -5959,10 +5981,8 @@ drawing.add(lp)
             '默认为None。 这将用纯色填充绘图矩形。\n'
             'Defaults to None. This will fill the plot rectangle with a solid color.',
         ],
-        ["lines.strokeColor", '线的颜色。\n'
-                              'Color of the line.'],
-        ["lines.strokeWidth", '线的宽度\n'
-                              'Width of the line.'],
+        ["lines.strokeColor", '线的颜色。\n' 'Color of the line.'],
+        ["lines.strokeWidth", '线的宽度\n' 'Width of the line.'],
         [
             "lines.symbol",
             '每个点使用的标记。您可以使用函数$makeMarker()$创建一个新的标记。\n'
@@ -6032,7 +6052,8 @@ pc.slices[3].strokeDashArray = [2,2]
 pc.slices[3].labelRadius = 1.75
 pc.slices[3].fontColor = colors.red
 d.add(pc)
-        """, name='d'
+        """,
+        name='d',
     )
     pdf.add_caption("凸出的饼图", category=constant.CAPTION_IMAGE)
     pdf.add_paragraph('属性在下面介绍。 $pie$ 具有 “$slices$” 集合，我们在同一表中记录 $wedge$ 属性。')
@@ -6101,7 +6122,10 @@ d.add(pc)
         ],
         ["slices.strokeWidth", "扇形边框宽度\nBorder width for wedge"],
         ["slices.strokeColor", "扇形边框颜色\nBorder color"],
-        ["slices.strokeDashArray", "实线或虚线配置：['solid', 'dashed']\nSolid or dashed line configuration"],
+        [
+            "slices.strokeDashArray",
+            "实线或虚线配置：['solid', 'dashed']\nSolid or dashed line configuration",
+        ],
         [
             "slices.popout",
             '切片应从馅饼的中心伸出多远？ 默认值为零。\n'
@@ -6128,9 +6152,11 @@ d.add(pc)
     pdf.add_flowable(table)
     pdf.add_heading("自定义 Label", level=3)
 
-    pdf.add_paragraph('通过改变集合$slices$中以$label_$为前缀的属性，'
-                      '可以单独定制每个幻灯片标签。'
-                      '例如 $pc.slices[2].label_angle = 10$ 改变第三个标签的角度。')
+    pdf.add_paragraph(
+        '通过改变集合$slices$中以$label_$为前缀的属性，'
+        '可以单独定制每个幻灯片标签。'
+        '例如 $pc.slices[2].label_angle = 10$ 改变第三个标签的角度。'
+    )
     pdf.add_paragraph('在使用这些自定义属性之前，您需要使用以下命令禁用简单标签：$pc.simplesLabels=0$')
     pdf.add_space()
 
@@ -6153,7 +6179,10 @@ d.add(pc)
         ["label_width", '标签宽度\nWidth of the label'],
         ["label_maxWidth", '标签可以增加到的最大宽度\nMaximum width the label can grow to'],
         ["label_height", '标签高度\nHeight of the label'],
-        ["label_textAnchor", '标签可以增加到的最大高度\nMaximum height the label can grow to'],
+        [
+            "label_textAnchor",
+            '标签可以增加到的最大高度\nMaximum height the label can grow to',
+        ],
         ["label_visible", '如果要绘制标签，则为True\nTrue if the label is to be drawn'],
         ["label_topPadding", '盒子的上边距(Padding at top of box)'],
         ["label_leftPadding", '盒子的左边距(Padding at left of box)'],
@@ -6169,16 +6198,20 @@ d.add(pc)
 
     pdf.add_heading("Side Labels 侧面标签", level=3)
 
-    pdf.add_paragraph('如果 $sideLabels$ 属性被设置为 $true$，那么切片分为两列，两边各一列。 '
-                      '饼和饼的起始角度将被自动设置。'
-                      '右侧栏的锚点设置为 "start"，并设置了左手列的锚点设置为 "end"。'
-                      '饼的边缘与左手列中任何一个的边缘的距离。'
-                      '列由 $sideLabelsOffset$ 属性决定，该属性为饼的宽度的一小部分。'
-                      '如果改变 $xradius$，饼会与标签重叠，这样一来...。'
-                      '我们建议将 $xradius$ 改为 $None$。下面是一个例子。')
+    pdf.add_paragraph(
+        '如果 $sideLabels$ 属性被设置为 $true$，那么切片分为两列，两边各一列。 '
+        '饼和饼的起始角度将被自动设置。'
+        '右侧栏的锚点设置为 "start"，并设置了左手列的锚点设置为 "end"。'
+        '饼的边缘与左手列中任何一个的边缘的距离。'
+        '列由 $sideLabelsOffset$ 属性决定，该属性为饼的宽度的一小部分。'
+        '如果改变 $xradius$，饼会与标签重叠，这样一来...。'
+        '我们建议将 $xradius$ 改为 $None$。下面是一个例子。'
+    )
     pdf.add_draw(sample5(), '一个 $sideLabels=1$ 的饼图示例')
-    pdf.add_paragraph('如果将 $sideLabels$ 设置为 $True$，则某些属性将变得多余，例如 $pointerLabelMode$。 '
-                      '同样，$sideLabelsOffset$ 仅在将 $sideLabels$ 设置为 $true$ 时更改饼图。')
+    pdf.add_paragraph(
+        '如果将 $sideLabels$ 设置为 $True$，则某些属性将变得多余，例如 $pointerLabelMode$。 '
+        '同样，$sideLabelsOffset$ 仅在将 $sideLabels$ 设置为 $true$ 时更改饼图。'
+    )
 
     pdf.add_heading("一些问题", level=4)
     pdf.add_paragraph('如果切片过多，指针可能会交叉。')
@@ -6188,10 +6221,12 @@ d.add(pc)
     pdf.add_draw(sample8(), '标签重叠的示例')
 
     pdf.add_heading("Legends", level=2)
-    pdf.add_paragraph('可以找到各种初步的图例类，但需要进行清理以与图表模型的其他部分保持一致。'
-                      '图例是指定图表颜色和线条风格的自然场所；'
-                      '我们建议每个图表都创建一个不可见的$legend$属性。'
-                      '然后，将执行以下操作以指定颜色：')
+    pdf.add_paragraph(
+        '可以找到各种初步的图例类，但需要进行清理以与图表模型的其他部分保持一致。'
+        '图例是指定图表颜色和线条风格的自然场所；'
+        '我们建议每个图表都创建一个不可见的$legend$属性。'
+        '然后，将执行以下操作以指定颜色：'
+    )
 
     pdf.add_code_eg("myChart.legend.defaultColors = [red, green, blue]")
     pdf.add_paragraph("还可以定义一组共享相同图例的图表：")
@@ -6211,72 +6246,90 @@ d.add(pc)
     pdf.add_todo('这样行吗？ 直接指定图表颜色是否可以接受？')
 
     pdf.add_heading("存在的问题", level=3)
-    pdf.add_paragraph('有几个问题已经解决了，但现在开始真正公开这些问题还为时过早。' 
-                      '不过，这里有一个正在进行的事情清单。')
-    pdf.add_bullet('颜色规范: -- 现在图表有一个没文档化的属性 $defaultColors$, '
-                   '该属性提供要循环显示的颜色列表，以便每个数据系列都有自己的颜色。'
-                   '现在，如果你要引入图例，则需要确保它具有相同的颜色列表。'
-                   '最有可能的是，它将被一种方案取代，该方案指定一种图例，该图例包含每个数据系列具有不同值的属性。 '
-                   '然后，该图例也可以由多个图表共享，但本身不必可见。')
-    pdf.add_bullet('额外的图表类型--当目前的设计变得更加稳定时，' 
-                   '我们希望增加条形图的变体，以处理百分位条形图以及这里看到的并排变体。')
+    pdf.add_paragraph('有几个问题已经解决了，但现在开始真正公开这些问题还为时过早。' '不过，这里有一个正在进行的事情清单。')
+    pdf.add_bullet(
+        '颜色规范: -- 现在图表有一个没文档化的属性 $defaultColors$, '
+        '该属性提供要循环显示的颜色列表，以便每个数据系列都有自己的颜色。'
+        '现在，如果你要引入图例，则需要确保它具有相同的颜色列表。'
+        '最有可能的是，它将被一种方案取代，该方案指定一种图例，该图例包含每个数据系列具有不同值的属性。 '
+        '然后，该图例也可以由多个图表共享，但本身不必可见。'
+    )
+    pdf.add_bullet(
+        '额外的图表类型--当目前的设计变得更加稳定时，' '我们希望增加条形图的变体，以处理百分位条形图以及这里看到的并排变体。'
+    )
 
     pdf.add_heading("展望 ($Outlook$)", level=3)
     pdf.add_paragraph('处理全部图表类型需要一些时间。我们预计将首先完成柱状图和饼图，然后试行更多的普通图。')
 
     pdf.add_heading("X-Y Plots", level=3)
-    pdf.add_paragraph('大多数其他图都涉及两个值轴，并以某种形式直接绘制x-y数据。 '
-                      '该系列可以绘制为线条，标记符号，两者兼而有之,'
-                      '或自定义图形（例如，开-高-低-闭图形）'
-                      '所有这些都具有缩放和轴/标题格式的概念。 '
-                      '在某一点上，一个例程将在数据序列上循环，并在给定的x-y位置上对数据点 "做一些事情"。'
-                      '给定一个基本的折线图，只需覆盖一个方法--比如说，$drawSeries()$，'
-                      '就可以很容易地推导出一个自定义的图表类型。')
+    pdf.add_paragraph(
+        '大多数其他图都涉及两个值轴，并以某种形式直接绘制x-y数据。 '
+        '该系列可以绘制为线条，标记符号，两者兼而有之,'
+        '或自定义图形（例如，开-高-低-闭图形）'
+        '所有这些都具有缩放和轴/标题格式的概念。 '
+        '在某一点上，一个例程将在数据序列上循环，并在给定的x-y位置上对数据点 "做一些事情"。'
+        '给定一个基本的折线图，只需覆盖一个方法--比如说，$drawSeries()$，'
+        '就可以很容易地推导出一个自定义的图表类型。'
+    )
 
     pdf.add_heading("自定义标记和自定义形状", level=3)
-    pdf.add_paragraph('众所周知的绘图软件包，如 $excel$、$Mathematica$和$Excel$，'
-                      '都提供了一系列的标记类型来添加到图表中。'
-                      '我们可以做得更好'
-                      '--你可以编写任何一种你想要的图表部件，只需告诉图表使用它作为例子。')
+    pdf.add_paragraph(
+        '众所周知的绘图软件包，如 $excel$、$Mathematica$和$Excel$，'
+        '都提供了一系列的标记类型来添加到图表中。'
+        '我们可以做得更好'
+        '--你可以编写任何一种你想要的图表部件，只需告诉图表使用它作为例子。'
+    )
 
     pdf.add_heading("组合图", level=4)
-    pdf.add_paragraph('结合多种绘图类型真的很容易。'
-                      '你只需在同一个矩形中绘制几个图表（条形图、线形图或其他什么图），'
-                      '根据需要取消显示轴。'
-                      '因此，一个图表可以将一条线与左轴上15年内的苏格兰伤寒病例相关联，'
-                      '右轴上有一组显示通货膨胀率的条形图。'
-                      '如果有谁能提醒我们这个例子的出处，'
-                      '我们会注明出处，并很高兴地展示这个著名的图表作为例子。')
+    pdf.add_paragraph(
+        '结合多种绘图类型真的很容易。'
+        '你只需在同一个矩形中绘制几个图表（条形图、线形图或其他什么图），'
+        '根据需要取消显示轴。'
+        '因此，一个图表可以将一条线与左轴上15年内的苏格兰伤寒病例相关联，'
+        '右轴上有一组显示通货膨胀率的条形图。'
+        '如果有谁能提醒我们这个例子的出处，'
+        '我们会注明出处，并很高兴地展示这个著名的图表作为例子。'
+    )
 
     pdf.add_heading("互动式编辑", level=3)
-    pdf.add_paragraph('图形包的一个原则是使图形组件的所有 "有趣的" '
-                      '属性都可以通过设置相应的公共属性的适当值来访问和改变。'
-                      '这使得我们很想建立一个像GUI编辑器一样的工具，'
-                      '来帮助你交互式地完成这些工作。')
-    pdf.add_paragraph('ReportLab使用Tkinter工具箱构建了这样的工具，'
-                      '该工具箱可加载描述图纸的纯Python代码并记录您的属性编辑操作。 '
-                      '然后，此“更改历史记录”用于为该图表的子类创建代码，'
-                      '例如，可以像其他任何图表一样立即保存和使用该代码，'
-                      '或将其用作另一个交互式编辑会话的新起点。')
+    pdf.add_paragraph(
+        '图形包的一个原则是使图形组件的所有 "有趣的" '
+        '属性都可以通过设置相应的公共属性的适当值来访问和改变。'
+        '这使得我们很想建立一个像GUI编辑器一样的工具，'
+        '来帮助你交互式地完成这些工作。'
+    )
+    pdf.add_paragraph(
+        'ReportLab使用Tkinter工具箱构建了这样的工具，'
+        '该工具箱可加载描述图纸的纯Python代码并记录您的属性编辑操作。 '
+        '然后，此“更改历史记录”用于为该图表的子类创建代码，'
+        '例如，可以像其他任何图表一样立即保存和使用该代码，'
+        '或将其用作另一个交互式编辑会话的新起点。'
+    )
     pdf.add_paragraph('不过这还在进行中，发布的条件还需要进一步细化。')
 
     pdf.add_heading("其他", level=3)
-    pdf.add_paragraph('这并不是对所有图表类的详尽介绍。这些类还在不断地改进中。'
-                      '要查看当前发行版中的确切内容，请使用 $graphdocpy.py$工具。'
-                      '默认情况下，它将在 $reportlab/graphics$ 上运行，并生成一份完整的报告。'
-                      '(如果你想在其他模块或软件包上运行它，'
-                      '$graphdocpy.py -h$ 会打印出一条帮助信息，告诉你如何运行。)')
+    pdf.add_paragraph(
+        '这并不是对所有图表类的详尽介绍。这些类还在不断地改进中。'
+        '要查看当前发行版中的确切内容，请使用 $graphdocpy.py$工具。'
+        '默认情况下，它将在 $reportlab/graphics$ 上运行，并生成一份完整的报告。'
+        '(如果你想在其他模块或软件包上运行它，'
+        '$graphdocpy.py -h$ 会打印出一条帮助信息，告诉你如何运行。)'
+    )
     pdf.add_paragraph('这是“文档小部件” ($Documenting Widgets$) 部分中提到的工具')
 
     pdf.add_heading("Shapes 多边形", level=2)
 
-    pdf.add_paragraph('本节介绍形状的概念及其作为图形库生成的所有输出的构建块的重要性。 '
-                      '介绍了现有形状的一些属性及其与图表的关系，'
-                      '并简要介绍了针对不同输出格式使用不同渲染器的概念。')
+    pdf.add_paragraph(
+        '本节介绍形状的概念及其作为图形库生成的所有输出的构建块的重要性。 '
+        '介绍了现有形状的一些属性及其与图表的关系，'
+        '并简要介绍了针对不同输出格式使用不同渲染器的概念。'
+    )
 
     pdf.add_heading("可用形状", level=3)
-    pdf.add_paragraph('绘画是由形状组成的。任何东西都可以通过组合相同的原始图形集来构建。'
-                      '模块$shapes.py$提供了一些可以添加到图形中的基本形状和构造。它们是')
+    pdf.add_paragraph(
+        '绘画是由形状组成的。任何东西都可以通过组合相同的原始图形集来构建。'
+        '模块$shapes.py$提供了一些可以添加到图形中的基本形状和构造。它们是'
+    )
 
     pdf.add_bullet('Rect - 矩形')
     pdf.add_bullet('Circle - 圆')
@@ -6289,14 +6342,17 @@ d.add(pc)
     pdf.add_bullet('Group - 组')
     pdf.add_bullet('$Path$ (<i>还没有完全实现，但将来会加入</i>) - 路径')
 
-    pdf.add_paragraph('下面的图画来自于我们的测试套件，显示了大部分的基本形状（除了组）。那些有绿色填充面的图形也被称为<i>实体图形</i>。'
-                      '(这些是$Rect$、$Circle$、$Ellipse$、$Wedge$和$Polygon$)。')
+    pdf.add_paragraph(
+        '下面的图画来自于我们的测试套件，显示了大部分的基本形状（除了组）。那些有绿色填充面的图形也被称为<i>实体图形</i>。'
+        '(这些是$Rect$、$Circle$、$Ellipse$、$Wedge$和$Polygon$)。'
+    )
 
     pdf.add_draw(testshapes.getDrawing06(), '基本的图形')
 
     pdf.add_heading("形状属性", level=3)
-    pdf.add_paragraph('形状有两种属性 --有的用来定义其几何形状，'
-                      '有的用来定义其样式。让我们创建一个红色的矩形，有3点粗的绿色边框。')
+    pdf.add_paragraph(
+        '形状有两种属性 --有的用来定义其几何形状，' '有的用来定义其样式。让我们创建一个红色的矩形，有3点粗的绿色边框。'
+    )
 
     pdf.add_embedded_code(
         """
@@ -6310,14 +6366,18 @@ r.fillColor = red
 r.strokeColor = green
 r.strokeWidth = 3
 d.add(r)
-    """, name='d')
+    """,
+        name='d',
+    )
     pdf.add_caption('红色矩形和绿色边框', category=constant.CAPTION_IMAGE)
 
     pdf.add_pencil_note()
     pdf.add_text_note("在未来的例子中，我们将省略导入语句。")
-    pdf.add_paragraph('所有的形状都有一些可以设置的属性。'
-                      '在交互式提示下，我们可以使用它们的^dumpProperties()^方法来列出这些属性。'
-                      '下面是你可以用来配置一个^Rect.Rex^的方法。')
+    pdf.add_paragraph(
+        '所有的形状都有一些可以设置的属性。'
+        '在交互式提示下，我们可以使用它们的^dumpProperties()^方法来列出这些属性。'
+        '下面是你可以用来配置一个^Rect.Rex^的方法。'
+    )
 
     pdf.add_code_eg(
         """
@@ -6338,12 +6398,15 @@ d.add(r)
     >>>
     """
     )
-    pdf.add_paragraph('形状一般有<i>style属性</i>和<i>geometry属性</i>。'
-                      '$x$, $y$, $width$ 和 $height$ 是几何属性的一部分，'
-                      '在创建矩形时必须提供，因为没有这些属性就没有什么意义。'
-                      '其他的属性是可选的，并且有合理的默认值。')
-    pdf.add_paragraph('你可以在随后的行中设置其他属性，或者将它们作为可选参数传递给构造函数。'
-                      '我们也可以用这种方式来创建我们的矩形。')
+    pdf.add_paragraph(
+        '形状一般有<i>style属性</i>和<i>geometry属性</i>。'
+        '$x$, $y$, $width$ 和 $height$ 是几何属性的一部分，'
+        '在创建矩形时必须提供，因为没有这些属性就没有什么意义。'
+        '其他的属性是可选的，并且有合理的默认值。'
+    )
+    pdf.add_paragraph(
+        '你可以在随后的行中设置其他属性，或者将它们作为可选参数传递给构造函数。' '我们也可以用这种方式来创建我们的矩形。'
+    )
     pdf.add_code_eg(
         """
     >>> r = Rect(5, 5, 200, 100,
@@ -6352,22 +6415,28 @@ d.add(r)
                  strokeWidth=3)
     """
     )
-    pdf.add_paragraph('我们来看看样式属性。'
-                      '$fillColor$是显而易见的。'
-                      '$stroke$ 是形状边缘的发布术语；$stroke$有一个颜色、宽度，'
-                      '可能还有一个破折号图案，以及一些（很少使用的）功能，'
-                      '用于当一条线转角时发生的情况。'
-                      '$rx$ 和 $ry$ 是可选的几何属性，用于定义圆角矩形的角半径。')
+    pdf.add_paragraph(
+        '我们来看看样式属性。'
+        '$fillColor$是显而易见的。'
+        '$stroke$ 是形状边缘的发布术语；$stroke$有一个颜色、宽度，'
+        '可能还有一个破折号图案，以及一些（很少使用的）功能，'
+        '用于当一条线转角时发生的情况。'
+        '$rx$ 和 $ry$ 是可选的几何属性，用于定义圆角矩形的角半径。'
+    )
     pdf.add_paragraph('其他所有的实体形状都具有相同的样式属性。')
 
-    pdf.add_heading("Lines - 线")
+    pdf.add_heading("Lines - 线", level=3)
 
-    pdf.add_paragraph('我们提供单条直线、多条直线和曲线。'
-                      '线条具有所有的$stroke*$属性，但没有$fillColor$。'
-                      '下面是一些直线和多线的例子以及相应的图形输出。')
+    pdf.add_paragraph(
+        '我们提供单条直线、多条直线和曲线。'
+        '线条具有所有的$stroke*$属性，但没有$fillColor$。'
+        '下面是一些直线和多线的例子以及相应的图形输出。'
+    )
 
-    pdf.add_embedded_code("""
+    pdf.add_embedded_code(
+        """
 from reportlab.graphics.shapes import Drawing
+from reportlab.lib import colors
 from reportlab.graphics.shapes import (
     Drawing, Line, PolyLine
 )
@@ -6383,14 +6452,18 @@ d.add(PolyLine([120,110, 130,150, 140,110, 150,150, 160,110,
           170,150, 180,110, 190,150, 200,110],
          strokeWidth=2,
          strokeColor=colors.purple))
-    """, name='d')
-    pdf.add_caption("线和折线示例")
+    """,
+        name='d',
+    )
+    pdf.add_caption("线和折线示例", category=constant.CAPTION_IMAGE)
 
     pdf.add_heading("字符串", level=3)
-    pdf.add_paragraph('$ReportLab$ 图形包并不是为花哨的文本布局而设计的，'
-                      '但它可以将字符串放置在所需的位置上，'
-                      '并进行 $left/right/center$ 对齐。'
-                      '让我们指定一个$String$对象，看看它的属性。')
+    pdf.add_paragraph(
+        '$ReportLab$ 图形包并不是为花哨的文本布局而设计的，'
+        '但它可以将字符串放置在所需的位置上，'
+        '并进行 $left/right/center$ 对齐。'
+        '让我们指定一个$String$对象，看看它的属性。'
+    )
     pdf.add_code_eg(
         """
     >>> s = String(10, 50, 'Hello World')
@@ -6405,15 +6478,21 @@ d.add(PolyLine([120,110, 130,150, 140,110, 150,150, 160,110,
     >>>
     """
     )
-    pdf.add_paragraph("字符串有一个 $textAnchor$ 属性，它的值可以是 $'start'$、$'middle'$、$'end'$之一。"
-                      "如果设置为$'start'$，则$x$和$y$与字符串的开始相关，以此类推。"
-                      "这提供了一个简单的方法来对齐文本。")
-    pdf.add_paragraph('字符串使用一个通用的字体标准：$Acrobat Reader$ 中存在的 $Type 1 Postscript$ 字体。'
-                      '因此，我们可以在 $ReportLab$ 中使用基本的14种字体，并获得准确的指标。'
-                      '我们最近还增加了对额外的$Type 1$字体的支持，'
-                      '渲染器都知道如何渲染$Type 1$字体。')
-    pdf.add_paragraph("下面是一个使用下面代码片段的更漂亮的例子。"
-                      "请查阅 $ReportLab$ 用户指南，了解像 $'DarkGardenMK'$ 这样的非标准字体是如何被注册的。")
+    pdf.add_paragraph(
+        "字符串有一个 $textAnchor$ 属性，它的值可以是 $'start'$、$'middle'$、$'end'$之一。"
+        "如果设置为$'start'$，则$x$和$y$与字符串的开始相关，以此类推。"
+        "这提供了一个简单的方法来对齐文本。"
+    )
+    pdf.add_paragraph(
+        '字符串使用一个通用的字体标准：$Acrobat Reader$ 中存在的 $Type 1 Postscript$ 字体。'
+        '因此，我们可以在 $ReportLab$ 中使用基本的14种字体，并获得准确的指标。'
+        '我们最近还增加了对额外的$Type 1$字体的支持，'
+        '渲染器都知道如何渲染$Type 1$字体。'
+    )
+    pdf.add_paragraph(
+        "下面是一个使用下面代码片段的更漂亮的例子。"
+        "请查阅 $ReportLab$ 用户指南，了解像 $'DarkGardenMK'$ 这样的非标准字体是如何被注册的。"
+    )
     pdf.add_code_eg(
         """
         d = Drawing(400, 200)
@@ -6450,7 +6529,7 @@ d.add(PolyLine([120,110, 130,150, 140,110, 150,150, 160,110,
                 'Hello World',
                 fontName='Times-Roman',
                 fontSize=size,
-                )
+            )
         )
 
     d.add(String(130, 120, 'Hello World', fontName='Courier', fontSize=36))
@@ -6460,26 +6539,660 @@ d.add(PolyLine([120,110, 130,150, 140,110, 150,150, 160,110,
     pdf.add_draw(d, '花式字体样例')
 
     pdf.add_heading("Paths", level=3)
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
-    pdf.add_paragraph()
+    pdf.add_paragraph(
+        '$Postscript paths$ 是图形学中一个广为人知的概念。'
+        '它们在$reportlab/graphics$中还没有实现，但很快就会实现。'
+    )
+
+    pdf.add_heading("Groups", level=3)
+    pdf.add_paragraph(
+        '最后，我们有 $Group$ 对象。'
+        '一个组有一个内容列表，就是其他节点。'
+        '它还可以应用变换 -- 它的内容可以被旋转、缩放或移动。'
+        '如果你懂数学，你可以直接设置变换。'
+        '否则它提供了旋转、缩放等方法。'
+        '在这里，我们做一个旋转和转换的组。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> g =Group(shape1, shape2, shape3)
+    >>> g.rotate(30)
+    >>> g.translate(50, 200)
+    """
+    )
+    pdf.add_paragraph(
+        '组提供了一个重复使用的工具。'
+        '你可以做一堆形状来表示某个组件 '
+        '--比如说，一个坐标系--并把它们放在一个叫做 "Axis" (轴) 的组里。'
+        '然后你可以把这个组放到其他组中，每个组都有不同的平移和旋转，'
+        '你就会得到一堆轴。它仍然是同一个组，被画在不同的地方。'
+    )
+    pdf.add_paragraph('让我们用一些只稍微多一点的代码来做这件事。')
+    pdf.add_code_eg(
+        """
+        d = Drawing(400, 200)
+    
+        Axis = Group(
+            Line(0,0,100,0),  # x axis
+            Line(0,0,0,50),   # y axis
+            Line(0,10,10,10), # ticks on y axis
+            Line(0,20,10,20),
+            Line(0,30,10,30),
+            Line(0,40,10,40),
+            Line(10,0,10,10), # ticks on x axis
+            Line(20,0,20,10),
+            Line(30,0,30,10),
+            Line(40,0,40,10),
+            Line(50,0,50,10),
+            Line(60,0,60,10),
+            Line(70,0,70,10),
+            Line(80,0,80,10),
+            Line(90,0,90,10),
+            String(20, 35, 'Axes', fill=colors.black)
+            )
+    
+        firstAxisGroup = Group(Axis)
+        firstAxisGroup.translate(10,10)
+        d.add(firstAxisGroup)
+    
+        secondAxisGroup = Group(Axis)
+        secondAxisGroup.translate(150,10)
+        secondAxisGroup.rotate(15)
+    
+        d.add(secondAxisGroup)
+    
+        thirdAxisGroup = Group(Axis,
+                               transform=mmult(translate(300,10),
+                                               rotate(30)))
+        d.add(thirdAxisGroup)
+    """
+    )
+
+    d = Drawing(400, 200)
+    Axis = Group(
+        Line(0, 0, 100, 0),  # x axis
+        Line(0, 0, 0, 50),  # y axis
+        Line(0, 10, 10, 10),  # ticks on y axis
+        Line(0, 20, 10, 20),
+        Line(0, 30, 10, 30),
+        Line(0, 40, 10, 40),
+        Line(10, 0, 10, 10),  # ticks on x axis
+        Line(20, 0, 20, 10),
+        Line(30, 0, 30, 10),
+        Line(40, 0, 40, 10),
+        Line(50, 0, 50, 10),
+        Line(60, 0, 60, 10),
+        Line(70, 0, 70, 10),
+        Line(80, 0, 80, 10),
+        Line(90, 0, 90, 10),
+        String(20, 35, 'Axes', fill=colors.black),
+    )
+    firstAxisGroup = Group(Axis)
+    firstAxisGroup.translate(10, 10)
+    d.add(firstAxisGroup)
+    secondAxisGroup = Group(Axis)
+    secondAxisGroup.translate(150, 10)
+    secondAxisGroup.rotate(15)
+    d.add(secondAxisGroup)
+    thirdAxisGroup = Group(
+        Axis, transform=mmult(translate(300, 10), rotate(30))
+    )
+    d.add(thirdAxisGroup)
+    # draw(d, "Groups examples")
+    pdf.add_draw(d, "$Groups$ 示例")
+
+    pdf.add_heading("小部件", level=2)
+    pdf.add_paragraph('现在，我们描述小部件及其与形状的关系。 ' '通过许多示例，展示了小部件如何使可重用图形组件成为现实。')
+
+    pdf.add_heading("Shapes vs. Widgets", level=3)
+    pdf.add_paragraph(
+        '到目前为止，图纸一直是 "$pure data$"(纯数据)。'
+        '除了协助程序员检查和检验图纸外，它们中没有任何代码可以真正做任何事情。'
+        '事实上，这是整个概念的基石，也是让我们实现可移植性的原因'
+        '--渲染器只需要实现原始形状。'
+    )
+    pdf.add_paragraph(
+        '我们希望构建可重复使用的图形对象，包括一个强大的图表库。'
+        '要做到这一点，我们需要重用比矩形和圆形更有形的东西。'
+        '我们应该能够编写对象供其他人重用 '
+        '--箭头、齿轮、文本框、UML图节点，甚至是完全成熟的图表。'
+    )
+    pdf.add_paragraph(
+        '小部件标准是建立在shapes模块之上的标准，'
+        '任何人都可以编写新的小部件，我们可以建立它们的库。'
+        '$Widget$ 支持 $getProperties()$ 和 $setProperties()$ 方法，'
+        '所以你可以检查和修改，也可以用统一的方式记录它们。'
+    )
+    pdf.add_bullet('小部件是一个可重复使用的形状')
+    pdf.add_bullet('当调用 $draw()$ 方法时，它可以在没有参数的情况下进行初始化，' '它创建了一个原始形状或一个组来表示自己。')
+    pdf.add_bullet('它可以有任何你想要的参数，它们可以驱动它的绘制方式。')
+    pdf.add_bullet(
+        '它有一个$demo()$方法，该方法应以200x100矩形返回一个精美的绘制示例。 '
+        '这是自动文档编制工具的基础。 $demo()$方法也应该有一个写得很好的文档字符串，因为它也可以打印！'
+    )
+    pdf.add_paragraph(
+        '小部件与图形只是一捆形状的想法背道而驰。 他们肯定有自己的代码吗？ '
+        '它们的工作方式是，小部件可以将自身转换为一组原始形状。 '
+        '如果其某些组件本身就是小部件，它们也将被转换。 '
+        '这在渲染过程中自动发生。 '
+        '渲染器将看不到图表小部件，而只会看到矩形，直线和字符串的集合。 '
+        '您还可以显式 “$flatten out$” (扁平化) 工程图，从而将所有小部件都转换为基元。'
+    )
+
+    pdf.add_heading("使用一个小部件", level=3)
+    pdf.add_paragraph('让我们想象一个简单的新部件。' '我们将使用一个小部件来绘制一张脸，然后展示它是如何实现的。')
+    pdf.add_code_eg(
+        """
+    >>> from reportlab.lib import colors
+    >>> from reportlab.graphics import shapes
+    >>> from reportlab.graphics import widgetbase
+    >>> from reportlab.graphics import renderPDF
+    >>> d = shapes.Drawing(200, 100)
+    >>> f = widgetbase.Face()
+    >>> f.skinColor = colors.yellow
+    >>> f.mood = "sad"
+    >>> d.add(f)
+    >>> renderPDF.drawToFile(d, 'face.pdf', 'A Face')
+    """
+    )
+
+    d = Drawing(200, 120)
+    f = widgetbase.Face()
+    f.x = 50
+    f.y = 10
+    f.skinColor = colors.yellow
+    f.mood = "sad"
+    d.add(f)
+    # draw(d, 'A sample widget')
+    pdf.add_draw(d, '小部件示例')
+
+    pdf.add_paragraph('让我们看看它有哪些可用的属性，使用我们前面看到的 $setProperties()$ 方法。')
+    pdf.add_code_eg(
+        """
+    >>> f.dumpProperties()
+    eyeColor = Color(0.00,0.00,1.00)
+    mood = sad
+    size = 80
+    skinColor = Color(1.00,1.00,0.00)
+    x = 10
+    y = 10
+    >>>
+    """
+    )
+
+    pdf.add_paragraph(
+        '上面的代码似乎奇怪的一件事是，当我们制作面孔时，我们没有设置大小或位置。 '
+        '这是必要的折衷方案，以允许使用一个统一的界面来构造小部件并对其进行记录'
+        '-它们不能在其 $__init__()$ 方法中要求参数。 '
+        '取而代之的是，通常将它们设计为适合200 x 100的窗口，'
+        '然后在创建后通过设置诸如 $x, y, width$ 等属性来移动或调整它们的大小。'
+    )
+    pdf.add_paragraph(
+        '此外，一个小部件总是提供一个$demo()$方法。'
+        '像这样简单的总是在设置属性之前做一些合理的事情，但更复杂的像图表这样的就没有任何数据可供绘制。'
+        '文档工具会调用$demo()$，'
+        '这样你的花哨的新图表类就可以创建一张图来展示它的能力。'
+    )
+    pdf.add_paragraph('以下是一些简单的小部件，可在模块 <i>$signsandsymbols.py$</i> 中使用。')
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.widgets import signsandsymbols
+
+d = Drawing(230, 230)
+
+ne = signsandsymbols.NoEntry()
+ds = signsandsymbols.DangerSign()
+fd = signsandsymbols.FloppyDisk()
+ns = signsandsymbols.NoSmoking()
+
+ne.x, ne.y = 10, 10
+ds.x, ds.y = 120, 10
+fd.x, fd.y = 10, 120
+ns.x, ns.y = 120, 120
+
+d.add(ne)
+d.add(ds)
+d.add(fd)
+d.add(ns)
+    """,
+        name='d',
+    )
+    pdf.add_caption(
+        '一些来自 $signandsymbols.py$ 的例子。', category=constant.CAPTION_IMAGE
+    )
+    pdf.add_paragraph('而这是生成它们所需要的代码，如上图所示。')
+
+    pdf.add_heading("复合小部件", level=3)
+    pdf.add_paragraph(
+        '让我们想象一下，一个复合小组件可以并排绘制两个面孔。' '当你有了 $Face widget$ 时，就可以很容易地构建这个小部件。'
+    )
+    pdf.add_code_eg(
+        """
+    >>> tf = widgetbase.TwoFaces()
+    >>> tf.faceOne.mood
+    'happy'
+    >>> tf.faceTwo.mood
+    'sad'
+    >>> tf.dumpProperties()
+    faceOne.eyeColor = Color(0.00,0.00,1.00)
+    faceOne.mood = happy
+    faceOne.size = 80
+    faceOne.skinColor = None
+    faceOne.x = 10
+    faceOne.y = 10
+    faceTwo.eyeColor = Color(0.00,0.00,1.00)
+    faceTwo.mood = sad
+    faceTwo.size = 80
+    faceTwo.skinColor = None
+    faceTwo.x = 100
+    faceTwo.y = 10
+    >>>
+    """
+    )
+    pdf.add_paragraph(
+        "故意暴露了'$faceOne$'和'$faceTwo$'这两个属性，这样你就可以直接获取它们。也可以有顶层属性，但本例中没有。"
+    )
+    pdf.add_heading("校验小部件", level=3)
+    pdf.add_paragraph(
+        '小组件设计者决定验证的策略，但默认情况下，' '如果设计者提供了检查信息，它们就会像形状一样工作--检查每一个任务。'
+    )
+    pdf.add_heading("实现小部件", level=3)
+    pdf.add_paragraph('我们试图让它尽可能容易地实现小部件。下面是一个不做任何类型检查的 $Face$ 小组件的代码。')
+    pdf.add_code_eg(
+        """
+    class Face(Widget):
+        \"\"\"This draws a face with two eyes, mouth and nose.\"\"\"
+    
+        def __init__(self):
+            self.x = 10
+            self.y = 10
+            self.size = 80
+            self.skinColor = None
+            self.eyeColor = colors.blue
+            self.mood = 'happy'
+    
+        def draw(self):
+            s = self.size  # abbreviate as we will use this a lot
+            g = shapes.Group()
+            g.transform = [1,0,0,1,self.x, self.y]
+            # background
+            g.add(shapes.Circle(s * 0.5, s * 0.5, s * 0.5,
+                                fillColor=self.skinColor))
+            # CODE OMITTED TO MAKE MORE SHAPES
+            return g
+    """
+    )
+    pdf.add_paragraph('我们在这个文档中省略了所有绘制形状的代码，但你可以在 $widgetbase.py$ 中找到它。')
+    pdf.add_paragraph(
+        '默认情况下，任何没有前导下划线的属性都会被 $setProperties$ 返回。这是为了鼓励一致的编码惯例而特意制定的政策。'
+    )
+    pdf.add_paragraph(
+        '一旦你的 $widget$ 工作了，你可能想要添加对验证的支持。'
+        '这涉及到在类中添加一个名为 $_verifyMap$ 的字典，它从属性名映射到 "检查函数"。'
+        '$widgetbase.py$ 模块定义了一堆检查函数，比如 $isNumber$, $isListOfShapes$ 等等。'
+        '你也可以简单地使用 $None$，这意味着属性必须存在，但可以有任何类型。'
+        '而且你可以也应该写你自己的检查函数。'
+        '我们想将 "$mood$" 自定义属性限制为 "$happy$"、"$sad$"或 "$ok$" 等值。'
+        '所以我们这样做:'
+    )
+    pdf.add_code_eg(
+        """
+    class Face(Widget):
+        \"\"\"This draws a face with two eyes.  It exposes a
+        couple of properties to configure itself and hides
+        all other details\"\"\"
+        def checkMood(moodName):
+            return (moodName in ('happy','sad','ok'))
+        _verifyMap = {
+            'x': shapes.isNumber,
+            'y': shapes.isNumber,
+            'size': shapes.isNumber,
+            'skinColor':shapes.isColorOrNone,
+            'eyeColor': shapes.isColorOrNone,
+            'mood': checkMood
+            }
+    """
+    )
+    pdf.add_paragraph(
+        '这个检查将在每次属性分配时执行；'
+        '或者，如果$config.shapeChecking$是关闭的，'
+        '每当你调用$myFace.verify()$时，这个检查就会被执行。'
+    )
+    pdf.add_heading("记录小部件", level=3)
+    pdf.add_paragraph(
+        '我们正在开发一个通用工具来记录任何Python包或模块；'
+        '它已经记录到到 $ReportLab$ 中，并将用于为 $ReportLab$包生成一个引用。'
+        '当它遇到小部件时，它会在手册中添加额外的章节，包括：'
+    )
+    pdf.add_bullet('您的小组件类的文档字符串')
+    pdf.add_bullet('从您的^demo()^方法中提取的代码片段，以便人们可以看到如何使用它')
+    pdf.add_bullet('由^demo()^方法产生的图画。')
+    pdf.add_bullet('绘图中小组件的属性转储。')
+    pdf.add_paragraph(
+        '这个工具意味着我们可以保证在网站和印刷品上的小部件和图表上都有最新的文档； ' '而且您也可以为自己的小部件做同样的事情！'
+    )
+    pdf.add_heading("小工具设计策略", level=3)
+    pdf.add_paragraph(
+        '我们无法提出一个一致的架构来设计 $widget$，所以我们把这个问题留给了作者！'
+        '如果你不喜欢默认的验证策略，或者是 $setProperties/getProperties$ 的工作方式，'
+        '你可以自己覆盖它们。'
+    )
+    pdf.add_paragraph(
+        '对于简单的 $widgets$ ，建议你做我们上面所做的：'
+        '选择非重叠的属性，在 $__init__$ 上初始化每个属性，'
+        '然后在调用 $draw()$ 时构造一切。你可以使用 $__setattr__$ 钩子，'
+        '当某些属性被设置时，就会更新所有的东西。'
+        '考虑一个饼图。如果你想暴露各个切片，你可以写这样的代码。'
+    )
+    pdf.add_code_eg(
+        """
+    from reportlab.graphics.charts import piecharts
+    pc = piecharts.Pie()
+    pc.defaultColors = [navy, blue, skyblue] #used in rotation
+    pc.data = [10,30,50,25]
+    pc.slices[7].strokeWidth = 5
+    """
+    )
+    pdf.add_paragraph(
+        '最后一行是有问题的，因为我们只创建了四个切片'
+        '--事实上，我们可能还没有创建它们。'
+        '$pc.slices[7]$是否会引起错误？'
+        '如果定义了第七个楔形图，用来覆盖默认设置，这是不是一个解决方案？'
+        '我们现在把这个问题直接丢给 $widget$ 作者，并建议您在暴露 "子对象" 之前先做一个简单的工作，'
+        '因为子对象的存在取决于其他属性的值 :-)'
+    )
+    pdf.add_paragraph(
+        '我们还讨论了父级小部件可以将属性传递给其子级的规则。 '
+        '人们似乎普遍希望以一种全局的方式来表示“所有切片均从其父级的 $lineWidth$ 获得其 $lineWidth$ ”，'
+        '而无需进行大量重复编码。 '
+        '我们没有通用的解决方案，因此请再次将其留给小部件作者。 '
+        '我们希望人们将尝试下推，下拉和模式匹配方法，并提出一些不错的东西。'
+        ' 同时，我们当然可以编写整体式的图表小部件，'
+        '这些小部件的工作方式类似于Visual Basic和Delphi。'
+    )
+    pdf.add_paragraph('现在看看下面的示例代码，使用一个早期版本的饼图小组件和它产生的输出。')
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.charts.piecharts import Pie
+from reportlab.graphics.shapes import Drawing, String
+from reportlab.lib import colors
+
+d = Drawing(400,200)
+d.add(String(100,175,"Without labels", textAnchor="middle"))
+d.add(String(300,175,"With labels", textAnchor="middle"))
+
+pc = Pie()
+pc.x = 25
+pc.y = 50
+pc.data = [10,20,30,40,50,60]
+pc.slices[0].popout = 5
+d.add(pc, 'pie1')
+
+pc2 = Pie()
+pc2.x = 150
+pc2.y = 50
+pc2.data = [10,20,30,40,50,60]
+pc2.labels = ['a','b','c','d','e','f']
+d.add(pc2, 'pie2')
+
+pc3 = Pie()
+pc3.x = 275
+pc3.y = 50
+pc3.data = [10,20,30,40,50,60]
+pc3.labels = ['a','b','c','d','e','f']
+pc3.slices.labelRadius = 0.65
+pc3.slices.fontName = "Helvetica-Bold"
+pc3.slices.fontSize = 16
+pc3.slices.fontColor = colors.yellow
+d.add(pc3, 'pie3')
+""",
+        name='d',
+    )
+    pdf.add_caption('一些饼图示例', category=constant.CAPTION_IMAGE)
 
 
-def chapter11(pdf):
+def chapter11_graph(pdf):
     pass
+
+
+def chapter12_appendix_1(pdf):
+    pdf.add_appendix("$ReportLab$ 示例")
+    pdf.add_paragraph(
+        "在$reportlab/demos$的子目录中，有许多工作实例，几乎展示了 $reportlab$ 使用的所有方面。"
+    )
+
+    pdf.add_heading("奥德赛", level=2)
+    pdf.add_paragraph(
+        "$odyssey.py$、$dodyssey.py$和$fodyssey.py$"
+        "这三个脚本都是取文件$oddyssey.txt$并生成PDF文档。"
+        "包含的 $odyssey.txt$ 很短；"
+        "更长和更多的测试版本可以在 <a href=\"ftp://ftp.reportlab.com/odyssey.full.zip\">"
+        "$ftp://ftp.reportlab.com/odyssey.full.zip$</a> 找到。"
+    )
+    pdf.add_code_eg(
+        """
+    Windows
+    cd reportlab\\demos\\odyssey
+    python odyssey.py
+    start odyssey.pdf
+    
+    Linux
+    cd reportlab/demos/odyssey
+    python odyssey.py
+    acrord odyssey.pdf
+    """
+    )
+    pdf.add_paragraph(
+        "$odyssey.py$ 脚本显示了简单的格式化。"
+        "它的运行速度相当快，但它所做的只是收集文本并将其强行放到画布页面上。"
+        "它完全不进行段落操作，所以你可以看到 $XML$ &lt; 和 &gt; 标签。"
+    )
+    pdf.add_paragraph(
+        "脚本 $fodyssey.py$ 和 $dodyssey.py$ 处理段落格式，"
+        "所以你可以看到颜色变化等。"
+        "这两个脚本都使用了文档模板类， $dodyssey.py$ 脚本显示了做双列布局的能力，并使用了多个页面模板。"
+    )
+    pdf.add_heading("标准字体和颜色", level=2)
+    pdf.add_paragraph(
+        "在$reportlab/demos/stdfonts$中，"
+        "脚本 $stdfonts.py$ 可以用来说明 $ReportLab$ 的标准字体。"
+        "使用以下方法运行该脚本"
+    )
+    pdf.add_code_eg(
+        """
+    cd reportlab\\demos\\stdfonts
+    python stdfonts.py
+    """
+    )
+    pdf.add_paragraph(
+        "生成两个PDF文档，$StandardFonts_MacRoman.pdf$ 和 $StandardFonts_WinAnsi.pdf$，"
+        "其中显示了两种最常见的内置字体编码。"
+    )
+    pdf.add_paragraph(
+        "在$reportlab/demos/colors$中的 $colortest.py$ 脚本展示了 "
+        " $reportlab$ 设置和使用颜色的不同方式。"
+    )
+    pdf.add_paragraph(
+        "试着运行该脚本并查看输出文档，$colortest.pdf$。"
+        "这显示了不同的颜色空间和大量在$reportlab.lib.cols$模块中命名的颜色选择。"
+    )
+    pdf.add_paragraph(
+        "$Dinu Gherman$ 贡献了这个有用的脚本，"
+        "它使用 $reportlab$ 从 $Python$ 脚本中生成漂亮的彩色$PDF$文档，包括类、方法和函数的书签。"
+        "要得到一个漂亮的主脚本版本，可以尝试一下"
+    )
+    pdf.add_code_eg(
+        """
+    cd reportlab/demos/py2pdf
+    python py2pdf.py py2pdf.py
+    acrord py2pdf.pdf
+    """
+    )
+    pdf.add_paragraph("即我们使用$py2pdf$在文档中生成一个漂亮的$py2pdf.py$版本，根名相同，扩展名为$.pdf$。")
+    pdf.add_paragraph("$py2pdf.py$脚本有很多选项，这些选项超出了这个简单介绍的范围，请参考脚本开头的注释。")
+    pdf.add_heading("Gadflypaper", level=2)
+    pdf.add_paragraph(
+        "$reportlab/demos/gadflypaper$中的$Python$脚本$gfe.py$使用了内联式的文档编制方式。"
+        "这个脚本几乎完全由$Aaron Watters$制作，"
+        "产生了一个描述$Aaron$的$gadfly$内存数据库的Python文档。"
+        "要生成该文档，请使用"
+    )
+    pdf.add_code_eg(
+        """
+    cd reportlab\\gadflypaper
+    python gfe.py
+    start gfe.pdf
+    """
+    )
+    pdf.add_paragraph(
+        "PDF文档中的所有内容都是由脚本制作的，这就是为什么这是一种内联式文档制作方式。"
+        "所以，为了生成一个标题，后面跟着一些文本，脚本使用了函数$header$和$p$，"
+        "这两个函数接收一些文本并附加到一个全局故事列表中。"
+    )
+    pdf.add_code_eg(
+        '''
+    header("Conclusion")
+    
+    p("""The revamped query engine design in Gadfly 2 supports
+    ..........
+    and integration.""")
+    '''
+    )
+    pdf.add_heading("Pythonpoint", level=2)
+    pdf.add_paragraph(
+        "$Andy Robinson$改进了$pythonpoint.py$脚本("
+        "在$reportlab\\demos\\pythonpoint$中)，直到它成为一个真正有用的脚本。"
+        "它接收一个包含XML标记的输入文件，并使用一个 $xmllib$样式 分析器将标记映射到$PDF$幻灯片中。"
+        "当在它自己的目录下运行时，$pythonpoint.py$ "
+        "将文件 $pythonpoint.xml$ 作为默认输入，并生成 $pythonpoint.pdf$，"
+        "这是 $Pythonpoint$ 的文档。您也可以通过一篇较早的文章看到它的运行情况。"
+    )
+    pdf.add_code_eg(
+        """
+    cd reportlab\\demos\\pythonpoint
+    python pythonpoint.py monterey.xml
+    start monterey.pdf
+    """
+    )
+    pdf.add_paragraph(
+        "$pythonpoint$ 不仅是自文档，而且还演示了 $reportlab$ 和 $PDF$ 。"
+        "它使用了 $reportlab$ 的许多功能（文档模板、表格等）。"
+        "$PDF$ 的奇特功能，如淡入和书签也被展示得很好。"
+        "$XML$ 文档的使用可以与 $gadflypaper$ 演示中的<i>$inline$</i>风格形成对比；"
+        "内容与格式完全分离。"
+    )
+
+
+def chapter13_appendix_2(pdf):
+    pdf.add_appendix("译者备注")
+
+    pdf.add_paragraph("后面的信息为译者在翻译本手册时，学习，查询资料做的备注，或者说总结，没有对应的英文版...")
+    pdf.add_heading("$Win Ansi$ 编码 和 $Mac Roman$ 编码", level=2)
+    pdf.add_paragraph(
+        '参考: <font color="blue"><u>'
+        '<a href="https://www.ziti163.com/Item/2054.aspx">'
+        '$ANSI$，$ISO-8859-1$和$MacRoman$字符集之间的差异'
+        '</a></u></font>'
+    )
+    pdf.add_paragraph('以下为原文和译文:')
+    pdf.add_paragraph(
+        'Of the three main 8-bit character sets, '
+        'only ISO-8859-1 is produced by a standards organization.  '
+        'The three sets are identical for the 95 characters from 32 to 126, '
+        'the ASCII character set.  '
+        'The ANSI character set, also known as Windows-1252, '
+        'has become a Microsoft proprietary character set; '
+        'it is a superset of ISO-8859-1 with the addition of 27 characters '
+        'in locations that ISO designates for control codes.  '
+        'Apple’s proprietary MacRoman character set '
+        'contains a similar variety of characters from 128 to 255, '
+        'but with very few of them assigned the same numbers, '
+        'and also assigns characters to the control-code positions.'
+    )
+    pdf.add_paragraph(
+        'The characters that appear in the first column '
+        'of the following tables are generated '
+        'from Unicode numeric character references, '
+        'and so they should appear correctly in any Web browser '
+        'that supports Unicode and that has suitable fonts available, '
+        'regardless of the operating system.'
+    )
+
+    pdf.add_bullet('ANSI characters not present in ISO-8859-1')
+    pdf.add_bullet('ANSI characters not present in MacRoman')
+    pdf.add_bullet('ISO-8859-1 characters not present in ANSI')
+    pdf.add_bullet('ISO-8859-1 characters not present in MacRoman')
+    pdf.add_bullet('MacRoman characters not present in ANSI')
+    pdf.add_bullet('MacRoman characters not present in ISO-8859-1')
+    pdf.add_paragraph("译文:")
+    pdf.add_paragraph(
+        '在三种主要的8位字符集中，只有$ISO-8859-1$是由标准组织制作的。 '
+        '这三个字符集对于32到126这95个字符，即$ASCII$字符集是相同的。 '
+        '$ANSI$字符集，也就是$Windows-1252$，已经成为微软的专有字符集；'
+        '它是$ISO-8859-1$的超集，在ISO指定控制代码的位置增加了27个字符。 '
+        '苹果公司专有的$MacRoman$字符集包含从128到255个类似的各种字符，'
+        '但其中很少有相同的数字，而且还将字符分配到控制码的位置。'
+    )
+    pdf.add_paragraph(
+        '下表第一栏中显示的字符是从$Unicode$数字字符引用生成的，'
+        '因此，无论使用什么操作系统，'
+        '它们都应该在支持$Unicode$并具有合适的可用字体的任何$Web$浏览器中正确显示。'
+    )
+    pdf.add_bullet('$ISO-8859-1$ 中不存在 $ANSI$ 字符')
+    pdf.add_bullet('$MacRoman$ 中不存在 $ANSI$ 字符')
+    pdf.add_bullet('$ANSI$ 中不存在 $ISO-8859-1$ 字符')
+    pdf.add_bullet('$MacRoman$ 中不存在 $ISO-8859-1$ 字符')
+    pdf.add_bullet('$ANSI$ 中不存在 $MacRoman$ 字符')
+    pdf.add_bullet('$ISO-8859-1$ 中不存在 $MacRoman$ 字符')
+    pdf.add_heading('其他参考:', level=3)
+    pdf.add_paragraph(
+        '$Win Ansi$ 编码总体来说就是, '
+        '微软公司根据$windows$系统的本地化和国际化地区，'
+        '默认采取的某种编码.'
+        '参考:<font color="blue"><u>'
+        '<a href="https://www.cnblogs.com/malecrab/p/5300486.html">'
+        '$ANSI$是什么编码？</a></u></font>'
+    )
+
+    pdf.add_heading('生成pdf文件，推荐开源字体：思源黑体', level=2)
+
+    pdf.add_paragraph(
+        'True Type 字体介绍: <font color="blue"><u>'
+        '<a href="https://blog.csdn.net/gaojinshan/article/details/80319856">'
+        'https://blog.csdn.net/gaojinshan/article/details/80319856'
+        '</a></u></font>'
+    )
+
+    pdf.add_paragraph(
+        '思源黑体、思源宋体TTF介绍: <font color="blue"><u>'
+        '<a href="https://www.v2ex.com/t/399030">'
+        'https://www.v2ex.com/t/399030'
+        '</a></u></font>'
+    )
+
+    pdf.add_paragraph("$GitHub 资源: $")
+
+    pdf.add_bullet(
+        '1. <font color="blue"><u>'
+        '<a href="https://github.com/be5invis/source-han-sans-ttf/releases">'
+        'https://github.com/be5invis/source-han-sans-ttf/releases'
+        '</a></u></font>'
+    )
+    pdf.add_bullet(
+        '2. <font color="blue"><u>'
+        '<a href="https://github.com/junmer/source-han-serif-ttf">'
+        'https://github.com/junmer/source-han-serif-ttf'
+        '</a></u></font>'
+    )
+    pdf.add_bullet(
+        '3. <font color="blue"><u>'
+        '<a href="https://github.com/Pal3love/Source-Han-TrueType">'
+        'https://github.com/Pal3love/Source-Han-TrueType'
+        '</a></u></font>'
+    )
 
 
 def main(filename):
@@ -6488,17 +7201,19 @@ def main(filename):
     )
     pdf = PDF(filename, fonts_dir=fonts_dir)
 
-    chapter1(pdf)
-    chapter2(pdf)
-    chapter3(pdf)
-    chapter4(pdf)
-    chapter5(pdf)
-    chapter6(pdf)
-    chapter7(pdf)
-    chapter8(pdf)
-    chapter9(pdf)
-    chapter10(pdf)
-    chapter11(pdf)
+    chapter1_introduction(pdf)
+    chapter2_overview(pdf)
+    chapter3_font(pdf)
+    chapter4_special_features(pdf)
+    chapter5_platypus(pdf)
+    chapter6_paragraph(pdf)
+    chapter7_table(pdf)
+    chapter8_flowables(pdf)
+    chapter9_useful_flowables(pdf)
+    chapter10_custom_flowables(pdf)
+    chapter11_graph(pdf)
+    chapter12_appendix_1(pdf)
+    chapter13_appendix_2(pdf)
     pdf.build_2_save()
 
 
