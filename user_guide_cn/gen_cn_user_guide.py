@@ -6128,7 +6128,7 @@ d.add(pc)
     pdf.add_paragraph('在使用这些自定义属性之前，您需要使用以下命令禁用简单标签：$pc.simplesLabels=0$')
     pdf.add_space()
 
-    cn_data = [
+    attribute = [
         ["属性", "描述"],
         ["label_dx", 'X轴标签偏移\nX Offset of the label'],
         ["label_dy", 'Y轴标签偏移\nY Offset of the label'],
@@ -6157,7 +6157,7 @@ d.add(pc)
         ["label_pointer_strokeColor", '指示线颜色\nColor of indicator line'],
         ["label_pointer_strokeWidth", '指示线宽度\nWidth of indicator line'],
     ]
-    table = Table(cn_data, style=attr_style, colWidths=(130, 300))
+    table = Table(attribute, style=attr_style, colWidths=(130, 300))
     pdf.add_flowable(table)
     pdf.add_caption("Pie.slices 自定义 label", category=constant.CAPTION_TABLE)
 
@@ -6261,6 +6261,54 @@ d.add(pc)
                       '(如果你想在其他模块或软件包上运行它，'
                       '$graphdocpy.py -h$ 会打印出一条帮助信息，告诉你如何运行。)')
     pdf.add_paragraph('这是“文档小部件” ($Documenting Widgets$) 部分中提到的工具')
+
+    pdf.add_heading("Shapes 多边形", level=2)
+
+    pdf.add_paragraph('本节介绍形状的概念及其作为图形库生成的所有输出的构建块的重要性。 '
+                      '介绍了现有形状的一些属性及其与图表的关系，'
+                      '并简要介绍了针对不同输出格式使用不同渲染器的概念。')
+
+    pdf.add_heading("可用形状", level=3)
+    pdf.add_paragraph('绘画是由形状组成的。任何东西都可以通过组合相同的原始图形集来构建。'
+                      '模块$shapes.py$提供了一些可以添加到图形中的基本形状和构造。它们是')
+
+    pdf.add_bullet('Rect - 矩形')
+    pdf.add_bullet('Circle - 圆')
+    pdf.add_bullet('Ellipse - 椭圆')
+    pdf.add_bullet('Wedge (a pie slice) - 扇形')
+    pdf.add_bullet('Polygon - 多边形')
+    pdf.add_bullet('Line - 线')
+    pdf.add_bullet('PolyLine - 折线')
+    pdf.add_bullet('String - 字符串')
+    pdf.add_bullet('Group - 组')
+    pdf.add_bullet('$Path$ (<i>还没有完全实现，但将来会加入</i>) - 路径')
+
+    pdf.add_paragraph('下面的图画来自于我们的测试套件，显示了大部分的基本形状（除了组）。那些有绿色填充面的图形也被称为<i>实体图形</i>。'
+                      '(这些是$Rect$、$Circle$、$Ellipse$、$Wedge$和$Polygon$)。')
+
+    pdf.add_draw(testshapes.getDrawing06(), '基本的图形')
+
+    pdf.add_heading("形状属性", level=3)
+    pdf.add_paragraph('形状有两种属性 --有的用来定义其几何形状，'
+                      '有的用来定义其样式。让我们创建一个红色的矩形，有3点粗的绿色边框。')
+
+    pdf.add_embedded_code(
+        """
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.shapes import Rect
+from reportlab.lib.colors import red, green
+
+d = Drawing(220,120)
+r = Rect(5, 5, 200, 100)
+r.fillColor = red
+r.strokeColor = green
+r.strokeWidth = 3
+d.add(r)
+    """, name='d')
+    pdf.add_caption('红色矩形和绿色边框', category=constant.CAPTION_IMAGE)
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
+    # pdf.add_paragraph()
     # pdf.add_paragraph()
     # pdf.add_paragraph()
     # pdf.add_paragraph()

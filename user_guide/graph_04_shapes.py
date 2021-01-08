@@ -75,17 +75,17 @@ cn_disc('绘画是由形状组成的。任何东西都可以通过组合相同�
         '模块$shapes.py$提供了一些可以添加到图形中的基本形状和构造。它们是')
 
 
-bullet("Rect")
-bullet("Circle")
-bullet("Ellipse")
-bullet("Wedge (a pie slice)")
-bullet("Polygon")
-bullet("Line")
-bullet("PolyLine")
-bullet("String")
-bullet("Group")
+bullet("Rect - 矩形")
+bullet("Circle - 圆")
+bullet("Ellipse - 椭圆")
+bullet("Wedge (a pie slice) - 扇形")
+bullet("Polygon - 多边形")
+bullet("Line - 线")
+bullet("PolyLine - 折线")
+bullet("String - 字符串")
+bullet("Group - 组")
 # bullet("Path (<i>not implemented yet, but will be added in the future</i>)")
-cn_bullet("$Path$ (<i>还没有完全实现，但将来会加入</i>)")
+cn_bullet("$Path$ (<i>还没有完全实现，但将来会加入</i>) - 路径")
 
 disc(
     """
