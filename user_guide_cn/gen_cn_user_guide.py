@@ -34,7 +34,7 @@ from reportlab.graphics.shapes import (
 from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
 from components import constant
-from core import examples
+from core import doc_examples
 from core.pdf import PDF
 
 
@@ -532,7 +532,7 @@ def chapter2_overview(pdf):
 
     pdf.add_heading("绘图操作", level=2)
     pdf.add_paragraph("假设上面提到的$hello$函数实现如下（我们先不详细解释每个操作）。")
-    pdf.add_code_eg(examples.testhello)
+    pdf.add_code_eg(doc_examples.testhello)
     pdf.add_paragraph(
         "检查这段代码时注意到，使用画布进行的操作基本上有两种类型。 "
         "第一种类型是在页面上画一些东西，如一个文本字符串或一个矩形或一条线。"
@@ -545,7 +545,7 @@ def chapter2_overview(pdf):
         "（例如，将填充颜色从原来的任何颜色改为蓝色，或者将当前的字体改为15点的$Times-Roman$）。"
     )
     pdf.add_paragraph("上面列出的 \"hello world \"程序生成的文档将包含以下图形。")
-    pdf.add_illustration(examples.hello, 'pdfgen 生成 "Hello World"')
+    pdf.add_illustration(doc_examples.hello, 'pdfgen 生成 "Hello World"')
 
     pdf.add_heading("关于本文档中的演示", level=3)
     pdf.add_paragraph(
@@ -787,12 +787,12 @@ def chapter2_overview(pdf):
         "再向上移动一英寸，来标识页面上的位置。"
     )
     pdf.add_paragraph("例如，下面的函数在$canvas$上绘制一些元素。")
-    pdf.add_code_eg(examples.testcoords)
+    pdf.add_code_eg(doc_examples.testcoords)
     pdf.add_paragraph(
         "在默认的用户空间中，\"原点\"^(0,0)^点在左下角。  "
         "在默认的用户空间中执行$coords$函数（针对 \"演示迷你页\"），我们得到以下结果。"
     )
-    pdf.add_illustration(examples.coords, '坐标系统')
+    pdf.add_illustration(doc_examples.coords, '坐标系统')
 
     pdf.add_heading("移动原点：$translate$方法", level=3)
     pdf.add_paragraph(
@@ -800,9 +800,9 @@ def chapter2_overview(pdf):
         "$canvas.translate(^x,y^)$方法将当前页面的原点移动到当前由^(x,y)^确定的点。"
     )
     pdf.add_paragraph("例如下面的平移函数首先移动原点，然后再绘制如上所示的相同对象。")
-    pdf.add_code_eg(examples.testtranslate)
+    pdf.add_code_eg(doc_examples.testtranslate)
     pdf.add_paragraph("这就产生了以下结果：")
-    pdf.add_illustration(examples.translate, "移动原点：$translate$方法")
+    pdf.add_illustration(doc_examples.translate, "移动原点：$translate$方法")
     pdf.add_pencil_note()
     pdf.add_text_note(
         "如示例中所示，完全可以将对象或对象的一部分绘制到\"页面之外\"。"
@@ -817,20 +817,20 @@ def chapter2_overview(pdf):
         "要在所有维度上将图形缩小一半，使用$dx = dy = 0.5$。 "
         "然而为了说明问题，我们举一个例子，其中$dx$和$dy$是不同的。"
     )
-    pdf.add_code_eg(examples.testscale)
+    pdf.add_code_eg(doc_examples.testscale)
     pdf.add_paragraph("这样就会产生一个 \"短小精悍\"的缩小版的之前显示的操作。")
-    pdf.add_illustration(examples.scale, "缩放坐标系统")
+    pdf.add_illustration(doc_examples.scale, "缩放坐标系统")
     pdf.add_pencil_note()
     pdf.add_text_note("缩放也可能会将对象或对象的一部分从页面上移开，或者可能会导致对象 \"缩水为零\"。")
     pdf.add_paragraph("缩放和翻译可以结合起来，但操作的顺序很重要。")
-    pdf.add_code_eg(examples.testscaletranslate)
+    pdf.add_code_eg(doc_examples.testscaletranslate)
     pdf.add_paragraph(
         "这个示例函数首先保存当前的$canvas$状态，然后进行$scale$和$translate$操作。 "
         "之后，函数恢复了状态（有效地消除了缩放和翻译的影响），"
         "然后以不同的顺序进行<i>相同的</i>操作。"
         "观察下面的效果。"
     )
-    pdf.add_illustration(examples.scaletranslate, "缩放和翻译")
+    pdf.add_illustration(doc_examples.scaletranslate, "缩放和翻译")
     pdf.add_pencil_note()
     pdf.add_text_note(
         "缩放会收缩或增长所有的东西，包括线宽，"
@@ -849,9 +849,9 @@ def chapter2_overview(pdf):
     )
     pdf.add_heading("镜像", level=3)
     pdf.add_paragraph("有趣的是，虽然可能不是非常有用，但注意到比例因子可以是负的。 例如下面的函数")
-    pdf.add_code_eg(examples.testmirror)
+    pdf.add_code_eg(doc_examples.testmirror)
     pdf.add_paragraph("创建$coord$函数绘制的元素的镜像。")
-    pdf.add_illustration(examples.mirror, "镜像")
+    pdf.add_illustration(doc_examples.mirror, "镜像")
     pdf.add_paragraph("注意，文字串是倒着画的。")
     pdf.add_heading("颜色", level=2)
     pdf.add_paragraph(
@@ -870,8 +870,8 @@ def chapter2_overview(pdf):
         "或者通过灰度级别。"
         "下面的$colors$函数对这四种方法分别进行了练习。"
     )
-    pdf.add_code_eg(examples.testRGBcolors)
-    pdf.add_illustration(examples.colorsRGB, "RGB 颜色模块")
+    pdf.add_code_eg(doc_examples.testRGBcolors)
+    pdf.add_illustration(doc_examples.colorsRGB, "RGB 颜色模块")
     pdf.add_heading("RGB颜色透明度", level=4)
     pdf.add_paragraph(
         "在$pdfgen$中，可以将对象涂在其他对象上，以达到良好的效果。 "
@@ -895,8 +895,8 @@ def chapter2_overview(pdf):
         "请参考我们的网站 http://www.reportlab.com/snippets/，"
         "并查找overPrint和alpha的片段，以查看生成下面图表的代码。"
     )
-    pdf.add_code_eg(examples.testalpha)
-    pdf.add_illustration(examples.alpha, "Alpha 例子")
+    pdf.add_code_eg(doc_examples.testalpha)
+    pdf.add_illustration(doc_examples.alpha, "Alpha 例子")
     pdf.add_heading("CMYK 颜色", level=3)
     pdf.add_paragraph(
         "$CMYK$或减法是按照打印机混合三种颜料（青色、品红色和黄色）形成颜色的方式进行的。"
@@ -916,8 +916,8 @@ def chapter2_overview(pdf):
         "例如：CMYKColor(0,0,0,1)是黑色，CMYKColor(0,0,0,0)表示 \"没有墨水\"。"
         "而CMYKColor(0.5,0,0,0)表示50%的青色。"
     )
-    pdf.add_code_eg(examples.testCMYKcolors)
-    pdf.add_illustration(examples.colorsCMYK, "CMYK颜色模型")
+    pdf.add_code_eg(doc_examples.testCMYKcolors)
+    pdf.add_illustration(doc_examples.colorsCMYK, "CMYK颜色模型")
     pdf.add_heading("色彩空间检查", level=2)
     pdf.add_paragraph(
         "画布的$enforceColorSpace$参数用于强制执行文档中使用的颜色模型的一致性。"
@@ -941,30 +941,30 @@ def chapter2_overview(pdf):
         "--如果你看不到这个效果，那么你可能需要在你的PDF浏览软件中启用\"叠印预览\"选项。 "
         "一些PDF浏览器，如$evince$不支持叠印，但是Adobe Acrobat Reader支持。"
     )
-    pdf.add_illustration(examples.overPrint, "OverPrint示例")
+    pdf.add_illustration(doc_examples.overPrint, "OverPrint示例")
     pdf.add_heading("其他对象的打印顺序示例", level=3)
     pdf.add_paragraph('"SPUMONI"字样用白色涂抹在彩色长方形上，有明显的 "去除 "字体内部颜色的效果。')
-    pdf.add_code_eg(examples.testspumoni)
-    pdf.add_illustration(examples.spumoni, "涂抹颜色")
+    pdf.add_code_eg(doc_examples.testspumoni)
+    pdf.add_illustration(doc_examples.spumoni, "涂抹颜色")
     pdf.add_paragraph("由于默认的$canvas$背景是白色的，在白色背景上画上白色的字母，单词的最后一个字母不可见。")
     pdf.add_paragraph("这种分层建立复杂绘画的方法可以在$pdfgen$中完成非常多的层数--比起处理物理颜料时的物理限制要少。")
-    pdf.add_code_eg(examples.testspumoni2)
+    pdf.add_code_eg(doc_examples.testspumoni2)
     pdf.add_paragraph("Spumoni2$函数在$spumoni$图上叠加一个冰淇淋圆锥。 请注意，圆锥和勺子的不同部分也会互相分层。")
-    pdf.add_illustration(examples.spumoni2, "层层叠加")
+    pdf.add_illustration(doc_examples.spumoni2, "层层叠加")
     pdf.add_heading("标准字体和文本对象", level=2)
     pdf.add_paragraph(
         "在$pdfgen$中可以用许多不同的颜色、字体和大小来绘制文本。"
         "$textsize$函数演示了如何改变文本的颜色、字体和大小，以及如何在页面上放置文本。"
     )
-    pdf.add_code_eg(examples.testtextsize)
+    pdf.add_code_eg(doc_examples.testtextsize)
     pdf.add_paragraph("$textsize$函数生成了以下页面。")
-    pdf.add_illustration(examples.textsize, "不同字体和大小的文字")
+    pdf.add_illustration(doc_examples.textsize, "不同字体和大小的文字")
     pdf.add_paragraph("不同字体和大小的文本在$pdfgen$中总是有许多不同的字体。")
-    pdf.add_code_eg(examples.testfonts)
+    pdf.add_code_eg(doc_examples.testfonts)
     pdf.add_paragraph(
         "函数$fonts$列出了始终可用的字体。" "这些字体不需要存储在PDF文档中，" "因为它们保证在Acrobat Reader中存在。"
     )
-    pdf.add_illustration(examples.fonts, "14种标准字体")
+    pdf.add_illustration(doc_examples.fonts, "14种标准字体")
     pdf.add_paragraph("Symbol和ZapfDingbats字体无法正确显示，因为这些字体中不存在所需的字形。")
     pdf.add_paragraph("有关如何使用任意字体的信息，请参阅下一章。")
     pdf.add_heading("文本对象方法", level=2)
@@ -990,42 +990,42 @@ def chapter2_overview(pdf):
         "例如，$setTextOrigin$将光标放置在一个已知的位置，"
         "而$textLine$和$textLines$方法则将文本光标向下移动，经过缺失的线条。"
     )
-    pdf.add_code_eg(examples.testcursormoves1)
+    pdf.add_code_eg(doc_examples.testcursormoves1)
     pdf.add_paragraph("函数$cursormoves$依靠文本光标的自动移动来放置原点后的文本。")
-    pdf.add_illustration(examples.cursormoves1, "文本光标的移动方式")
+    pdf.add_illustration(doc_examples.cursormoves1, "文本光标的移动方式")
     pdf.add_paragraph(
         "也可以通过使用$moveCursor$方法更明确地控制光标的移动"
         "（该方法将光标移动为从当前<i>线</i>开始的偏移量，而不是当前光标，"
         "并且该方法还具有正^y^偏移量移动<i>向下</i>)"
         "与正常几何形状相反，正^y^通常向上移动。"
     )
-    pdf.add_code_eg(examples.testcursormoves2)
+    pdf.add_code_eg(doc_examples.testcursormoves2)
     pdf.add_paragraph("在这里，$textOut$不会向下移动一行，而$textLine$函数则向下移动。")
-    pdf.add_illustration(examples.cursormoves2, "文本光标如何再次移动")
+    pdf.add_illustration(doc_examples.cursormoves2, "文本光标如何再次移动")
     pdf.add_heading("字符间距", level=3)
     pdf.add_code_eg("""textobject.setCharSpace(charSpace)""")
     pdf.add_paragraph("$setCharSpace$方法调整文本的一个参数--字符间的间距。")
-    pdf.add_code_eg(examples.testcharspace)
+    pdf.add_code_eg(doc_examples.testcharspace)
     pdf.add_paragraph("$charspace$函数行使各种间距设置。它产生以下页面。")
-    pdf.add_illustration(examples.charspace, "调整字符间距")
+    pdf.add_illustration(doc_examples.charspace, "调整字符间距")
     pdf.add_heading("字距", level=3)
     pdf.add_code_eg("""textobject.setWordSpace(wordSpace)""")
     pdf.add_paragraph("$setWordSpace$方法调整字与字之间的空间。")
-    pdf.add_code_eg(examples.testwordspace)
+    pdf.add_code_eg(doc_examples.testwordspace)
     pdf.add_paragraph("$wordspace$函数显示了下面各种文字空间设置的样子。")
-    pdf.add_illustration(examples.wordspace, "调整字距")
+    pdf.add_illustration(doc_examples.wordspace, "调整字距")
     pdf.add_heading("水平缩放", level=3)
     pdf.add_code_eg("""textobject.setHorizScale(horizScale)""")
     pdf.add_paragraph("文本行可以通过$setHorizScale$方法进行水平拉伸或收缩。")
-    pdf.add_code_eg(examples.testhorizontalscale)
+    pdf.add_code_eg(doc_examples.testhorizontalscale)
     pdf.add_paragraph("水平缩放参数^horizScale^是以百分比的形式给出的（默认为100），所以下图所示的80设置看起来很瘦。")
-    pdf.add_illustration(examples.horizontalscale, "调整水平文本的比例")
+    pdf.add_illustration(doc_examples.horizontalscale, "调整水平文本的比例")
     pdf.add_heading("行间间距(领先)", level=3)
     pdf.add_code_eg("""textobject.setLeading(leading)""")
     pdf.add_paragraph("一条线的起始点和下一条线的起始点之间的垂直偏移称为前导偏移。 " "$setLeading$方法调整前导偏移。")
-    pdf.add_code_eg(examples.testleading)
+    pdf.add_code_eg(doc_examples.testleading)
     pdf.add_paragraph("如下图所示，如果一行的前导偏移量设置得太小，我就会把前一行中的字符的底部部分写在上面。")
-    pdf.add_illustration(examples.leading, "矫枉过正")
+    pdf.add_illustration(doc_examples.leading, "矫枉过正")
     pdf.add_heading("其他文本对象方法", level=3)
     pdf.add_code_eg("""textobject.setTextRenderMode(mode)""")
     pdf.add_paragraph("例如，$setTextRenderMode$方法允许将文本作为剪裁背景图的前景。")
@@ -1050,37 +1050,37 @@ def chapter2_overview(pdf):
         "图形的内部可以填充，也可以不填充；等等。"
     )
     pdf.add_paragraph("例如，$star$函数使用一个路径对象来绘制一个星体")
-    pdf.add_code_eg(examples.teststar)
+    pdf.add_code_eg(doc_examples.teststar)
     pdf.add_paragraph("$star$函数被设计用来说明$pdfgen$支持的各种行式参数。")
-    pdf.add_illustration(examples.star, "直线样式参数")
+    pdf.add_illustration(doc_examples.star, "直线样式参数")
     pdf.add_heading("直线连接设置", level=3)
     pdf.add_paragraph("通过$setLineJoin$方法，可以调整线段在一个点上相接的是方块还是圆角顶点。")
-    pdf.add_code_eg(examples.testjoins)
+    pdf.add_code_eg(doc_examples.testjoins)
     pdf.add_paragraph("线条连接的设置只有对粗线条才真正有意义，因为对细线条看不清楚。")
-    pdf.add_illustration(examples.joins, "不同的直线连接样式")
+    pdf.add_illustration(doc_examples.joins, "不同的直线连接样式")
     pdf.add_heading("直线帽子设置", level=3)
     pdf.add_paragraph(
         "使用$setLineCap$方法调整的线帽设置，" "决定了终止线的终点是在顶点处的正方形、" "顶点上方的正方形还是顶点上方的半圆。"
     )
-    pdf.add_code_eg(examples.testcaps)
+    pdf.add_code_eg(doc_examples.testcaps)
     pdf.add_paragraph("线帽设置和线条连接设置一样，只有在线条较粗时才会清晰可见。")
-    pdf.add_illustration(examples.caps, "直线帽子设置")
+    pdf.add_illustration(doc_examples.caps, "直线帽子设置")
     pdf.add_heading("破折号和断线", level=3)
     pdf.add_paragraph("用$setDash$方法可以将线条分成点或破折号。")
-    pdf.add_code_eg(examples.testdashes)
+    pdf.add_code_eg(doc_examples.testdashes)
     pdf.add_paragraph("虚线或圆点的图案可以是简单的开/关重复图案，也可以指定为复杂的重复图案。")
-    pdf.add_illustration(examples.dashes, "破折号")
+    pdf.add_illustration(doc_examples.dashes, "破折号")
     pdf.add_heading("用路径对象创建复杂的图形", level=3)
     pdf.add_paragraph(
         "线条、曲线、弧线等图形的组合可以使用路径对象组合成一个图形。"
         "例如下图所示的函数就是利用直线和曲线构造两个路径对象。"
         "这个函数将在后面的铅笔图标构造中使用。"
     )
-    pdf.add_code_eg(examples.testpenciltip)
+    pdf.add_code_eg(doc_examples.testpenciltip)
     pdf.add_paragraph(
         "请注意，铅笔头的内部是作为一个对象填充的，即使它是由几条线和曲线构成的。" "然后使用一个新的路径对象在其上绘制铅笔头。"
     )
-    pdf.add_illustration(examples.penciltip, "铅笔头")
+    pdf.add_illustration(doc_examples.penciltip, "铅笔头")
     pdf.add_heading("矩形、圆形、椭圆形。", level=2)
     pdf.add_paragraph(
         "$pdfgen$模块支持许多一般有用的形状，如矩形、圆角矩形、椭圆和圆。"
@@ -1088,7 +1088,7 @@ def chapter2_overview(pdf):
         "例如下面的$pencil$函数使用矩形和圆角矩形绘制了一个铅笔图标，"
         "并添加了各种填充颜色和其他一些注释。"
     )
-    pdf.add_code_eg(examples.testpencil)
+    pdf.add_code_eg(doc_examples.testpencil)
     pdf.add_pencil_note()
     pdf.add_text_note(
         "这个函数是用来创建左边的'边距铅笔'的。"
@@ -1096,17 +1096,17 @@ def chapter2_overview(pdf):
         "例如，白色矩形'擦掉'了黑色矩形的一部分，"
         "而 '笔尖'则涂抹了黄色矩形的一部分。"
     )
-    pdf.add_illustration(examples.pencil, "铅笔")
+    pdf.add_illustration(doc_examples.pencil, "铅笔")
     pdf.add_heading("贝兹尔曲线", level=2)
     pdf.add_paragraph("想要构造具有弯曲边界的图形的程序，一般使用贝塞尔曲线来形成边界。")
-    pdf.add_code_eg(examples.testbezier)
+    pdf.add_code_eg(doc_examples.testbezier)
     pdf.add_paragraph(
         "Bezier曲线由四个控制点$(x1,y1)$，$(x2,y2)$，$(x3,y3)$，$(x4,y4)$指定。"
         "曲线起于$(x1,y1)$，止于$(x4,y4)$，从$(x1,y1)$到$(x2,y2)$的线段和从$(x3,y3)$到$(x4,"
         "y4)$的线段都与曲线形成切线。 "
         "而且曲线完全包含在凸图形中，顶点在控制点上。"
     )
-    pdf.add_illustration(examples.bezier, "基本贝塞尔曲线")
+    pdf.add_illustration(doc_examples.bezier, "基本贝塞尔曲线")
     pdf.add_paragraph("上图($testbezier$的输出)显示了一个bezier曲线、控制点定义的切线和控制点处有顶点的凸图形。")
     pdf.add_heading("平滑地连接贝塞尔曲线序列", level=3)
     pdf.add_paragraph(
@@ -1114,9 +1114,9 @@ def chapter2_overview(pdf):
         "要想从几条贝塞尔曲线中构造一条较大的平滑曲线，"
         "请确保相邻贝塞尔曲线在控制点连接的切线位于同一直线上。"
     )
-    pdf.add_code_eg(examples.testbezier2)
+    pdf.add_code_eg(doc_examples.testbezier2)
     pdf.add_paragraph('由$testbezier2$创建的图形描述了一条平滑的复曲线，因为相邻的切线 "排队"，如下图所示。')
-    pdf.add_illustration(examples.bezier2, "bezier curves")
+    pdf.add_illustration(doc_examples.bezier2, "bezier curves")
     pdf.add_heading("路径对象方法", level=2)
     pdf.add_paragraph(
         '路径对象通过在画布上的起始点设置 "笔"或"画笔"，'
@@ -1150,9 +1150,9 @@ def chapter2_overview(pdf):
         '围成的矩形（当^(x1,y1)^为左下角，^(x2,y2)^为右上角）。'
         '$extent$是指与椭圆上的横移。'
     )
-    pdf.add_code_eg(examples.testarcs)
+    pdf.add_code_eg(doc_examples.testarcs)
     pdf.add_paragraph("上面的$arcs$函数行使了两种局部椭圆方法。它产生了下面的图形。")
-    pdf.add_illustration(examples.arcs, "弧线")
+    pdf.add_illustration(doc_examples.arcs, "弧线")
     pdf.add_code_eg("""pathobject.rect(x, y, width, height) """)
     pdf.add_paragraph("$rect$方法在^(x,y)^指定的^width^和^height^处画一个左下角的矩形。")
     pdf.add_code_eg("""pathobject.ellipse(x, y, width, height)""")
@@ -1161,31 +1161,31 @@ def chapter2_overview(pdf):
     )
     pdf.add_code_eg("""pathobject.circle(x_cen, y_cen, r) """)
     pdf.add_paragraph("$circle$方法画一个以^(x_cen，y_cen)^为中心，半径^r^的圆。")
-    pdf.add_code_eg(examples.testvariousshapes)
+    pdf.add_code_eg(doc_examples.testvariousshapes)
     pdf.add_paragraph("上面的$variousshapes$函数显示了一个放置在参考网格中的矩形、圆和椭圆。")
-    pdf.add_illustration(examples.variousshapes, "路径对象中的矩形、圆形、椭圆形。")
+    pdf.add_illustration(doc_examples.variousshapes, "路径对象中的矩形、圆形、椭圆形。")
     pdf.add_code_eg("""pathobject.close() """)
     pdf.add_paragraph(
         "$close$方法通过从图形的最后一点到图形的起始点("
         "最近一次通过$moveTo$或$arc$或其他放置操作将画笔放置在纸上的点)画一条线段来关闭当前图形。"
     )
-    pdf.add_code_eg(examples.testclosingfigures)
+    pdf.add_code_eg(doc_examples.testclosingfigures)
     pdf.add_paragraph("$closingfigures$函数说明了闭合或不闭合图形的效果，包括一条线段和一个部分椭圆。")
-    pdf.add_illustration(examples.closingfigures, "闭合和不闭合的路径对象数字")
+    pdf.add_illustration(doc_examples.closingfigures, "闭合和不闭合的路径对象数字")
     pdf.add_paragraph("关闭或不关闭图形只影响图形的描边轮廓，而不影响图形的填充，如上图所示。")
     pdf.add_paragraph("关于使用路径对象绘图的更广泛的例子，请检查$hand$函数。")
-    pdf.add_code_eg(examples.testhand)
+    pdf.add_code_eg(doc_examples.testhand)
     pdf.add_paragraph(
         '在调试模式下(默认)，$hand$函数显示了用于构成图形的贝塞尔曲线的切线段。'
         '请注意，当线段对齐时，曲线平滑地连接在一起，但当线段不对齐时，曲线显示出一个 "尖锐的边缘"。'
     )
-    pdf.add_illustration(examples.hand, "手形图")
+    pdf.add_illustration(doc_examples.hand, "手形图")
     pdf.add_paragraph(
         "在非调试模式下，$hand$函数只显示贝塞尔曲线。 如果设置了$fill$参数，则会使用当前的填充颜色填充图形。"
     )
-    pdf.add_code_eg(examples.testhand2)
+    pdf.add_code_eg(doc_examples.testhand2)
     pdf.add_text_note('边框的 "描边 "画在它们重叠的内部填充物上。')
-    pdf.add_illustration(examples.hand2, "妙手回春")
+    pdf.add_illustration(doc_examples.hand2, "妙手回春")
     pdf.add_heading("进一步阅读: ReportLab图形库", level=2)
     pdf.add_paragraph(
         "到目前为止，我们所看到的图形是在相当低的水平上创建的。"
@@ -1319,7 +1319,7 @@ data
     """
     )
     pdf.add_paragraph('请注意，参数 "$WinAnsiEncoding$"与输入无关，它是说字体文件内的哪一组字符将被激活并可用。')
-    pdf.add_illustration(examples.customfont1, "使用非常不标准的字体")
+    pdf.add_illustration(doc_examples.customfont1, "使用非常不标准的字体")
     pdf.add_paragraph(
         '字体的名称来自$AFM$文件的$FontName$字段。'
         '在上面的例子中，我们事先知道了这个名字，但是很多时候字体描述文件的名字是非常神秘的，'
@@ -1476,7 +1476,7 @@ data
     canvas.drawString(10, 100, "In the Vera TT Font!")
     """
     )
-    pdf.add_illustration(examples.ttffont1, "使用$Vera TrueType$字体")
+    pdf.add_illustration(doc_examples.ttffont1, "使用$Vera TrueType$字体")
     pdf.add_paragraph('在上面的例子中，$True Type$字体对象是使用')
     pdf.add_code_eg(
         """
@@ -1673,7 +1673,7 @@ def chapter4_special_features(pdf):
     )
     pdf.add_paragraph('表单不需要引用整个页面； 任何可能经常重复的内容都应以表格的形式放置。')
     pdf.add_paragraph('下面的示例显示了使用的基本顺序。 真正的程序可能会预先定义表单，然后从另一个位置引用它们。')
-    pdf.add_code_eg(examples.testforms)
+    pdf.add_code_eg(doc_examples.testforms)
     pdf.add_heading("链接和目的地(书签)", level=2)
     pdf.add_paragraph(
         "PDF支持内部超链接。 单击可以触发多种链接类型，目标类型和事件。"
@@ -1883,9 +1883,9 @@ def chapter4_special_features(pdf):
         '查看$*.pdf$输出文件，'
         '并在文件内容中查找字符串$/Author$。'
     )
-    pdf.add_code_eg(examples.testannotations)
+    pdf.add_code_eg(doc_examples.testannotations)
     pdf.add_paragraph('如果您想让主题、标题和作者在查看和打印时自动显示在文档中，您必须像其他文本一样将它们绘制到文档中。')
-    pdf.add_illustration(examples.annotations, "设置文档内部注释")
+    pdf.add_illustration(doc_examples.annotations, "设置文档内部注释")
     pdf.add_heading("加密", level=2)
     pdf.add_heading("关于加密PDF文件", level=3)
     pdf.add_paragraph('Adobe的PDF标准允许你在对一个PDF文件进行加密时做三件相关的事情。')
@@ -2657,7 +2657,9 @@ def chapter5_platypus(pdf):
         '（即图像、段落和表格等内容，但不包括$页脚$或$固定页面图形$等内容）。'
     )
     pdf.add_paragraph('$pdfgen.Canvas$为最终从其他图层接收文档绘画的最低层。')
-    pdf.add_illustration(examples.doctemplateillustration, 'DocTemplate 结构说明')
+    pdf.add_illustration(
+        doc_examples.doctemplateillustration, 'DocTemplate 结构说明'
+    )
     pdf.add_paragraph(
         '上面的插图形象地说明了$DocTemplate$、$PageTemplate$和$Flowables$的概念 。'
         '然而，它具有欺骗性，因为每一个$PageTemplate$实际上可以指定任何数量的页面的格式'
@@ -2689,17 +2691,17 @@ def chapter5_platypus(pdf):
     )
     pdf.add_heading("开始", level=2)
     pdf.add_paragraph('考虑以下代码序列，它为$Platypus$提供了一个非常简单的 "hello world "例子。')
-    pdf.add_code_eg(examples.platypussetup)
+    pdf.add_code_eg(doc_examples.platypussetup)
     pdf.add_paragraph('首先，我们从其他模块中导入一些构造函数、一些段落样式和其他方便。')
-    pdf.add_code_eg(examples.platypusfirstpage)
+    pdf.add_code_eg(doc_examples.platypusfirstpage)
     pdf.add_paragraph('我们用上面的函数定义文档首页的固定特征。')
-    pdf.add_code_eg(examples.platypusnextpage)
+    pdf.add_code_eg(doc_examples.platypusnextpage)
     pdf.add_paragraph(
         '由于我们希望第一个页面之后的页面看起来与第一个页面不同，'
         '我们为其他页面的固定特征定义了一个备用布局。'
         '请注意，上面的两个函数使用 $pdfgen$ 级别的画布操作来为页面绘制注释。'
     )
-    pdf.add_code_eg(examples.platypusgo)
+    pdf.add_code_eg(doc_examples.platypusgo)
     pdf.add_paragraph(
         '最后，我们创建一个$"store"$并构建文档。'
         '请注意，我们在这里使用的是$"canned"$(罐头)文档模板，'
@@ -2709,9 +2711,9 @@ def chapter5_platypus(pdf):
     )
     pdf.add_paragraph(
         '要查看这个示例程序的输出，'
-        '请以"顶层脚本"的形式运行模块$docs/userguide/examples.py$'
+        '请以"顶层脚本"的形式运行模块$docs/userguide/doc_examples.py$'
         '（来自$ReportLab docs$发行版）。'
-        '脚本解释$python examples.py$将生成$Platypus$输出$phello.pdf$。'
+        '脚本解释$python doc_examples.py$将生成$Platypus$输出$phello.pdf$。'
     )
 
     pdf.add_heading("$Flowables$", level=2)
@@ -4575,13 +4577,13 @@ def chapter9_useful_flowables(pdf):
     pdf.add_paragraph(
         '回想一下本用户指南中 $pdfgen$ 一节中的 $hand$ 函数，' '它生成了一个由贝塞尔曲线构成的闭合图形的手图。'
     )
-    pdf.add_illustration(examples.hand, "一只手")
+    pdf.add_illustration(doc_examples.hand, "一只手")
     pdf.add_paragraph(
         '为了在 $Platypus flowable$ 中嵌入这个或其他绘图，'
         '我们必须定义一个 $Flowable$ 的子类，'
         '至少有一个$wrap$方法和一个$draw$方法。'
     )
-    pdf.add_code_eg(examples.testhandannotation)
+    pdf.add_code_eg(doc_examples.testhandannotation)
     pdf.add_paragraph(
         '$wrap$方法必须提供绘图的大小'
         '-- $Platypus$ 主循环用它来决定这个元素是否适合当前框架的剩余空间。 '
@@ -4625,7 +4627,7 @@ I.hAlign = 'CENTER'
     )
 
 
-def chapter10_custom_flowables(pdf):
+def chapter10_graph(pdf):
     pdf.add_heading("绘制", level=1)
     pdf.add_heading("简介", level=2)
     pdf.add_paragraph(
@@ -6638,7 +6640,7 @@ d.add(PolyLine([120,110, 130,150, 140,110, 150,150, 160,110,
         Axis, transform=mmult(translate(300, 10), rotate(30))
     )
     d.add(thirdAxisGroup)
-    # draw(d, "Groups examples")
+    # draw(d, "Groups doc_examples")
     pdf.add_draw(d, "$Groups$ 示例")
 
     pdf.add_heading("小部件", level=2)
@@ -6954,7 +6956,7 @@ d.add(pc3, 'pie3')
     pdf.add_caption('一些饼图示例', category=constant.CAPTION_IMAGE)
 
 
-def chapter11_graph(pdf):
+def chapter11(pdf):
     pass
 
 
@@ -7210,8 +7212,8 @@ def main(filename):
     chapter7_table(pdf)
     chapter8_flowables(pdf)
     chapter9_useful_flowables(pdf)
-    chapter10_custom_flowables(pdf)
-    chapter11_graph(pdf)
+    chapter10_graph(pdf)
+    chapter11(pdf)
     chapter12_appendix_1(pdf)
     chapter13_appendix_2(pdf)
     pdf.build_2_save()
