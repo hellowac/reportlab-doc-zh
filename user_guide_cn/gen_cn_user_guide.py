@@ -36,7 +36,14 @@ from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
 from components import constant
 from core import doc_examples
-from core.office_examples.charts import lines as office_example_lines
+from core.office_examples.charts import (
+    lines as of_ex_lines,
+    pie as of_ex_pie,
+    scatter as of_ex_scatter,
+    bar as of_ex_bar,
+    quick_charts as of_ex_quick_charts,
+    area as of_ex_area,
+)
 from core.pdf import PDF
 
 
@@ -6965,7 +6972,7 @@ def chapter11(pdf):
     pass
 
 
-def chapter12_appendix_1(pdf):
+def chapter12_appendix_mode(pdf):
     pdf.add_appendix("$ReportLab$ 示例")
     pdf.add_paragraph(
         "在$reportlab/demos$的子目录中，有许多工作实例，几乎展示了 $reportlab$ 使用的所有方面。"
@@ -7093,7 +7100,7 @@ def chapter12_appendix_1(pdf):
     )
 
 
-def chapter13_appendix_2(pdf):
+def chapter13_appendix_font(pdf):
     pdf.add_appendix("译者备注")
 
     pdf.add_paragraph("后面的信息为译者在翻译本手册时，学习，查询资料做的备注，或者说总结，没有对应的英文版...")
@@ -7202,10 +7209,11 @@ def chapter13_appendix_2(pdf):
     )
 
 
-def chapter14_appendix_3(pdf):
+def chapter14_appendix_line(pdf):
     pdf.add_appendix("官方示例: Line")
 
     pdf.add_paragraph(
+        '参考: '
         '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
             link='https://www.reportlab.com/chartgallery/line/'
         )
@@ -7214,33 +7222,147 @@ def chapter14_appendix_3(pdf):
 
     pdf.add_heading('Line with markers (serious)', level=2)
     pdf.add_flowable(
-        office_example_lines.line_with_smiley_marker_serious(width=chart_width)
+        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
     )
     pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
 
     pdf.add_heading('Line with markers (silly)', level=2)
     pdf.add_flowable(
-        office_example_lines.line_with_smiley_marker_silly(width=chart_width)
+        of_ex_lines.line_with_smiley_marker_silly(width=chart_width)
     )
     pdf.add_caption('折线图(silly)', category=constant.CAPTION_IMAGE)
 
     pdf.add_heading('char with background color', level=2)
-    pdf.add_flowable(
-        office_example_lines.line_with_background_color(width=chart_width)
-    )
+    pdf.add_flowable(of_ex_lines.line_with_background_color(width=chart_width))
     pdf.add_caption('折线+背景图示例', category=constant.CAPTION_IMAGE)
 
     pdf.add_heading('dashed lines and number formats', level=2)
     pdf.add_flowable(
-        office_example_lines.dashed_line_and_number_format(width=chart_width)
+        of_ex_lines.dashed_line_and_number_format(width=chart_width)
     )
     pdf.add_caption('虚线+数字格式', category=constant.CAPTION_IMAGE)
 
     pdf.add_heading('time serious plot', level=2)
-    pdf.add_flowable(
-        office_example_lines.line_with_time_series_plot(width=chart_width)
-    )
+    pdf.add_flowable(of_ex_lines.line_with_time_series_plot(width=chart_width))
     pdf.add_caption('时间走势图', category=constant.CAPTION_IMAGE)
+
+
+def chapter15_appendix_pie(pdf):
+    pdf.add_appendix("官方示例: Pie")
+
+    pdf.add_paragraph(
+        '参考: '
+        '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
+            link='https://www.reportlab.com/chartgallery/pie/'
+        )
+    )
+    chart_width = 460
+
+    pdf.add_heading('Basic pie', level=2)
+    pdf.add_flowable(of_ex_pie.basic_pie(width=chart_width))
+    pdf.add_caption('基本饼图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Pie with multi-column legend', level=2)
+    pdf.add_flowable(of_ex_pie.pie_with_multi_column_legend(width=chart_width))
+    pdf.add_caption('饼图+多列', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Exploding pie', level=2)
+    pdf.add_flowable(
+        of_ex_pie.exploding_pie(width=chart_width, height=chart_width / 2)
+    )
+    pdf.add_caption('Exploding 饼图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Pie with nested legend', level=2)
+    pdf.add_flowable(
+        of_ex_pie.pie_with_nested_legend(
+            width=chart_width, height=chart_width / 2
+        )
+    )
+    pdf.add_caption('嵌套Legend 饼图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Pie with a pie', level=2)
+    pdf.add_flowable(
+        of_ex_pie.pie_with_a_pie(width=chart_width, height=chart_width / 2)
+    )
+    pdf.add_caption('嵌套 饼图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Legend with text wrapping', level=2)
+    pdf.add_flowable(
+        of_ex_pie.legend_with_text_wrapping(
+            width=chart_width, height=chart_width / 2
+        )
+    )
+    pdf.add_caption('图例附带文本', category=constant.CAPTION_IMAGE)
+
+
+def chapter16_appendix_scatter(pdf):
+    pdf.add_appendix("官方示例: Scatter")
+
+    pdf.add_paragraph(
+        '参考: '
+        '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
+            link='https://www.reportlab.com/chartgallery/scatter/'
+        )
+    )
+    chart_width = 460
+
+    pdf.add_heading('Scatter plot with legend', level=2)
+    pdf.add_flowable(of_ex_scatter.scatter_plot_with_legend(width=chart_width))
+    pdf.add_caption('散点图', category=constant.CAPTION_IMAGE)
+
+
+def chapter17_appendix_bar(pdf):
+    pdf.add_appendix("官方示例: bar")
+
+    pdf.add_paragraph(
+        '参考: '
+        '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
+            link='https://www.reportlab.com/chartgallery/bar/'
+        )
+    )
+    chart_width = 460
+
+    pdf.add_heading('Line with markers (serious)', level=2)
+    pdf.add_flowable(
+        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
+    )
+    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
+
+
+def chapter18_appendix_quick_charts(pdf):
+    pdf.add_appendix("官方示例: quickcharts")
+
+    pdf.add_paragraph(
+        '参考: '
+        '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
+            link='https://www.reportlab.com/chartgallery/quickcharts/'
+        )
+    )
+    chart_width = 460
+
+    pdf.add_heading('Line with markers (serious)', level=2)
+    pdf.add_flowable(
+        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
+    )
+    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
+
+
+def chapter19_appendix_area(pdf):
+    pdf.add_appendix("官方示例: Area")
+
+    pdf.add_paragraph(
+        '参考: '
+        '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
+            link='https://www.reportlab.com/chartgallery/area/'
+        )
+    )
+    chart_width = 460
+
+    pdf.add_heading('Line with markers (serious)', level=2)
+    pdf.add_flowable(
+        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
+    )
+    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
 
 
 def main(filename):
@@ -7260,9 +7382,14 @@ def main(filename):
     chapter9_useful_flowables(pdf)
     chapter10_graph(pdf)
     chapter11(pdf)
-    chapter12_appendix_1(pdf)
-    chapter13_appendix_2(pdf)
-    chapter14_appendix_3(pdf)
+    chapter12_appendix_mode(pdf)
+    chapter13_appendix_font(pdf)
+    chapter14_appendix_line(pdf)
+    chapter15_appendix_pie(pdf)
+    chapter16_appendix_scatter(pdf)
+    chapter17_appendix_bar(pdf)
+    chapter18_appendix_quick_charts(pdf)
+    chapter19_appendix_area(pdf)
     pdf.build_2_save()
 
 
