@@ -20,6 +20,7 @@ from reportlab.graphics.shapes import Drawing
 from reportlab.graphics import widgetbase
 from reportlab.platypus.flowables import Spacer, Image
 from reportlab.lib.units import inch
+from reportlab.rl_config import defaultPageSize
 from reportlab.graphics import testshapes
 from reportlab.graphics.shapes import (
     Drawing,
@@ -35,13 +36,16 @@ from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
 from components import constant
 from core import doc_examples
+from core.office_examples.charts import lines as office_example_lines
 from core.pdf import PDF
 
 
 BASE_DIR = os.path.dirname(__file__)
+logger = None
 
 
 def setup_logging():
+    global logger
     # Define the log format
     log_format = '%(filename)s %(funcName)s:%(lineno)s %(message)s'
 
@@ -51,6 +55,7 @@ def setup_logging():
         format=log_format,
         handlers=[logging.StreamHandler()],
     )
+    logger = logging.getLogger()
 
 
 def chapter1_introduction(pdf):
@@ -7197,11 +7202,52 @@ def chapter13_appendix_2(pdf):
     )
 
 
+def chapter14_appendix_3(pdf):
+    pdf.add_appendix("官方示例: Line")
+
+    pdf.add_paragraph(
+        '<font color="blue"><u><a href="{link}">{link}</a></u></font>'.format(
+            link='https://www.reportlab.com/chartgallery/line/'
+        )
+    )
+    chart_width = 460
+
+    pdf.add_heading('Line with markers (serious)', level=2)
+    pdf.add_flowable(
+        office_example_lines.line_with_smiley_marker_serious(width=chart_width)
+    )
+    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Line with markers (silly)', level=2)
+    pdf.add_flowable(
+        office_example_lines.line_with_smiley_marker_silly(width=chart_width)
+    )
+    pdf.add_caption('折线图(silly)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('char with background color', level=2)
+    pdf.add_flowable(
+        office_example_lines.line_with_background_color(width=chart_width)
+    )
+    pdf.add_caption('折线+背景图示例', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('dashed lines and number formats', level=2)
+    pdf.add_flowable(
+        office_example_lines.dashed_line_and_number_format(width=chart_width)
+    )
+    pdf.add_caption('虚线+数字格式', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('time serious plot', level=2)
+    pdf.add_flowable(
+        office_example_lines.line_with_time_series_plot(width=chart_width)
+    )
+    pdf.add_caption('时间走势图', category=constant.CAPTION_IMAGE)
+
+
 def main(filename):
     fonts_dir = os.path.join(
         os.path.dirname(os.path.abspath(BASE_DIR)), 'fonts'
     )
-    pdf = PDF(filename, fonts_dir=fonts_dir)
+    pdf = PDF(filename, pagesize=defaultPageSize, fonts_dir=fonts_dir)
 
     chapter1_introduction(pdf)
     chapter2_overview(pdf)
@@ -7216,6 +7262,7 @@ def main(filename):
     chapter11(pdf)
     chapter12_appendix_1(pdf)
     chapter13_appendix_2(pdf)
+    chapter14_appendix_3(pdf)
     pdf.build_2_save()
 
 

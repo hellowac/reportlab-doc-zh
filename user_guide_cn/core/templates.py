@@ -10,6 +10,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class FrontCoverTemplate(PageTemplate):
+    """ 封面 """
+
     def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
         self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
@@ -43,6 +45,8 @@ class FrontCoverTemplate(PageTemplate):
 
 
 class OneColumnTemplate(PageTemplate):
+    """ 页眉/页脚 """
+
     def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
         self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
@@ -70,6 +74,8 @@ class OneColumnTemplate(PageTemplate):
 
 
 class TOCTemplate(PageTemplate):
+    """ 目录 """
+
     def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
         self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
@@ -97,6 +103,8 @@ class TOCTemplate(PageTemplate):
 
 
 class TwoColumnTemplate(PageTemplate):
+    """ 页眉 """
+
     def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
         self.unicode_font = unicode_font
         self.pageWidth = pageSize[0]
@@ -123,6 +131,7 @@ class TwoColumnTemplate(PageTemplate):
         canvas.drawString(inch, y + 8, doc.title)
         canvas.drawRightString(self.pageWidth - inch, y + 8, doc.chapter)
         canvas.line(inch, y, self.pageWidth - inch, y * inch)
+
         canvas.drawCentredString(
             doc.pagesize[0] / 2, 0.75 * inch, f'第 {canvas.getPageNumber()} 页'
         )
