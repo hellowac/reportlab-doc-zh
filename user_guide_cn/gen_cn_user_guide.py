@@ -7460,13 +7460,53 @@ def chapter18_appendix_quick_charts(pdf):
     )
     pdf.add_caption('3D条形图)', category=constant.CAPTION_IMAGE)
 
-    pdf.add_heading('柱状图', level=2)
+    pdf.add_heading('背景柱状图', level=2)
     pdf.add_flowable(
         of_ex_quick_charts.QuickBarChart01(
             width=chart_width, height=chart_height, titleFontName=pdf.font_bold
         )
     )
+    pdf.add_caption('背景柱状图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('柱状图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickBarChart02(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
     pdf.add_caption('柱状图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('3D背景柱状图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.Quick3DBarChart01(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('3D背景柱状图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('嵌套饼图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickDohnotChart01(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('嵌套饼图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('分裂饼图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickExplodedPie01(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('分裂饼图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('3D分裂饼图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.Quick3DExplodedPie01(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('3D分裂饼图)', category=constant.CAPTION_IMAGE)
 
 
 def chapter19_appendix_area(pdf):
