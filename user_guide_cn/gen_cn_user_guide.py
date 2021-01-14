@@ -7321,12 +7321,91 @@ def chapter17_appendix_bar(pdf):
         )
     )
     chart_width = 460
+    chart_height = chart_width / 2
 
-    pdf.add_heading('Line with markers (serious)', level=2)
+    pdf.add_heading('Four category eight month', level=2)
     pdf.add_flowable(
-        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
+        of_ex_bar.FourCategoryEightMonth(width=chart_width, height=chart_height)
     )
-    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
+    pdf.add_caption('4个类别8个月对比图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Comparison chart', level=2)
+    pdf.add_flowable(
+        of_ex_bar.ComparisonChart(width=chart_width, height=chart_height)
+    )
+    pdf.add_caption('对比图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Multi-line x-axis labels', level=2)
+    pdf.add_flowable(
+        of_ex_bar.MultiLineXAxisLabels(width=chart_width, height=chart_height)
+    )
+    pdf.add_caption('多行x轴标签', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('BarChart with table', level=2)
+    pdf.add_flowable(
+        of_ex_bar.BarChartWithTable(width=chart_width, height=chart_height)
+    )
+    pdf.add_caption('柱状图和表格', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Vertical labels', level=2)
+    pdf.add_flowable(
+        of_ex_bar.VerticalLabels(width=chart_width, height=chart_height)
+    )
+    pdf.add_caption('垂直标签', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Dual Bar charts on one canvas', level=2)
+    pdf.add_flowable(
+        of_ex_bar.DualBarChartsOnOneCanvas(
+            width=chart_width, height=chart_height
+        )
+    )
+    pdf.add_caption('一块画布上的双条形图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading(
+        'Vertical bar chart with mixed stacked & parallel bars', level=2
+    )
+    pdf.add_flowable(
+        of_ex_bar.VBCMixedStackedParallel(
+            width=chart_width, height=chart_height
+        )
+    )
+    pdf.add_caption('混合堆叠平行条形图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading(
+        'Vertical 3D bar chart with mixed stacked & parallel bars', level=2
+    )
+    pdf.add_flowable(
+        of_ex_bar.VBCMixedStackedParallel3D(
+            width=chart_width, height=chart_height
+        )
+    )
+    pdf.add_caption('垂直3D柱状图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Horizontal bar with red axis negative labels', level=2)
+    pdf.add_flowable(
+        of_ex_bar.HBarChartWRedXValueAxisNegLabels(
+            width=chart_width, height=chart_height
+        )
+    )
+    pdf.add_caption('带红色轴负标签的单标签', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('Vertical bar with line labels', level=2)
+    pdf.add_flowable(
+        of_ex_bar.VBarChartWLineBarLabels(
+            width=chart_width, height=chart_height
+        )
+    )
+    pdf.add_caption('带线标签的竖线柱状图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading(
+        'A Vertical Bar Chart With Line Indicated Bar Labels', level=2
+    )
+    pdf.add_flowable(
+        of_ex_bar.VBarChartWLineIndicatedBarLabels(
+            width=chart_width, height=chart_height
+        )
+    )
+    pdf.add_caption('带线标签的竖线柱状图2', category=constant.CAPTION_IMAGE)
 
 
 def chapter18_appendix_quick_charts(pdf):
@@ -7338,13 +7417,56 @@ def chapter18_appendix_quick_charts(pdf):
             link='https://www.reportlab.com/chartgallery/quickcharts/'
         )
     )
-    chart_width = 460
 
-    pdf.add_heading('Line with markers (serious)', level=2)
-    pdf.add_flowable(
-        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
+    pdf.add_paragraph("$ReportLab Quick Charts$")
+    pdf.add_paragraph(
+        "Unlike the other chart types shown in this gallery, "
+        "Quick Charts do not have any predetermined structure."
     )
-    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
+    pdf.add_paragraph(
+        "Rather, they can accept similar data structures and depending "
+        "on the particular Quick Chart type, create a chart."
+    )
+    pdf.add_paragraph(
+        "You will lose some of the precision and control of some of the "
+        "specialist chart classes seen elsewhere in the gallery, "
+        "but Quick Charts will let you experiment more quickly "
+        "with a range of different ways to visualise your data."
+    )
+
+    pdf.add_paragraph("$ReportLab 快速图形$")
+    pdf.add_paragraph("与此库中显示的其他图表类型不同，快速图表没有任何预定的结构。")
+    pdf.add_paragraph("相反，他们可以接受类似的数据结构，并根据特定的“快速图表”类型创建图表。")
+    pdf.add_paragraph(
+        "您将失去在图库中其他地方看到的某些专业图表类别的精度和控制力，但是“快速图表”将使您可以使用各种不同的方式更快地进行实验以可视化数据。"
+    )
+
+    chart_width = 460
+    chart_height = chart_width / 2
+
+    pdf.add_heading('面积图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickAreaChart01(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('面积图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('3D条形图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.Drawing3DBarChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('3D条形图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('柱状图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickBarChart01(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('柱状图)', category=constant.CAPTION_IMAGE)
 
 
 def chapter19_appendix_area(pdf):
