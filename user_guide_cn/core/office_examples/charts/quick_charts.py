@@ -146,3 +146,352 @@ class Quick3DExplodedPie01(_DrawingEditorMixin, QuickChartDrawing):
         self.qc.chartType = 'exploded_pie3d'
         self.qc.titleText = '3D 分裂饼图'
         self.qc.titleFontName = titleFontName
+
+
+class QuickFilledRadarChart(_DrawingEditorMixin, QuickChartDrawing):
+    """
+    Filled radar chart - with 2 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        QuickChartDrawing.__init__(self, width, height, *args, **kw)
+        self.qc.data = [[100, 120, 240, 360], [410, 130, 150, 180]]
+        self.qc.categoryNames = ('2002', '2003', '2004', '2005')
+        self.qc.legendText = 'A', 'B'
+        self.qc.legendFontColor = black
+        self.qc.legendFontSize = 10
+        self.qc.legendPos = 'left'
+        self.qc.seriesNames = ('A', 'B')
+        self.qc.chartType = 'filled_radar'
+        self.qc.titleText = '填充雷达图'  # 'Filled Radar Chart'
+        self.qc.xAxisGridLines = 0
+        self.qc.titleFontName = titleFontName
+
+
+class Quick3DLineChart(_DrawingEditorMixin, Drawing):
+    """
+    3d Line Chart - with 3 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.seriesNames = ('a', 'b', 'c')
+        self.chart.xTitleText = 'Year'
+        self.chart.yTitleText = 'Sales (000,000)'
+        self.chart.height = 200
+        self.chart.categoryNames = ('1', '2', '3')
+        self.chart.titleText = '3D折线图'  # 'Line Plot Chart'
+        self.chart.chartType = 'linechart3d'
+        self.chart.data = [(100, 113), (80, 70), (70, 81)]
+        self.chart.titleFontName = titleFontName
+
+
+class QuickLineChart(_DrawingEditorMixin, Drawing):
+    """
+    Line chart - with 3 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.chartType = 'linechart'
+        self.chart.height = 200
+        self.chart.data = [
+            [115, 120, 140, 160],
+            [110, 130, 100, 90],
+            [40, 70, 100, 140],
+        ]
+        self.chart.titleText = '折线图'  # 'Line Chart'
+        self.chart.seriesNames = ('a', 'b', 'c')
+        self.chart.xTitleText = 'Year'
+        self.chart.categoryNames = ('2009', '2012', '2011', '2012')
+        self.chart.yTitleText = 'Sales (000,000)'
+        self.chart.titleFontName = titleFontName
+
+
+class QuickLineMarkChart(_DrawingEditorMixin, Drawing):
+    """
+    Line Chart - with markers & 3 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.height = 200
+        self.chart.titleText = '折线图'  # 'Line Chart'
+        self.chart.seriesNames = ('a', 'b', 'c')
+        self.chart.xTitleText = 'Year'
+        self.chart.categoryNames = ('2009', '2012', '2011', '2012')
+        self.chart.yTitleText = 'Sales (000,000)'
+        self.chart.chartType = 'linechart_markers'
+        self.chart.data = [
+            [11, 120, 140, 160],
+            [110, 130, 100, 90],
+            [40, 70, 100, 140],
+        ]
+        self.chart.titleFontName = titleFontName
+
+
+class QuickLinePlot(_DrawingEditorMixin, Drawing):
+    """
+    Line Plot - with 3 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.seriesNames = ('a', 'b', 'c')
+        self.chart.xTitleText = 'Year'
+        self.chart.yTitleText = 'Sales (000,000)'
+        self.chart.height = 200
+        self.chart.categoryNames = ('1', '2', '3')
+        self.chart.titleText = '直线图'  # 'Line Plot Chart'
+        self.chart.data = [(2008, 2013), (80, 60), (70, 75), (40, 60)]
+        self.chart.chartType = 'lineplot'
+        self.chart.titleFontName = titleFontName
+
+
+class Quick3DLinePlot(_DrawingEditorMixin, Drawing):
+    """
+    Line Plot 3d - with 3 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+
+        self.chart.seriesNames = ('a', 'b', 'c')
+        self.chart.xTitleText = 'Year'
+        self.chart.yTitleText = 'Sales (000,000)'
+        self.chart.height = 200
+        self.chart.categoryNames = ('1', '2', '3')
+        self.chart.titleText = '3D 线图'  # 'Line Plot Chart 3d'
+        self.chart.data = [(2008, 2013), (80, 60), (70, 75), (40, 60)]
+        self.chart.chartType = 'lineplot3d'
+        self.chart.titleFontName = titleFontName
+
+
+class QuickLinePlotMarker(_DrawingEditorMixin, Drawing):
+    """
+    Line Plot Markers - with 3 series & data points as markers
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.seriesNames = ('a', 'b', 'c')
+        self.chart.xTitleText = 'Year'
+        self.chart.yTitleText = 'Sales (000,000)'
+        self.chart.height = 200
+        self.chart.categoryNames = ('1', '2', '3')
+        self.chart.titleText = '标记线图'  # 'Line Plot Markers Chart'
+        self.chart.chartType = 'lineplot_markers'
+        self.chart.data = [(2008, 2013), (80, 60), (70, 75), (40, 60)]
+        self.chart.titleFontName = titleFontName
+
+
+class QuickPercentageArea(_DrawingEditorMixin, Drawing):
+    """
+    Percentage Area -  with 2 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.chartType = 'percent_area'
+        self.chart.height = 200
+        self.chart.data = [[100, 120, 140, 160], [120, 130, 90, 80]]
+        self.chart.legendFontColor = black
+        self.chart.legendFontSize = 10
+        self.chart.legendText = None
+        self.chart.seriesNames = 'Alpha', 'Beta'
+        self.chart.titleText = '矩形面积图'  # 'Percent Area Chart'
+        self.chart.yTitleText = 'Market Share'
+        self.chart.y = 1
+        self.chart.xTitleText = 'Year'
+        self.chart.titleFontName = titleFontName
+
+
+class QuickPercentageBarChart(_DrawingEditorMixin, Drawing):
+    """
+    Percentage Bar Chart - with 3 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.chartType = 'percent_bar'
+        self.chart.width = 400
+        self.chart.height = 200
+        self.chart.data = [[100, 12], [11, 130], [55, 45]]
+        self.chart.seriesNames = 'A', 'B', 'C'
+        self.chart.categoryNames = ('UK', 'EU')
+        self.chart.dataLabelsFontSize = 12
+        self.chart.xTitleText = 'Percentage'
+        self.chart.yTitleText = 'Region'
+        self.chart.titleText = '矩形条形图'  # 'Percentage Bar Chart'
+        self.renderScale = 1.0
+        self.chart.titleFontName = titleFontName
+
+
+class QuickPercentageColumnChart(_DrawingEditorMixin, Drawing):
+    """
+    Percentage Column Chart - with 4 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.height = 200
+        self.chart.seriesRelation = None  #
+        self.chart.dataLabelsFontSize = 12
+        self.chart.chartSeparation = 1
+        self.chart.xTitleText = ''
+        self.chart.categoryNames = ('2009', '2010', '2012')
+        self.chart.chartType = 'percent_column'
+        self.chart.titleText = 'Percentage Column'
+        self.chart.data = [
+            [100, 120, 140],
+            [110, 130, 150],
+            [200, 100, 100],
+            [50, 20, 60],
+        ]
+        self.chart.seriesNames = ('a', 'b', 'c', 'd')
+        self.chart.titleFontName = titleFontName
+
+
+class Quick3DPieChart(_DrawingEditorMixin, QuickChartDrawing):
+    """
+    3d Pie Chart
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        QuickChartDrawing.__init__(self, width, height, *args, **kw)
+        self.qc.titleText = '3D饼图'  # 'Quick Pie Chart'
+        self.qc.chartType = 'pie3d'
+        self.qc.categoryNames = ('2009', '2010', '2011', '2012')
+        self.qc.titleFontName = titleFontName
+
+
+class QuickPieChart(_DrawingEditorMixin, QuickChartDrawing):
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        QuickChartDrawing.__init__(self, width, height, *args, **kw)
+        self.qc.chartType = 'pie'
+        self.qc.titleText = '饼图'  # 'Quick Pie Chart'
+        self.qc.categoryNames = '2002', '2003', '2004', '2005'
+        self.qc.titleFontName = titleFontName
+
+
+class QuickRadarChart(_DrawingEditorMixin, QuickChartDrawing):
+    """
+    Radar Chart
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        QuickChartDrawing.__init__(self, width, height, *args, **kw)
+        self.qc.chartType = 'radar'
+        self.qc.titleText = '雷达图'  # 'Radar Chart'
+        self.qc.data = [[100, 120, 240, 360], [410, 130, 150, 180]]
+        self.qc.legendText = 'A', 'B'
+        self.qc.legendFontColor = black
+        self.qc.legendFontSize = 10
+        self.qc.legendPos = 'left'
+        self.qc.seriesNames = ('A', 'B')
+        self.qc.categoryNames = ('2009', '2010', '2011', '2012')
+        self.qc.titleFontName = titleFontName
+
+
+class QuickMarkRadarChart(_DrawingEditorMixin, QuickChartDrawing):
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        QuickChartDrawing.__init__(self, width, height, *args, **kw)
+        self.qc.data = [[100, 120, 240, 360], [410, 130, 150, 180]]
+        self.qc.categoryNames = ('2002', '2003', '2004', '2005')
+        self.qc.legendText = 'A', 'B'
+        self.qc.legendFontColor = black
+        self.qc.legendFontSize = 10
+        self.qc.legendPos = 'left'
+        self.qc.seriesNames = ('A', 'B')
+        self.qc.chartType = 'radar_markers'
+        self.qc.titleText = '标记雷达图'  # 'Radar Markers Chart'
+        self.qc.titleFontName = titleFontName
+
+
+class QuickStackedAreaChart(_DrawingEditorMixin, Drawing):
+    """
+    Stacked Area -  with 2 series
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.chartType = 'stacked_area'
+        self.chart.height = 200
+        self.chart.legendFontColor = black
+        self.chart.legendFontSize = 9
+        self.chart.textData = "a,b"
+        self.chart.dataLabelsFontSize = 10
+        self.chart.seriesNames = 'A', 'B'
+        self.chart.legendText = None
+        self.chart.titleText = '堆叠面积图'  # 'Stacked Area Chart'
+        self.chart.xTitleText = 'Year'
+        self.chart.yTitleText = 'Sales (thousands)'
+        self.chart.titleFontName = titleFontName
+
+
+class QuickStackedBarChart(_DrawingEditorMixin, Drawing):
+    """
+    Percentage Bar Chart
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.width = 400
+        self.chart.height = 200
+        self.chart.seriesNames = 'A', 'B', 'C'
+        self.chart.dataLabelsFontSize = 12
+        self.chart.titleText = '堆叠条形图'  # 'Percentage Bar Chart'
+        self.chart.chartType = 'stacked_bar'
+        self.chart.xTitleText = 'Profit per Product'
+        self.chart.yTitleText = 'Region'
+        self.chart.categoryNames = ('UK', 'EU', 'USA')
+        self.chart.data = [[100, 12, 10], [11, 130, 140], [55, 45, 50]]
+        self.chart.titleFontName = titleFontName
+
+
+class QuickStackedColumnChart(_DrawingEditorMixin, Drawing):
+    """
+    Percentage Bar Chart
+    """
+
+    def __init__(self, width=400, height=200, *args, **kw):
+        titleFontName = kw.pop('titleFontName', 'Helvetica')
+        Drawing.__init__(self, width, height, *args, **kw)
+        self._add(self, QuickChart(), name='chart', validate=None, desc=None)
+        self.chart.seriesNames = 'a', 'b', 'c'
+        self.chart.seriesRelation = None  #
+        self.chart.dataLabelsFontSize = 12
+        self.chart.chartSeparation = 1
+        self.chart.data = [[100, 120, 140], [110, 130, 150], [200, 100, 100]]
+        self.chart.xTitleText = ''
+        self.chart.categoryNames = ('2009', '2010', '2012')
+        self.chart.chartType = 'stacked_column'
+        self.chart.titleText = '堆叠柱状图'  # 'Stacked Column'
+        self.chart.titleFontName = titleFontName

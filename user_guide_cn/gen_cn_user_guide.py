@@ -7508,6 +7508,142 @@ def chapter18_appendix_quick_charts(pdf):
     )
     pdf.add_caption('3D分裂饼图)', category=constant.CAPTION_IMAGE)
 
+    pdf.add_heading('填充雷达图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickFilledRadarChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('填充雷达图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('3D折线图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.Quick3DLineChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('3D折线图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('折线图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickLineChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('折线图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('标记折线图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickLineMarkChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('标记折线图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('直线图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickLinePlot(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('直线图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('3D直线图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.Quick3DLinePlot(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('3D直线图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('直线标记图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickLinePlotMarker(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('直线标记图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('矩形面积图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickPercentageArea(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('矩形面积图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('矩形条形图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickPercentageBarChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('矩形条形图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('矩形柱状图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickPercentageColumnChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('矩形柱状图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('3D饼图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.Quick3DPieChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('3D饼图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('饼图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickPieChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('饼图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('雷达图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickRadarChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('雷达图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('标记雷达图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickMarkRadarChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('标记雷达图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('堆叠面积图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickStackedAreaChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('堆叠面积图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('堆叠条形图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickStackedBarChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('堆叠条形图)', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('堆叠柱状图', level=2)
+    pdf.add_flowable(
+        of_ex_quick_charts.QuickStackedColumnChart(
+            width=chart_width, height=chart_height, titleFontName=pdf.font_bold
+        )
+    )
+    pdf.add_caption('堆叠柱状图)', category=constant.CAPTION_IMAGE)
+
 
 def chapter19_appendix_area(pdf):
     pdf.add_appendix("官方示例: Area")
@@ -7520,11 +7656,13 @@ def chapter19_appendix_area(pdf):
     )
     chart_width = 460
 
-    pdf.add_heading('Line with markers (serious)', level=2)
-    pdf.add_flowable(
-        of_ex_lines.line_with_smiley_marker_serious(width=chart_width)
-    )
-    pdf.add_caption('折线图(serious)', category=constant.CAPTION_IMAGE)
+    pdf.add_heading('面积折线图', level=2)
+    pdf.add_flowable(of_ex_area.AreaWithLinesChart(width=chart_width))
+    pdf.add_caption('面积折线图', category=constant.CAPTION_IMAGE)
+
+    pdf.add_heading('面积动态标签图', level=2)
+    pdf.add_flowable(of_ex_area.AreaWithDynamicLabelChart(width=chart_width))
+    pdf.add_caption('面积动态标签图', category=constant.CAPTION_IMAGE)
 
 
 def main(filename):
