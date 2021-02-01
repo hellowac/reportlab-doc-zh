@@ -5,7 +5,7 @@ from reportlab.platypus.tableofcontents import (
     TableOfContents as BaseTableOfContents,
 )
 
-from core.style.toc import get_toc_style
+from report.core.style.toc import get_toc_style
 
 
 class TableOfContents(BaseTableOfContents):

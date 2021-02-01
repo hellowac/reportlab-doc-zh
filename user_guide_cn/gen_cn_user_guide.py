@@ -34,9 +34,9 @@ from reportlab.graphics.shapes import (
 )
 from reportlab.graphics.charts.piecharts import sample5, sample7, sample8
 
-from components import constant
-from core import doc_examples
-from core.office_examples.charts import (
+from report.components import constant
+from report.core import doc_examples
+from report.core.office_examples.charts import (
     lines as of_ex_lines,
     pie as of_ex_pie,
     scatter as of_ex_scatter,
@@ -44,10 +44,11 @@ from core.office_examples.charts import (
     quick_charts as of_ex_quick_charts,
     area as of_ex_area,
 )
-from core.pdf import PDF
+from report.core.pdf import PDF
 
 
 BASE_DIR = os.path.dirname(__file__)
+IMAGES_DIR = os.path.join(BASE_DIR, 'report', 'images')
 logger = None
 
 
@@ -1565,7 +1566,7 @@ data
         '由于许多用户不会安装字体包，我们已经包含了一些日文字符的相当颗粒状的^bitmap^。 下面我们将讨论生成它们所需要的内容。'
     )
 
-    pdf.add_image(os.path.join(BASE_DIR, "images", 'jpnchars.jpg'))
+    pdf.add_image(os.path.join(IMAGES_DIR, 'jpnchars.jpg'))
     pdf.add_paragraph(
         '在2.0版本之前，当你注册一个$CIDFont$时，'
         '你必须指定许多本地编码之一。在2.0版本中，你应该使用一个新的^UnicodeCIDFont^类。'
@@ -3499,20 +3500,20 @@ def chapter6_paragraph(pdf):
 
     pdf.add_para_box2(
         '<para autoLeading="off" fontSize=12>This &lt;img/&gt; '
-        '<img src="images/testimg.gif" valign="top"/> is aligned <b>top</b>.'
+        '<img src="{images_dir}/testimg.gif" valign="top"/> is aligned <b>top</b>.'
         '<br/><br/>This &lt;img/&gt; '
-        '<img src="images/testimg.gif" valign="bottom"/> is aligned '
+        '<img src="{images_dir}/testimg.gif" valign="bottom"/> is aligned '
         '<b>bottom</b>.'
         '<br/><br/> This &lt;img/&gt; '
-        '<img src="images/testimg.gif" valign="middle"/> is aligned '
+        '<img src="{images_dir}/testimg.gif" valign="middle"/> is aligned '
         '<b>middle</b>.'
         '<br/><br/>This &lt;img/&gt; '
-        '<img src="images/testimg.gif" valign="-4"/> is aligned <b>-4</b>.'
+        '<img src="{images_dir}/testimg.gif" valign="-4"/> is aligned <b>-4</b>.'
         '<br/><br/>This &lt;img/&gt; '
-        '<img src="images/testimg.gif" valign="+4"/> is aligned <b>+4</b>.'
+        '<img src="{images_dir}/testimg.gif" valign="+4"/> is aligned <b>+4</b>.'
         '<br/><br/>This &lt;img/&gt; '
-        '<img src="images/testimg.gif" width="10"/> has width<b>10</b>.'
-        '<br/><br/></para>',
+        '<img src="{images_dir}/testimg.gif" width="10"/> has width<b>10</b>.'
+        '<br/><br/></para>'.format(images_dir=IMAGES_DIR),
         '内联图片',
     )
     pdf.add_paragraph(
@@ -3976,7 +3977,7 @@ t=Table(data,style=[
         '请注意，$Image$的背景是白色的，这将会遮挡住您为单元格选择的任何背景。'
         '为了得到更好的效果，你应该使用透明的背景。'
     )
-    img = 'images/replogo.gif'
+    img = '{}/replogo.gif'.format(IMAGES_DIR)
     pdf.add_embedded_code(
         """
 from reportlab.platypus.flowables import Image
@@ -4245,7 +4246,7 @@ t=XPreformatted(text,normalStyle,dedent=3)
         '如果指定了 $width$和$height$，那么它们决定了显示图像的尺寸，单位是<i>points</i>。'
         '如果没有指定任何一个尺寸(或者指定为$None$)，那么图像的相应像素尺寸被假定为<i>points</i>并使用。'
     )
-    img = "images/lj8100.jpg"
+    img = "{}/lj8100.jpg".format(IMAGES_DIR)
     pdf.add_code_eg(
         """
     Image("{}")
@@ -4619,7 +4620,7 @@ def chapter9_useful_flowables(pdf):
     pdf.add_paragraph("要修改现有的可流动对象，您应该创建一个派生类并覆盖需要更改以获得所需行为的方法。")
     pdf.add_paragraph('作为创建旋转图像的示例，您需要覆盖现有 $Image$ 类的 $wrap$ 和 $draw$ 方法')
 
-    img = 'images/replogo.gif'
+    img = '{}/replogo.gif'.format(IMAGES_DIR)
     pdf.add_embedded_code(
         """
 from reportlab.platypus.flowables import Image
@@ -7666,10 +7667,22 @@ def chapter19_appendix_area(pdf):
 
 
 def main(filename):
-    fonts_dir = os.path.join(
-        os.path.dirname(os.path.abspath(BASE_DIR)), 'fonts'
+    # 封面图片和版权信息
+    logo = os.path.join(IMAGES_DIR, 'replogo.gif')
+    copyrights = (
+        'ReportLab',
+        'Wimbletech',
+        '35 Wimbledon Hill Road',
+        'London SW19 7NB, UK',
+        '',
+        '翻译整理: Hello wac',
     )
-    pdf = PDF(filename, pagesize=defaultPageSize, fonts_dir=fonts_dir)
+    pdf = PDF(
+        filename,
+        cover_image=logo,
+        copyrights=copyrights,
+        pagesize=defaultPageSize,
+    )
 
     chapter1_introduction(pdf)
     chapter2_overview(pdf)
@@ -7696,4 +7709,4 @@ def main(filename):
 if __name__ == '__main__':
 
     setup_logging()
-    main('test.pdf')
+    main('test2.pdf')

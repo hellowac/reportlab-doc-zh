@@ -4,7 +4,7 @@ from reportlab.lib import colors
 from reportlab import rl_settings
 from reportlab import rl_config
 
-from components import constant
+from report.components import constant
 
 
 def get_default_style_sheet(font_name=None, font_bold=None):

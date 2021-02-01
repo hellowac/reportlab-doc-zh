@@ -4,18 +4,27 @@ from reportlab.lib.units import inch, cm
 from reportlab.lib.sequencer import Sequencer
 from reportlab.rl_config import defaultPageSize
 
-from components import constant
+from report.components import constant
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-class FrontCoverTemplate(PageTemplate):
+class RLFrontCoverTemplate(PageTemplate):
     """ 封面 """
 
-    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+    def __init__(
+        self,
+        _id,
+        unicode_font,
+        cover_image=None,
+        after_page_strings=None,
+        page_size=defaultPageSize,
+    ):
         self.unicode_font = unicode_font
-        self.pageWidth = pageSize[0]
-        self.pageHeight = pageSize[1]
+        self.pageWidth = page_size[0]
+        self.pageHeight = page_size[1]
+        self.cover_image = cover_image
+        self.after_page_strings = after_page_strings or []
         frame1 = Frame(
             inch,
             3 * inch,
@@ -28,29 +37,34 @@ class FrontCoverTemplate(PageTemplate):
     def afterDrawPage(self, canvas, doc):
         canvas.saveState()
 
-        logo_gif = os.path.join(
-            os.path.dirname(BASE_DIR), 'images', 'replogo.gif'
-        )
-        canvas.drawImage(logo_gif, 2 * inch, 8 * inch)
+        # 如果有封面图片
+        if self.cover_image:
+            canvas.drawImage(self.cover_image, 2 * inch, 8 * inch)
 
-        canvas.setFont(self.unicode_font, 10)
+        # 封面左下角文本（版权信息）
+        x = inch
+        font_size = 12
+        canvas.setFont(self.unicode_font, font_size - 2)
         canvas.line(inch, 120, self.pageWidth - inch, 120)
 
-        canvas.drawString(inch, 100, 'ReportLab')
-        canvas.drawString(inch, 88, 'Wimbletech')
-        canvas.drawString(inch, 76, '35 Wimbledon Hill Road')
-        canvas.drawString(inch, 64, 'London SW19 7NB, UK')
-
+        for index, text in enumerate(self.after_page_strings):
+            y = 100 - font_size * index
+            canvas.drawString(x, y, text)
+        # canvas.drawString(inch, 100, 'ReportLab')
+        # canvas.drawString(inch, 88, 'Wimbletech')
+        # canvas.drawString(inch, 76, '35 Wimbledon Hill Road')
+        # canvas.drawString(inch, 64, 'London SW19 7NB, UK')
+        # from reportlab.pdfgen import canvas
         canvas.restoreState()
 
 
 class OneColumnTemplate(PageTemplate):
     """ 页眉/页脚 """
 
-    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, page_size=defaultPageSize):
         self.unicode_font = unicode_font
-        self.pageWidth = pageSize[0]
-        self.pageHeight = pageSize[1]
+        self.pageWidth = page_size[0]
+        self.pageHeight = page_size[1]
         frame1 = Frame(
             inch,
             inch,
@@ -76,10 +90,10 @@ class OneColumnTemplate(PageTemplate):
 class TOCTemplate(PageTemplate):
     """ 目录 """
 
-    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, page_size=defaultPageSize):
         self.unicode_font = unicode_font
-        self.pageWidth = pageSize[0]
-        self.pageHeight = pageSize[1]
+        self.pageWidth = page_size[0]
+        self.pageHeight = page_size[1]
         frame1 = Frame(
             inch,
             inch,
@@ -105,10 +119,10 @@ class TOCTemplate(PageTemplate):
 class TwoColumnTemplate(PageTemplate):
     """ 页眉 """
 
-    def __init__(self, _id, unicode_font, pageSize=defaultPageSize):
+    def __init__(self, _id, unicode_font, page_size=defaultPageSize):
         self.unicode_font = unicode_font
-        self.pageWidth = pageSize[0]
-        self.pageHeight = pageSize[1]
+        self.pageWidth = page_size[0]
+        self.pageHeight = page_size[1]
         colWidth = 0.5 * (self.pageWidth - 2.25 * inch)
         frame1 = Frame(
             inch, inch, colWidth, self.pageHeight - 2 * inch, id='leftCol'
@@ -139,25 +153,46 @@ class TwoColumnTemplate(PageTemplate):
 
 
 class RLDocTemplate(BaseDocTemplate):
-    def __init__(self, filename, unicode_font, **kwargs):
+    """ Reportlab文档模板 """
+
+    def __init__(
+        self,
+        filename,
+        unicode_font,
+        cover_image=None,
+        copyrights=None,
+        **kwargs,
+    ):
         super().__init__(filename=filename, **kwargs)
 
         self.addPageTemplates(
-            FrontCoverTemplate(
-                constant.TEMPLATE_COVER, unicode_font, self.pagesize
+            RLFrontCoverTemplate(
+                constant.PAGE_TEMPLATE_COVER,
+                unicode_font,
+                cover_image=cover_image,
+                after_page_strings=copyrights,
+                page_size=self.pagesize,
             )
         )
         self.addPageTemplates(
-            TOCTemplate(constant.TEMPLATE_TOC, unicode_font, self.pagesize)
+            TOCTemplate(
+                constant.PAGE_TEMPLATE_TOC,
+                unicode_font,
+                page_size=self.pagesize,
+            )
         )
         self.addPageTemplates(
             OneColumnTemplate(
-                constant.TEMPLATE_NORMAL, unicode_font, self.pagesize
+                constant.PAGE_TEMPLATE_NORMAL,
+                unicode_font,
+                page_size=self.pagesize,
             )
         )
         self.addPageTemplates(
             TwoColumnTemplate(
-                constant.TEMPLATE_TWO_COLUMN, unicode_font, self.pagesize
+                constant.PAGE_TEMPLATE_TWO_COLUMN,
+                unicode_font,
+                page_size=self.pagesize,
             )
         )
         self.seq = Sequencer()  # 计数器

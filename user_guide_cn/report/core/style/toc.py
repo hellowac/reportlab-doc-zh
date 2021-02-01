@@ -4,7 +4,7 @@
 
 from reportlab.lib.styles import ParagraphStyle
 
-from components import constant
+from report.components import constant
 
 _HEADING_FONT_SIZE_MAP = {
     constant.TOC_STYLE_HEADING_1: 14,

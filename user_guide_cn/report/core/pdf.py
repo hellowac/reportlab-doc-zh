@@ -26,21 +26,22 @@ from reportlab.platypus import (
 )
 from reportlab.platypus.xpreformatted import PythonPreformatted
 
-from components.constant import (
+from report.components.constant import (
     CAPTION_IMAGE,
     CAPTION_TABLE,
     CAPTION_IMAGE_PREFIX,
     CAPTION_TABLE_PREFIX,
 )
-from components import constant
-from components.exception import FontNameNotFoundError, HeadingLevelError
-from components.utils import find_file_name, quick_fix
+from report.components import constant
+from report.components.exception import FontNameNotFoundError, HeadingLevelError
+from report.components.utils import find_file_name, quick_fix
 
-from core.figure import Illustration, GraphicsDrawing, ParaBox, ParaBox2
-from core.flowable import NoteAnnotation, HandAnnotation
-from core.style.default import get_default_style_sheet
-from core.toc import TableOfContents
-from core.templates import RLDocTemplate
+from report.core import VALIDATED_FONT_NAMES
+from report.core.figure import Illustration, GraphicsDrawing, ParaBox, ParaBox2
+from report.core.flowable import NoteAnnotation, HandAnnotation
+from report.core.style.default import get_default_style_sheet
+from report.core.toc import TableOfContents
+from report.core.templates import RLDocTemplate
 
 
 logger = logging.getLogger(__name__)
@@ -49,58 +50,38 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 class PDF(object):
-    _default_font_regular = 'SourceHanSans-ExtraLight'  # 将加细细的作为正常体
-    _default_font_normal = 'SourceHanSans-Normal'  # 将细体的作为常规体
-    _default_font_bold = 'SourceHanSans-Normal'  # 将正常的作为粗体
-    _default_font_italic = 'SourceHanSans-Light'  # 忽略，没有斜体，留在这儿只为说明有这个功能
-    _default_font_bold_italic = (
-        'SourceHanSans-ExtraLight'  # 忽略，没有斜体，留在这儿只为说明有这个功能
-    )
-
     def __init__(
         self,
         filename,
         pagesize=None,
-        fonts_dir=None,
-        font_regular=None,
-        font_normal=None,
-        font_bold=None,
-        font_italic=None,
-        font_bold_italic=None,
+        cover_image=None,  # 封面图片
+        copyrights=None,  # 封面左下角版权（文档）信息
+        font_regular='SourceHanSans-ExtraLight',  # 将加细细的作为正常体
+        font_normal='SourceHanSans-Normal',  # 将细体的作为常规体,
+        font_bold='SourceHanSans-Normal',  # 将正常的作为粗体
+        font_italic='SourceHanSans-Light',  # 忽略，没有斜体，留在这儿只为说明有这个功能
+        font_bold_italic='SourceHanSans-ExtraLight',  # 忽略，没有斜体，留在这儿只为说明有这个功能
         toc_cls=None,
     ):
-        default_font_dir = os.path.join(BASE_DIR, 'fonts')
 
         self.filename = filename
+        self.cover_image = cover_image
+        self.copyrights = copyrights or ['Generate By ReportLab']
 
         # 处理页面大小
         self.pagesize = pagesize or rl_config.defaultPageSize
 
-        # 处理字体
-        self.fonts_dir = fonts_dir or default_font_dir
-        self.fonts_map = {}
-
-        # 外部字体包
-        self._load_fonts(fonts_dir)
-        # reportlab字体包
-        reportlab_fonts_dir = os.path.join(
-            os.path.dirname(reportlab.__file__), 'fonts'
-        )
-        self._load_fonts(reportlab_fonts_dir)
-        # 检查字体名称是否在指定目录下和默认是否支持
+        # 处理字体, 检查字体名称是否在指定目录下和默认是否支持
         self._check_font_name(
             font_regular, font_normal, font_bold, font_italic, font_bold_italic
         )
-        self.font_regular = font_regular or self._default_font_regular
-        self.font_normal = font_normal or self._default_font_normal
-        self.font_bold = font_bold or self._default_font_bold
-        self.font_italic = font_italic or self._default_font_italic
-        self.font_bold_italic = (
-            font_bold_italic or self._default_font_bold_italic
-        )
+        self.font_regular = font_regular
+        self.font_normal = font_normal
+        self.font_bold = font_bold
+        self.font_italic = font_italic
+        self.font_bold_italic = font_bold_italic
         # 注册字体
         self.registered_fonts = []
-        self._register_font()
 
         # 保持一致flag
         self._keep_together_index = None
@@ -139,57 +120,11 @@ class PDF(object):
 
         # 底层canv对象
         self._doc = RLDocTemplate(
-            self.filename, self.font_regular, pagesize=defaultPageSize
-        )
-
-    def _load_fonts(self, fonts_dir):
-        """
-        加载指定字体文件目录中字体名称和文件映射。
-
-        1. 初始化扩展字体, 参考用户手册: 3.5 支持TrueType字体
-        """
-
-        # 默认思源黑体, 仅支持ttf文件
-        ttf_files = glob.glob(os.path.join(fonts_dir, '*.ttf'))
-        fonts = self.fonts_map
-
-        for file in ttf_files:
-            font_name = find_file_name(file)
-            fonts[font_name] = file
-
-        return fonts
-
-    def _register_font(self):
-        """ 注册字体 """
-        font_names = {
+            self.filename,
             self.font_regular,
-            self.font_normal,
-            self.font_bold,
-            self.font_bold_italic,
-            self.font_italic,
-        }
-        # reportlab包cid字体声明
-        cid_font_names = defaultUnicodeEncodings.keys()
-
-        for name in font_names:
-            try:
-                pdfmetrics.registerFont(TTFont(name, self.fonts_map[name]))
-            except KeyError as e:
-                if name in cid_font_names:
-                    pdfmetrics.registerFont(UnicodeCIDFont(name))
-                else:
-                    raise
-            else:
-                self.registered_fonts.append(name)
-
-        font_family = self.font_regular
-        pdfmetrics.registerFontFamily(
-            font_family,
-            normal=None,  # self.font_normal,
-            bold=None,  # self.font_bold,
-            # 有限支持斜体，在文本中加入 ^斜体^ 表示某个英文为斜体，且不支持中文
-            # italic=self.font_italic,
-            # boldItalic=self.font_bold_italic or self.font_italic,
+            cover_image=self.cover_image,
+            copyrights=self.copyrights,
+            pagesize=defaultPageSize,
         )
 
     def _check_font_name(
@@ -202,11 +137,6 @@ class PDF(object):
     ):
         """检查字体名称是否合法"""
 
-        font_names = list(self.fonts_map.keys())
-        # reportlab包默认的unicode字体名称
-        font_names.extend(list(defaultUnicodeEncodings.keys()))
-        # reportlab包默认的扩展字体名称
-
         for font in (
             font_regular,
             font_normal,
@@ -214,8 +144,9 @@ class PDF(object):
             font_italic,
             font_bold_italic,
         ):
-            if font and font not in font_names:
-                raise FontNameNotFoundError(f'未发现该字体: {font}')
+            if font and font not in VALIDATED_FONT_NAMES:
+                path = VALIDATED_FONT_NAMES.get(font, '未知字体路径')
+                raise FontNameNotFoundError(f'未发现该字体: {font}: path: {path}')
 
     def quick_fix(self, text):
         return quick_fix(text, self.font_bold)
@@ -478,12 +409,12 @@ class PDF(object):
 
     def next_toc_template(self):
         """ 后面使用目录模板 """
-        self.store.append(NextPageTemplate(constant.TEMPLATE_TOC))
+        self.store.append(NextPageTemplate(constant.PAGE_TEMPLATE_TOC))
 
     def next_normal_template(self):
         """ 后面使用常规模板 """
         # nextTemplate("Normal")
-        self.store.append(NextPageTemplate(constant.TEMPLATE_NORMAL))
+        self.store.append(NextPageTemplate(constant.PAGE_TEMPLATE_NORMAL))
 
     def build_2_save(self):
         self._doc.multiBuild(self.store)

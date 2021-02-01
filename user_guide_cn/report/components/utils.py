@@ -5,7 +5,7 @@ import logging
 from contextlib import redirect_stderr
 # from fontTools import ttLib
 
-from components.t_parse import Template
+from report.components.t_parse import Template
 
 logger = logging.getLogger(__name__)
 
