@@ -9,8 +9,12 @@
 生成 `reportlab` 的用户手册请按下列方法执行：
 
 ```shell script
-cd user_guid
+# 英文原版
+cd user_guid  
 python genuserguide.py
+# 中文整理版
+cd user_guide_cn  
+python gen_cn_user_guide.py
 ```
 
 
