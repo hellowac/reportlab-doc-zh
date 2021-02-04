@@ -24,6 +24,7 @@ from reportlab.platypus import (
     KeepTogether,
     Image,
 )
+from reportlab.graphics.shapes import Drawing
 from reportlab.platypus.xpreformatted import PythonPreformatted
 
 from report.components.constant import (
@@ -37,6 +38,12 @@ from report.components.exception import FontNameNotFoundError, HeadingLevelError
 from report.components.utils import find_file_name, quick_fix
 
 from report.core import VALIDATED_FONT_NAMES
+from report.core.graphics.quick_charts import (
+    QuickChart,
+    CHART_TYPES,
+    LEGEND_POSITIONS,
+    MARKERS,
+)
 from report.core.figure import Illustration, GraphicsDrawing, ParaBox, ParaBox2
 from report.core.flowable import NoteAnnotation, HandAnnotation
 from report.core.style.default import get_default_style_sheet
@@ -145,8 +152,13 @@ class PDF(object):
             font_bold_italic,
         ):
             if font and font not in VALIDATED_FONT_NAMES:
-                path = VALIDATED_FONT_NAMES.get(font, '未知字体路径')
-                raise FontNameNotFoundError(f'未发现该字体: {font}: path: {path}')
+                raise FontNameNotFoundError(f'未发现该字体: {font}')
+
+    def reset_seq(self):
+        """ 将标题计数器置空 """
+        self.seq.reset(self._SEQ_CHAPTER_FLAG)
+        self.seq.reset(self._SEQ_SECTION_FLAG)
+        self.seq.reset(self._SEQ_FIGURE_FLAG)
 
     def quick_fix(self, text):
         return quick_fix(text, self.font_bold)
@@ -418,9 +430,55 @@ class PDF(object):
 
     def build_2_save(self):
         self._doc.multiBuild(self.store)
+        self.reset_seq()
 
-    @property
-    def canv(self):
-        if not self._doc.canv:
-            raise AttributeError('该属性不存在')
-        return self._doc.canv
+    def add_quick_chart(
+        self,
+        data,
+        names,
+        series='',
+        width=460,
+        height=230,
+        chart_type='column',
+        title=None,
+    ):
+        """
+        添加快速图形
+        @param width: 图形宽度, 默认: 460
+        @param height: 图形高度, 默认: 230
+        @param data: Y轴值数据
+        @param names: X轴分类数据
+        @param series: 数据系列名, 默认为: None
+        @param chart_type: 图形类型：
+        @param title: 图形标题
+        @return: None
+        """
+
+        if chart_type not in CHART_TYPES:
+            raise ValueError(
+                f'图形类别 {chart_type} 不支持, 仅支持: {"、".join(CHART_TYPES)}'
+            )
+
+        chart = QuickChart()
+        chart.width = width
+        chart.height = height
+        chart.chartType = chart_type
+        chart.data = data
+        # chart.titleText = '折线图'  # 'Line Chart'
+        chart.seriesNames = series
+        chart.categoryNames = names
+        # chart.xTitleText = 'Year'
+        # chart.yTitleText = 'Sales (000,000)'
+        chart.titleFontName = self.font_regular
+        chart.xTitleFontName = self.font_regular
+        chart.yTitleFontName = self.font_regular
+        chart.xAxisFontName = self.font_regular
+        chart.yAxisFontName = self.font_regular
+        chart.dataLabelsFontName = self.font_regular
+        chart.legendFontName = self.font_regular
+
+        drawing = Drawing()
+        drawing.add(chart)
+
+        self.add_space()
+        self.add_draw(drawing, title)
