@@ -11,7 +11,7 @@
 生成 `reportlab` 的用户手册请按下列方法执行：
 
 ```shell script
-# 英文原版
+# 英文原版 和 中文对照版
 cd user_guid  
 python genuserguide.py
 # 中文整理版
