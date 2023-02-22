@@ -38,3 +38,12 @@ True Type 字体介绍：<https://blog.csdn.net/gaojinshan/article/details/80319
 
 * [example_cn.pdf](./example_cn.pdf) 是仅仅只有中文的使用说明
 * [example_en_cn.pdf](./example_en_cn.pdf) 是英文原文和中文对照的使用说明
+
+## 官方文档和开源项目
+
+详细说明和文档参考[官方在线文档](https://docs.reportlab.com/)，以及官方reportlab开源镜像:
+
+* [reportlab-mirror](https://github.com/MrBitBucket/reportlab-mirror)
+* [relextra-examples-mirror](https://github.com/MrBitBucket/rlextra-examples-mirror)
+* [preppy-mirror](https://github.com/MrBitBucket/preppy-mirror)
+* [rlextra-full-tutorial-mirror](https://github.com/MrBitBucket/rlextra-full-tutorial-mirror)
