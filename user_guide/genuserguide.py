@@ -73,7 +73,7 @@ def run():
     pdfmetrics.registerFont(
         TTFont(
             'SourceHanSansIt',
-            os.path.join(fonts_dir, 'SourceHanSans-ExtraLight.ttf'),
+            os.path.join(fonts_dir, 'SourceHanSans-Light.ttf'),
         )
     )
 
